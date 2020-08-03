@@ -1,0 +1,3 @@
+INDEX VERSION 1.130
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/777711528.index
+/app_school/src/main/resources

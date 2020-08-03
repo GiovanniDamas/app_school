@@ -11,6 +11,8 @@
 	<name>app_school Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
+
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- version de java -->
@@ -34,10 +36,10 @@
 		<hibernate.version>5.2.11.Final</hibernate.version>
 
 		<!-- version de mysql -->
-		<mysql.driver.version>5.1.47</mysql.driver.version>
+		<mysql.driver.version>8.0.16</mysql.driver.version>
 
 		<!-- version de spring security -->
-		<spring.security.version>5.0.2.RELEASE</spring.security.version>
+		<spring.security.version>5.3.3.RELEASE</spring.security.version>
 
 	</properties>
 

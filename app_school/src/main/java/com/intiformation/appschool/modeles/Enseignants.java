@@ -12,13 +12,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="enseignants")
-public class Enseignant extends Personne implements Serializable{
+public class Enseignants extends Personnes implements Serializable{
 	
 	//////// CTOR ///////
 	/**
 	 * Ctor vide
 	 */
-	public Enseignant() {
+	public Enseignants() {
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class Enseignant extends Personne implements Serializable{
 	 * @param prenom
 	 * @param email
 	 */
-	public Enseignant(String identifiant, String motDePasse, String nom, String prenom, String email) {
+	public Enseignants(String identifiant, String motDePasse, String nom, String prenom, String email) {
 		super(identifiant, motDePasse, nom, prenom, email);
 		
 	}

@@ -4,3 +4,21 @@
 1596469484382	Delete element
 1596469503182	Delete element
 1596469640165	Rename type 'Personne'
+1596531890836	Delete element
+1596532071723	Delete element
+1596536185275	Delete element
+1596536336856	Rename type 'IEtudiantService'
+1596536345342	Rename type 'Etudiant'
+1596536352718	Rename type 'Enseignant'
+1596536358495	Rename type 'Administrateur'
+1596536362150	Rename type 'Personne'
+1596536372419	Rename type 'IEtudiantDAO'
+1596536379792	Rename type 'IEnseignantDAO'
+1596536385706	Rename type 'IAdministrateurDAO'
+1596536395207	Rename type 'EtudiantDAOImpl'
+1596536401730	Rename type 'EnseignantDAOImpl'
+1596536410397	Rename type 'AdministrateurDAOImpl'
+1596541010530	Delete element
+1596542243202	Delete element
+1596543255994	Delete elements
+1596543489643	Delete element

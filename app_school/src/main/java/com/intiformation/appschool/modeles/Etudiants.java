@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="etudiants")
-public class Etudiant extends Personne implements Serializable {
+public class Etudiants extends Personnes implements Serializable {
 
 	////// PROPS ////////
 	@Column(name="Photo")
@@ -29,7 +29,7 @@ public class Etudiant extends Personne implements Serializable {
 	/**
 	 * Ctor vide
 	 */
-	public Etudiant() {
+	public Etudiants() {
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class Etudiant extends Personne implements Serializable {
 	 * @param prenom
 	 * @param email
 	 */
-	public Etudiant(String identifiant, String motDePasse, String nom, String prenom, String email, String photo, Date dateDeNaissance) {
+	public Etudiants(String identifiant, String motDePasse, String nom, String prenom, String email, String photo, Date dateDeNaissance) {
 		super(identifiant, motDePasse, nom, prenom, email);
 		this.photo = photo;
 		this.dateDeNaissance = dateDeNaissance ;

@@ -11,10 +11,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="administrateurs")
-public class Administrateur extends Personne implements Serializable{
+public class Administrateurs extends Personnes implements Serializable{
 	
 	//////// CTOR ///////:
-	public Administrateur() {
+	public Administrateurs() {
 	}
 
 	
@@ -26,7 +26,7 @@ public class Administrateur extends Personne implements Serializable{
 	 * @param prenom
 	 * @param email
 	 */
-	public Administrateur(String identifiant, String motDePasse, String nom, String prenom, String email) {
+	public Administrateurs(String identifiant, String motDePasse, String nom, String prenom, String email) {
 		super(identifiant, motDePasse, nom, prenom, email);
 	}
 	

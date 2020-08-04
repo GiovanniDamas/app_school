@@ -9,8 +9,7 @@
 
 	<!-- Activation de la detection des beans de spring ex @Component, @Repository -->
 
-	<context:component-scan
-		base-package="com.intiformation.appschool.modeles" />
+	<context:component-scan base-package="com.intiformation.appschool" />
 
 	<!-- Association des classes et méthodes des contrôleurs à des requêtes -->
 

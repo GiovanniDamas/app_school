@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="personnes")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class Personne implements Serializable{
+public class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
@@ -52,7 +52,7 @@ public class Personne implements Serializable{
 	/**
 	 * ctor vide
 	 */
-	public Personne() {
+	public Personnes() {
 	
 	}
 
@@ -64,7 +64,7 @@ public class Personne implements Serializable{
 	 * @param prenom
 	 * @param email
 	 */
-	public Personne(String identifiant, String motDePasse, String nom, String prenom, String email) {
+	public Personnes(String identifiant, String motDePasse, String nom, String prenom, String email) {
 		super();
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;

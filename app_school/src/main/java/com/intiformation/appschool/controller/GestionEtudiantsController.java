@@ -1,5 +1,5 @@
 package com.intiformation.appschool.controller;
 
-public class ASupprimer {
+public class GestionEtudiantsController {
 
 }

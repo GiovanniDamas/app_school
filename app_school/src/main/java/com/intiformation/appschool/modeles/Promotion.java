@@ -42,14 +42,14 @@ public class Promotion implements Serializable {
 	 * Relation entre Promotion et Etudiant: plusieurs promotion pour plusieurs etudiants
 	 * ManyToMany	 	 
 	 */
-	/*
+	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="promotion_assos_etudiants",
 			   joinColumns=@JoinColumn(name="promotion_id"),
 			   inverseJoinColumns=@JoinColumn(name="etudiant_id"))	
-	private List<Etudiant> etudiantsPromotions;
-	*/
+	private List<Etudiants> etudiantsPromotions;
 	
+
 	/**
 	 * Relation entre Promotion et EnseignantMatierePromotionLink: OneToMany
 	 * 	 	 
@@ -92,8 +92,24 @@ public class Promotion implements Serializable {
 		this.libelle = libelle;
 	}
 	
+	public List<Etudiants> getEtudiantsPromotions() {
+		return etudiantsPromotions;
+	}
 
-	
+
+	public void setEtudiantsPromotions(List<Etudiants> etudiantsPromotions) {
+		this.etudiantsPromotions = etudiantsPromotions;
+	}
+
+
+	public List<EnseignantMatierePromotionLink> getEnseignantMatierePromotionLinks() {
+		return enseignantMatierePromotionLinks;
+	}
+
+
+	public void setEnseignantMatierePromotionLinks(List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks) {
+		this.enseignantMatierePromotionLinks = enseignantMatierePromotionLinks;
+	}
 	
 	
 

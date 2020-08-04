@@ -38,9 +38,9 @@ public class EnseignantMatierePromotionLink {
 	@JoinColumn(name = "promotion_id")
 	private Promotion promotion;
 
-	//@ManyToOne(cascade = CascadeType.ALL)
-	//@JoinColumn(name = "etudiant_id")
-	//private Etudiant etudiant;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "etudiant_id")
+	private Enseignants enseignant;
 
 	// _________________ CONSTRUCTEUR ___________________ //
 	/**
@@ -75,15 +75,17 @@ public class EnseignantMatierePromotionLink {
 	public void setPromotion(Promotion promotion) {
 		this.promotion = promotion;
 	}
-/*
-	public Etudiant getEtudiant() {
-		return etudiant;
+
+	public Enseignants getEnseignant() {
+		return enseignant;
 	}
 
-	public void setEtudiant(Etudiant etudiant) {
-		this.etudiant = etudiant;
+	public void setEnseignant(Enseignants enseignant) {
+		this.enseignant = enseignant;
 	}
-*/	
+
+
+	
 	
 
 }// end class

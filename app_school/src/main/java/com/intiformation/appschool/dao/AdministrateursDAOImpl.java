@@ -1,4 +1,4 @@
-package com.intiformation.appschool.dao;
+   package com.intiformation.appschool.dao;
 
 import java.util.List;
 

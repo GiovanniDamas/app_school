@@ -1,10 +1,13 @@
 package com.intiformation.appschool.modeles;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -35,25 +38,35 @@ public class Adresse {
 	@Column(name="ville")
 	private String ville;
 	
+	// _________________ ASSOCIATIONS ___________________ //
+	
+	// plusieurs adresses pour une peronne
+	@ManyToOne(cascade=CascadeType.PERSIST)
+	@JoinColumn(name="personne_id", referencedColumnName="idPersonne")
+	private Personnes personne;
+	
+	
 	/*_____________________ctors_________________________*/
 	public Adresse() {
 	}//end ctor vide
 
-	public Adresse(Long idAdresse, int numero, String rue, String codePostal, String ville) {
+	public Adresse(Long idAdresse, int numero, String rue, String codePostal, String ville, Personnes personne) {
 		super();
 		this.idAdresse = idAdresse;
 		this.numero = numero;
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
+		this.personne = personne;
 	}
 
-	public Adresse(int numero, String rue, String codePostal, String ville) {
+	public Adresse(int numero, String rue, String codePostal, String ville, Personnes personne) {
 		super();
 		this.numero = numero;
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
+		this.personne = personne;
 	}
 
 	
@@ -97,6 +110,14 @@ public class Adresse {
 
 	public void setVille(String ville) {
 		this.ville = ville;
+	}
+
+	public Personnes getPersonne() {
+		return personne;
+	}
+
+	public void setPersonne(Personnes personne) {
+		this.personne = personne;
 	}
 	
 	

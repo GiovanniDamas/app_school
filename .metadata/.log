@@ -2322,3 +2322,18 @@ java.nio.file.InvalidPathException: Illegal char <:> at index 4: .git:
 	at org.eclipse.egit.core.Activator$CheckProjectsToShare.visitConnect(Activator.java:614)
 	at org.eclipse.egit.core.Activator$CheckProjectsToShare.run(Activator.java:535)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:02:06.139
+!MESSAGE Could not publish server configuration for Tomcat v8.5 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:02:06.139
+!MESSAGE Multiple Contexts have a path of "/app_school".
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:04:08.574
+!MESSAGE Could not publish server configuration for Tomcat v8.5 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:04:08.574
+!MESSAGE Multiple Contexts have a path of "/app_school".
+
+!ENTRY org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:09:33.946
+!MESSAGE Could not publish server configuration for Tomcat v8.5 Server at localhost.
+!SUBENTRY 1 org.eclipse.jst.server.tomcat.core 4 0 2020-08-05 18:09:33.946
+!MESSAGE Multiple Contexts have a path of "/app_school".

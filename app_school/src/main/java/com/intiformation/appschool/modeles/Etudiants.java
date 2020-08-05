@@ -2,9 +2,12 @@ package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -24,6 +27,13 @@ public class Etudiants extends Personnes implements Serializable {
 	
 	@Column(name="DateDeNaissance")
 	Date dateDeNaissance;
+	
+	//associations
+	/**
+	 * relation entre étudiant et etudiantCours : un étudiant pour plusieurs etudiantsCours (One To Many)
+	 */
+	@OneToMany(targetEntity=EtudiantCours.class, cascade=CascadeType.ALL, mappedBy="etudiant")
+	private List<EtudiantCours> listeEtudiantsCours;
 
 	///////// CTOR /////////
 	/**
@@ -63,6 +73,14 @@ public class Etudiants extends Personnes implements Serializable {
 
 	public void setDateDeNaissance(Date dateDeNaissance) {
 		this.dateDeNaissance = dateDeNaissance;
+	}
+
+	public List<EtudiantCours> getListeEtudiantsCours() {
+		return listeEtudiantsCours;
+	}
+
+	public void setListeEtudiantsCours(List<EtudiantCours> listeEtudiantsCours) {
+		this.listeEtudiantsCours = listeEtudiantsCours;
 	}
 	
 	

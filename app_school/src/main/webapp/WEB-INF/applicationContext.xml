@@ -6,19 +6,23 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
-	
+
+
 	<!-- Activation de la detection des beans de spring ex @Component, @Repository -->
 
 	<context:component-scan
 		base-package="com.intiformation.appschool" />
 
 
+	<!-- ====================================================== -->
+	<!-- ======== Emplacement des fichiers propriétés ========= -->
+	<!-- ====================================================== -->
 	<context:property-placeholder
 		location="classpath:db.properties" />
 
-	<!-- declaration du bean de la datasource -->
-
+	<!-- ====================================================== -->
+	<!-- ======== Déclaration du Bean de la DataSource ======== -->
+	<!-- ====================================================== -->
 	<bean id="dataSourceBean"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
@@ -28,7 +32,12 @@
 		<property name="password" value="${db.password}" />
 	</bean>
 
+	<!-- ====================================================== -->
+	<!-- ========== Déclaration bean sessionFactory =========== -->
+	<!-- ====================================================== -->
 
+	<!-- > Spring propose une implémentation de la sessionFactory d'hibernate 
+		nommé 'LocalSessionFactoryBean' -->
 	<bean id="sessionFactoryBean"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 
@@ -50,7 +59,9 @@
 		<!-- declaration des classes entités annotés avec @Entity de mapping -->
 		<property name="annotatedClasses">
 			<list>
-				<value>com.intiformation.appschool.modeles</value>
+				<value>com.intiformation.appschool.modeles.Matiere</value>
+				<value>com.intiformation.appschool.modeles.Promotion</value>
+				<value>com.intiformation.appschool.modeles.EnseignantMatierePromotionLink</value>
 			</list>
 		</property>
 	</bean>

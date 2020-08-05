@@ -76,11 +76,11 @@ public class Personnes implements Serializable{
 	
 	////// GETTERS / SETTERS //////////
 	
-	public int getIdPersonne() {
+	public long getIdPersonne() {
 		return idPersonne;
 	}
 
-	public void setIdPersonne(int idPersonne) {
+	public void setIdPersonne(long idPersonne) {
 		this.idPersonne = idPersonne;
 	}
 

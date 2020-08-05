@@ -33,7 +33,6 @@
 <fullyQualifiedTypeName name="com.intiformation.appschool.dao.IAdministrateursDAO"/>
 <fullyQualifiedTypeName name="org.omg.CORBA.PRIVATE_MEMBER"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.IEtudiantsService"/>
-<fullyQualifiedTypeName name="com.intiformation.appschool.service.IEnseignantsService"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.IAdministrateursService"/>
 <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="org.springframework.context.ApplicationContext"/>
@@ -45,4 +44,5 @@
 <fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Etudiants"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Enseignants"/>
+<fullyQualifiedTypeName name="com.intiformation.appschool.service.IEnseignantsService"/>
 </qualifiedTypeNameHistroy>

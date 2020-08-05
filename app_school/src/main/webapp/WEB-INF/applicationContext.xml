@@ -50,7 +50,15 @@
 		<!-- declaration des classes entités annotés avec @Entity de mapping -->
 		<property name="annotatedClasses">
 			<list>
-				<value>com.intiformation.appschool.modeles</value>
+				<value>com.intiformation.appschool.modeles.Administrateurs</value>
+				<value>com.intiformation.appschool.modeles.Cours</value>
+				<value>com.intiformation.appschool.modeles.EnseignantMatierePromotionLink</value>
+				<value>com.intiformation.appschool.modeles.Enseignants</value>
+				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
+				<value>com.intiformation.appschool.modeles.Etudiants</value>
+				<value>com.intiformation.appschool.modeles.Matiere</value>
+				<value>com.intiformation.appschool.modeles.Personnes</value>
+				<value>com.intiformation.appschool.modeles.Promotion</value>
 			</list>
 		</property>
 	</bean>

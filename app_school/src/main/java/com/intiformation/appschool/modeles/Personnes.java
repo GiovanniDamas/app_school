@@ -1,7 +1,9 @@
 package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -29,24 +32,28 @@ public class Personnes implements Serializable{
 	////////// PROPS ////////
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="idPersonne")
-	int idPersonne;
+	@Column(name="id_personne")
+	private int idPersonne;
 	
-	@Column(name="Identifiant")
-	String identifiant;
+	@Column(name="identifiant")
+	private String identifiant;
 	
-	@Column(name="MotDePasse")
-	String motDePasse;
+	@Column(name="mot_de_passe")
+	private String motDePasse;
 	
-	@Column(name="Nom")
-	String nom;
+	@Column(name="nom")
+	private String nom;
 	
-	@Column(name="Prenom")
-	String prenom; 
+	@Column(name="prenom")
+	private String prenom; 
 	
-	@Column(name="Email")
-	String email;
+	@Column(name="email")
+	private String email;
 	
+	
+	@Column(name="adresse")
+	@OneToMany(mappedBy="personnes", cascade= CascadeType.ALL)
+	private List<Adresse> adresses;
 	
 	/////// CTOR ////////
 	/**
@@ -122,6 +129,14 @@ public class Personnes implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Adresse> getAdresses() {
+		return adresses;
+	}
+
+	public void setAdresses(List<Adresse> adresses) {
+		this.adresses = adresses;
 	}
 	
 	

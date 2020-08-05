@@ -37,12 +37,9 @@ public class Adresse {
 	
 	@Column(name="ville")
 	private String ville;
-	
-	// _________________ ASSOCIATIONS ___________________ //
-	
-	// plusieurs adresses pour une peronne
-	@ManyToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="personne_id", referencedColumnName="idPersonne")
+
+	@ManyToOne
+	@JoinColumn(name="id_personne")
 	private Personnes personne;
 	
 	

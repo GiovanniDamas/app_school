@@ -27,7 +27,10 @@ C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\ICoursDAO.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\IAideService.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Administrateurs.java
+<<<<<<< HEAD
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\controller\GestionCoursController.java
+=======
+>>>>>>> master
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\IAideDAO.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\controller\GestionAdministrateursController.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\EtudiantsServiceImpl.java
@@ -45,7 +48,10 @@ C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Promotion.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\AdministrateursDAOImpl.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\ICoursService.java
+<<<<<<< HEAD
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\controller\GestionEtudiantCoursController.java
+=======
+>>>>>>> master
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\CoursServiceImpl.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\EtudiantsDAOImpl.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\PromotionServiceImpl.java

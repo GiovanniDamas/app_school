@@ -102,7 +102,7 @@ public class Promotion implements Serializable {
 		this.etudiantsPromotions = etudiantsPromotions;
 	}
 
-/*
+
 	public List<EnseignantMatierePromotionLink> getEnseignantMatierePromotionLinks() {
 		return enseignantMatierePromotionLinks;
 	}
@@ -111,7 +111,7 @@ public class Promotion implements Serializable {
 	public void setEnseignantMatierePromotionLinks(List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks) {
 		this.enseignantMatierePromotionLinks = enseignantMatierePromotionLinks;
 	}
-*/	
+
 	
 
 }//end classe

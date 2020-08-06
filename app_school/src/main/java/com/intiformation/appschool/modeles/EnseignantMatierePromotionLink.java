@@ -64,7 +64,7 @@ public class EnseignantMatierePromotionLink implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-/*
+
 	public Matiere getMatiere() {
 		return matiere;
 	}
@@ -80,7 +80,6 @@ public class EnseignantMatierePromotionLink implements Serializable {
 	public void setPromotion(Promotion promotion) {
 		this.promotion = promotion;
 	}
-*/
 
 
 

@@ -9,6 +9,9 @@
 <body>
 
 	<h1>Hello !</h1>
+	
+	
+	<a href="${pageContext.request.contextPath}/listeEtudiants">lien test liste etudiants</a>
 
 </body>
 </html>

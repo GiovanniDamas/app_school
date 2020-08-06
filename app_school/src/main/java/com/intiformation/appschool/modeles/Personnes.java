@@ -16,8 +16,6 @@ import javax.persistence.Table;
 
 
 
-
-
 /**
  * Entité mère des classes etudiant, enseignant, administrateur </br>
  * Classe mappé par rapport à la table Personne </br>
@@ -32,7 +30,7 @@ public class Personnes implements Serializable{
 	////////// PROPS ////////
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_personne")
+	@Column(name="idPersonne")
 	private int idPersonne;
 	
 	@Column(name="identifiant")
@@ -82,12 +80,12 @@ public class Personnes implements Serializable{
 
 	
 	////// GETTERS / SETTERS //////////
-	
-	public long getIdPersonne() {
+
+	public int getIdPersonne() {
 		return idPersonne;
 	}
 
-	public void setIdPersonne(long idPersonne) {
+	public void setIdPersonne(int idPersonne) {
 		this.idPersonne = idPersonne;
 	}
 

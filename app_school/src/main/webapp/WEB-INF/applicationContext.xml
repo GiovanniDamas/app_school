@@ -48,7 +48,7 @@
 		</property>
 
 		<!-- declaration des classes entités annotés avec @Entity de mapping -->
-		<property name="annotatedClasses">
+		<property name="annotatedPackages">
 			<list>
 				<value>com.intiformation.appschool.modeles</value>
 			</list>

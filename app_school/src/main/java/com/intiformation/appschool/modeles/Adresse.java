@@ -1,6 +1,7 @@
 package com.intiformation.appschool.modeles;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="adresses")
-public class Adresse {
+public class Adresse implements Serializable  {
 
 	
 	/*_____________________props_________________________*/

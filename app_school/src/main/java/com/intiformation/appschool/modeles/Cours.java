@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,12 +51,14 @@ public class Cours implements Serializable{
 	/**
 	 * relation entre cours et matières
 	 */
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="matiere_id", referencedColumnName="id_matiere")
 	private Matiere matieres;
 	
 	/**
 	 * relation entre cours et promotion
 	 */
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotions;
 	

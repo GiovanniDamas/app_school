@@ -2,12 +2,14 @@ package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,12 +39,14 @@ public class EtudiantCours implements Serializable{
 	/**
 	 * relation entre etudiant et etudiantCours 
 	 */
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="etudiant_id", referencedColumnName="idPersonne")
 	private Etudiants etudiant;
 	
 	/**
 	 * relation entre cours et etudiantCours 
 	 */
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="cours_id", referencedColumnName="id_cours")
 	private Cours cours;
 	

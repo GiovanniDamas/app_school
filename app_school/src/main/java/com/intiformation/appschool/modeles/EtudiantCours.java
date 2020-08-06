@@ -2,14 +2,20 @@ package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
 
+<<<<<<< HEAD
+=======
 import javax.persistence.CascadeType;
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+<<<<<<< HEAD
+=======
 import javax.persistence.ManyToOne;
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 import javax.persistence.Table;
 
 /**
@@ -39,14 +45,20 @@ public class EtudiantCours implements Serializable{
 	/**
 	 * relation entre etudiant et etudiantCours 
 	 */
+<<<<<<< HEAD
+=======
 	@ManyToOne(cascade=CascadeType.ALL)
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 	@JoinColumn(name="etudiant_id", referencedColumnName="idPersonne")
 	private Etudiants etudiant;
 	
 	/**
 	 * relation entre cours et etudiantCours 
 	 */
+<<<<<<< HEAD
+=======
 	@ManyToOne(cascade=CascadeType.ALL)
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 	@JoinColumn(name="cours_id", referencedColumnName="id_cours")
 	private Cours cours;
 	

@@ -14,20 +14,22 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+
+
+
 /**
  * Entité mère des classes etudiant, enseignant, administrateur </br>
  * Classe mappé par rapport à la table Personne </br>
- * 
  * @author giovanni
  *
  */
 @Entity
-//@Table(name = "personnes")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Personnes implements Serializable {
-
+@Table(name="personnes")
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public class Personnes implements Serializable{
+	
 	////////// PROPS ////////
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE) // changement à .TABLE
 	@Column(name = "id_personne")
@@ -61,12 +63,11 @@ public abstract class Personnes implements Serializable {
 	 * ctor vide
 	 */
 	public Personnes() {
-
+	
 	}
 
 	/**
 	 * ctor chargé sans id
-	 * 
 	 * @param identifiant
 	 * @param motDePasse
 	 * @param nom
@@ -82,7 +83,16 @@ public abstract class Personnes implements Serializable {
 		this.email = email;
 	}
 
+	
 	////// GETTERS / SETTERS //////////
+	
+	public long getIdPersonne() {
+		return idPersonne;
+	}
+
+	public void setIdPersonne(long idPersonne) {
+		this.idPersonne = idPersonne;
+	}
 
 	public String getIdentifiant() {
 		return identifiant;
@@ -124,12 +134,14 @@ public abstract class Personnes implements Serializable {
 		this.email = email;
 	}
 
-	public int getId() {
-		return id;
+	public List<Adresse> getAdresses() {
+		return adresses;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setAdresses(List<Adresse> adresses) {
+		this.adresses = adresses;
 	}
+	
+	
 
-}// END CLASS
+}//END CLASS

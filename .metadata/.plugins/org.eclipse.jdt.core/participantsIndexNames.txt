@@ -1,5 +1,3 @@
 INDEX VERSION 1.130
-C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_app_school\app_school\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\545104311.index
-\app_school\src\main\java
-C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_app_school\app_school\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2768898776.index
+C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_gestion_ecole\app_school\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2768898776.index
 \app_school\src\main\java

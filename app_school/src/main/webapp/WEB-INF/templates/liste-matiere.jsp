@@ -6,30 +6,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+    rel="stylesheet">
+
 <title>Insert title here</title>
 </head>
 <body>
 
-<%-- 
-			> traitement des données envoyées par le controleur 'EmployeController'
-			et sa méthode recupererListeEmployesDB
-			
-				- Les données :	model.addAttribute("attribut_liste_employes", listeEmployesDB);
-				
-	 --%>
+
 
 	<h1>
-		<u>Liste des employés</u>
+		<u>Liste des matières:</u>
 	</h1>
 
 	<table border="1" width="70%">
 
 		<tr>
-			<%-- Au clic sur le lien : envoie d'une requete HTTP en GET vers la méthode 'afficherFormulaireAjout'
-					 du controler EmployeController, mappée sur l'url "/employe/add-employe-form" --%>
+		
 			<td colspan="5" align="right"><a
 				href="${pageContext.request.contextPath}/employe/add-employe-form">
-					Ajout d'un employé </a></td>
+					Ajout d'une matière </a></td>
 		</tr>
 
 		<!-- en tête de la table -->
@@ -67,6 +65,8 @@
 
 		</c:forEach>
 	</table>
+	
+	<button type="button" class="btn btn-danger">Hello</button>
 
 
 </body>

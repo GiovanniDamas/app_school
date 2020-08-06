@@ -1,8 +1,11 @@
 package com.intiformation.appschool.modeles;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,26 +23,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "enseignantMatierePromotionLink")
-public class EnseignantMatierePromotionLink {
+public class EnseignantMatierePromotionLink implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	// _________________ ASSOCIATIONS ___________________ //
 	/**
 	 * avec Matiere, Promotion et Etudiants: ManyToMany
 	 */
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "matiere_id")
+	@JoinColumn(name = "matiere_id", referencedColumnName="id_matiere")
 	private Matiere matiere;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "promotion_id")
+	@JoinColumn(name = "promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotion;
 
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "etudiant_id")
+	@JoinColumn(name = "personne_id", referencedColumnName="id_personne")
 	private Enseignants enseignant;
 
 	// _________________ CONSTRUCTEUR ___________________ //
@@ -76,13 +81,6 @@ public class EnseignantMatierePromotionLink {
 		this.promotion = promotion;
 	}
 
-	public Enseignants getEnseignant() {
-		return enseignant;
-	}
-
-	public void setEnseignant(Enseignants enseignant) {
-		this.enseignant = enseignant;
-	}
 
 
 	

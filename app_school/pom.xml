@@ -12,36 +12,33 @@
 	<url>http://maven.apache.org</url>
 
 
+	<!-- ============================================ -->
+	<!-- Propriétés du projet -->
+	<!-- ============================================ -->
 
-	<properties>
+<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- version de java -->
+		<!-- Verison de java -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-
-		<!-- Version de spring -->
+		<!-- version de spring -->
 		<spring.version>5.2.0.RELEASE</spring.version>
-
-		<!-- Version de la JSTL -->
+		<!-- version de l'API servlet -->
+		<servlet.version>3.1.0</servlet.version>
+		<!-- version de la JSTL -->
 		<jstl.version>1.2.1</jstl.version>
 		<tld.version>1.1.2</tld.version>
-
-		<!-- Version de l'API servlet -->
-		<servlet.version>3.1.0</servlet.version>
-
-		<!-- Version des JSP -->
+		<!-- version de JSP -->
 		<jsp.version>2.3.1</jsp.version>
-
 		<!-- version d'hibernate -->
 		<hibernate.version>5.2.11.Final</hibernate.version>
-
-		<!-- version de mysql -->
-		<mysql.driver.version>8.0.16</mysql.driver.version>
-
+		<!-- verison pilote jdbc mysql -->
+		<mysql.driver.version>5.1.47</mysql.driver.version>
 		<!-- version de spring security -->
-		<spring.security.version>5.3.3.RELEASE</spring.security.version>
-
+		<spring.security.version>5.0.2.RELEASE</spring.security.version>
 	</properties>
+
+
 
 
 	<!-- dependances du projet -->
@@ -121,7 +118,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.driver.version}</version>
 		</dependency>
-
+		<!--  
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>6.0.3</version>
+		</dependency>
+-->
 		<!-- ///// Spring Security /////// -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -157,6 +160,12 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-data</artifactId>
 			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 
 	</dependencies>

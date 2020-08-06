@@ -12,6 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+<<<<<<< HEAD
+=======
+import javax.persistence.ManyToOne;
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,12 +54,20 @@ public class Cours implements Serializable{
 	/**
 	 * relation entre cours et matières
 	 */
+<<<<<<< HEAD
+=======
+	@ManyToOne(cascade=CascadeType.ALL)
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 	@JoinColumn(name="matiere_id", referencedColumnName="id_matiere")
 	private Matiere matieres;
 	
 	/**
 	 * relation entre cours et promotion
 	 */
+<<<<<<< HEAD
+=======
+	@ManyToOne(cascade=CascadeType.ALL)
+>>>>>>> ff55219e0a5bd6a9db83eebe036a0b1ca95c9a82
 	@JoinColumn(name="promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotions;
 	

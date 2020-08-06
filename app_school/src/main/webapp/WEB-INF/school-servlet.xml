@@ -26,5 +26,19 @@
 		<property name="prefix" value="/WEB-INF/templates/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++ Gestion des resources statiques de l'application  +++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	
+	<!-- 
+			Configurer un gestion pour gérer les ressources statiques
+			
+			- repondre à toutes les ressources privenant de /assets/**
+			en recherchant dans le répertoire 
+	 -->
+	 <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+	
 
 </beans>

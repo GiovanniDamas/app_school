@@ -10,5 +10,6 @@
 
 	<h1>Hello !</h1>
 
+	<a href="${pageContext.request.contextPath}/cours/liste">Lien vers les cours</a>
 </body>
 </html>

@@ -65,6 +65,10 @@
 				<value>com.intiformation.appschool.modeles.Matiere</value>
 				<value>com.intiformation.appschool.modeles.Personnes</value>
 				<value>com.intiformation.appschool.modeles.Promotion</value>
+				<value>com.intiformation.appschool.modeles.Aide</value>
+				<value>com.intiformation.appschool.modeles.Adresse</value>
+				<value>com.intiformation.appschool.modeles.Cours</value>
+				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
 			</list>
 		</property>
 	</bean>

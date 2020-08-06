@@ -56,13 +56,14 @@ public class Enseignants extends Personnes implements Serializable {
 
 	}
 
-	
-	public int getIdPersonne() {
+	public int getIdEnseignant() {
 		return idEnseignant;
 	}
 
-	public void setIdPersonne(int idPersonne) {
-		this.idEnseignant = idPersonne;
+	public void setIdEnseignant(int idEnseignant) {
+		this.idEnseignant = idEnseignant;
 	}
+
+	
 
 }// END CLASS

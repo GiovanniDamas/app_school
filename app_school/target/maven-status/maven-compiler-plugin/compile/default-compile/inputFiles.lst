@@ -44,6 +44,7 @@
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IPromotionDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Matiere.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/EtudiantCours.java
+/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionAdministrateursController.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionMatiereController.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEtudiantsDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/MatiereDAOImpl.java

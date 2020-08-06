@@ -50,5 +50,6 @@ com/intiformation/appschool/service/CoursServiceImpl.class
 com/intiformation/appschool/dao/MatiereDAOImpl.class
 com/intiformation/appschool/service/IEnseignantMatierePromotionLinkService.class
 com/intiformation/appschool/dao/IGenerique.class
+com/intiformation/appschool/controller/GestionAdministrateursController.class
 com/intiformation/appschool/dao/IPromotionDAO.class
 com/intiformation/appschool/service/IEtudiantCoursService.class

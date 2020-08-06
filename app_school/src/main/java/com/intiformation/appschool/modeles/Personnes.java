@@ -27,13 +27,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="personnes")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class Personnes implements Serializable{
+public abstract class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE) // changement à .TABLE
 	@Column(name = "id_personne")
-	int id;
+	Long idPersonne;
 
 	@Column(name = "Identifiant")
 	String identifiant;
@@ -53,10 +53,12 @@ public class Personnes implements Serializable{
 	// _________________ ASSOCIATIONS ___________________ //
 
 	/*
-//	@Column(name="adresse")
+	
 	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
-	private List<Adresse> adresses;
-	*/
+	
+		*/
+	//private List<Adresse> adresses;
+
 
 	/////// CTOR ////////
 	/**
@@ -133,7 +135,7 @@ public class Personnes implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+/*
 	public List<Adresse> getAdresses() {
 		return adresses;
 	}
@@ -141,7 +143,7 @@ public class Personnes implements Serializable{
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 	}
-	
+*/	
 	
 
 }//END CLASS

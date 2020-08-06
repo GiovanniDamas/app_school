@@ -46,7 +46,8 @@ public class Matiere implements Serializable {
 	 * Relation entre Promotion et EnseignantMatierePromotionLink: OneToMany
 	 * 	 	 
 	 */
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="matieres")
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="matiere")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
 	
 

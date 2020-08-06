@@ -6,39 +6,45 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
-	
-	<!-- Activation de la detection des beans de spring ex @Component, @Repository -->
-
-	<context:component-scan
-		base-package="com.intiformation.appschool" />
 
 
+	<!-- ====================================================== -->
+	<!-- ======== Emplacement des fichiers propriétés ========= -->
+	<!-- ====================================================== -->
 	<context:property-placeholder
 		location="classpath:db.properties" />
 
-	<!-- declaration du bean de la datasource -->
 
+
+
+	<!-- ====================================================== -->
+	<!-- ======== Déclaration du Bean de la DataSource ======== -->
+	<!-- ====================================================== -->
 	<bean id="dataSourceBean"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
 			value="${db.driverClassName}" />
 		<property name="url" value="${db.url}" />
-		<property name="username" value="${db.username}" />
+		<property name="username" value="${db.user}" />
 		<property name="password" value="${db.password}" />
 	</bean>
 
+	<!-- ====================================================== -->
+	<!-- ========== Déclaration bean sessionFactory =========== -->
+	<!-- ====================================================== -->
 
+	<!-- > Spring propose une implémentation de la sessionFactory d'hibernate 
+		nommé 'LocalSessionFactoryBean' -->
 	<bean id="sessionFactoryBean"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 
-		<!-- injection du bean de la datasource "dataSourceBean" dans le bean de 
-			la sessionFactory -->
 
+		<!-- injection du bean de la datasource 'dataSourceBean' dans bean de la 
+			session factory -->
 		<property name="dataSource" ref="dataSourceBean" />
 
-		<!-- definition des proprietes d'hibernate -->
 
+		<!-- Definition des prop d'hibernate -->
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">${db.hibernate.dialect}</prop>
@@ -47,35 +53,61 @@
 			</props>
 		</property>
 
+
 		<!-- declaration des classes entités annotés avec @Entity de mapping -->
 		<property name="annotatedPackages">
 			<list>
-				<value>com.intiformation.appschool.modeles</value>
+				<value>com.intiformation.appschool.modeles.Etudiants</value>
+				<value>com.intiformation.appschool.modeles.Administrateurs</value>
+				<value>com.intiformation.appschool.modeles.Enseignants</value>
+				<value>com.intiformation.appschool.modeles.EnseignantMatierePromotionLink
+				</value>
+				<value>com.intiformation.appschool.modeles.Matiere</value>
+				<value>com.intiformation.appschool.modeles.Personnes</value>
+				<value>com.intiformation.appschool.modeles.Promotion</value>
 			</list>
 		</property>
 	</bean>
 
 
-	<!-- activation de la detection des annotations des transactions ex @Transactional -->
+	<!-- ====================================================== -->
+	<!-- === Configuration des annotations des transactions === -->
+	<!-- ====================================================== -->
+	<!-- activation de la détection des annoatation concernant les transactions. 
+		Ex @Transactional -->
+	<!-- - tx:annotation-driven: transactions pilotées par les annotations via 
+		un gestionnaire des transactions proposées ou fournies par pspring transactionManager -->
 
 	<tx:annotation-driven
 		transaction-manager="transactionManagerBean" />
 
+
+		<!-- ====================================================== -->
+	<!-- ========== Déclaration bean gestionnaire des tx ====== -->
+	<!-- ====================================================== -->
+	<!-- - va gérer pour nous les tx -->
 	<bean id="transactionManagerBean"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<!-- injection du bean de la session factory "sessionFactoryBean" dans 
-			le gestionnaire des txs -->
-		<property name="sessionFactory" ref="sessionFactoryBean" />
+
+		<!-- injection du bean de la sessionFactory 'sessionFactoryBean' dans le 
+			gestionnaires des tx -->
+		<property name="sessionFactory" ref="sessionFactoryBean"></property>
+
 	</bean>
+
+
+	<!-- ============================================ -->
+	<!-- DÉTECTION des composant de spring -->
+	<!-- ============================================ -->
 
 	<!-- Config des annotations -->
 
 	<context:annotation-config />
-
-	<!-- détection des composants de spring -->
+	
+	<!-- Activation de la detection des beans de spring ex @Component, @Repository -->
 
 	<context:component-scan
-		base-package="com.intiformation.appschool"></context:component-scan>
+		base-package="com.intiformation.appschool" />
 
 
 

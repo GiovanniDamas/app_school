@@ -170,7 +170,7 @@ public class AdresseDAOImpl implements IAdresseDAO {
 			throw e;
 		} // end catch			
 		
-		
+	
 	}//end getAdresseByPersonne
 
 }//end class

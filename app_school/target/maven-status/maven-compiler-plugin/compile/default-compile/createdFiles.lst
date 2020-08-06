@@ -1,4 +1,3 @@
-com/intiformation/appschool/modeles/EtudiantCours.class
 com/intiformation/appschool/dao/PromotionDAOImpl.class
 com/intiformation/appschool/service/IEtudiantsService.class
 com/intiformation/appschool/service/AideServiceImpl.class
@@ -10,6 +9,7 @@ com/intiformation/appschool/dao/IAdresseDAO.class
 com/intiformation/appschool/modeles/EnseignantMatierePromotionLink.class
 com/intiformation/appschool/modeles/Etudiants.class
 com/intiformation/appschool/dao/IAideDAO.class
+com/intiformation/appschool/controller/GestionMatiereController.class
 com/intiformation/appschool/modeles/Personnes.class
 com/intiformation/appschool/controller/GestionEtudiantsController.class
 com/intiformation/appschool/service/MatiereServiceImpl.class
@@ -36,8 +36,6 @@ com/intiformation/appschool/service/IPromotionService.class
 com/intiformation/appschool/service/IEnseignantMatierePromotionLinkService.class
 com/intiformation/appschool/modeles/Aide.class
 com/intiformation/appschool/dao/IGenerique.class
-com/intiformation/appschool/controller/GestionAdministrateursController.class
-com/intiformation/appschool/modeles/Cours.class
 com/intiformation/appschool/dao/IPromotionDAO.class
 com/intiformation/appschool/dao/IEtudiantsDAO.class
 com/intiformation/appschool/modeles/Enseignants.class

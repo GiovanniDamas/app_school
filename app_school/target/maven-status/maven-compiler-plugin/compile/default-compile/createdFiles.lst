@@ -17,6 +17,7 @@ com\intiformation\appschool\dao\AdministrateursDAOImpl.class
 com\intiformation\appschool\modeles\Matiere.class
 com\intiformation\appschool\service\IPromotionService.class
 com\intiformation\appschool\dao\EtudiantCoursDAOImpl.class
+com\intiformation\appschool\controller\GestionEtudiantCoursController.class
 com\intiformation\appschool\service\IAideService.class
 com\intiformation\appschool\service\IAdresseService.class
 com\intiformation\appschool\service\MatiereServiceImpl.class

@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -19,6 +22,11 @@ import javax.persistence.Table;
 public class Etudiants extends Personnes implements Serializable {
 
 	////// PROPS ////////
+	//@Id
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id_etudiant")
+	int idEtudiant;
+	
 	@Column(name="Photo")
 	String photo;
 	
@@ -63,6 +71,14 @@ public class Etudiants extends Personnes implements Serializable {
 
 	public void setDateDeNaissance(Date dateDeNaissance) {
 		this.dateDeNaissance = dateDeNaissance;
+	}
+
+	public int getIdEtudiant() {
+		return idEtudiant;
+	}
+
+	public void setIdEtudiant(int idEtudiant) {
+		this.idEtudiant = idEtudiant;
 	}
 	
 	

@@ -16,7 +16,7 @@
 	<!-- Propriétés du projet -->
 	<!-- ============================================ -->
 
-<properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Verison de java -->
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -118,13 +118,8 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.driver.version}</version>
 		</dependency>
-		<!--  
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>6.0.3</version>
-		</dependency>
--->
+		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
+			<version>6.0.3</version> </dependency> -->
 		<!-- ///// Spring Security /////// -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -167,6 +162,7 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+
 
 	</dependencies>
 

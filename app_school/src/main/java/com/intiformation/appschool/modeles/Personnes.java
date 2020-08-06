@@ -52,12 +52,9 @@ public abstract class Personnes implements Serializable{
 
 	// _________________ ASSOCIATIONS ___________________ //
 
-	/*
 	
 	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
-	
-		*/
-	//private List<Adresse> adresses;
+	private List<Adresse> adresses;
 
 
 	/////// CTOR ////////
@@ -135,7 +132,7 @@ public abstract class Personnes implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-/*
+
 	public List<Adresse> getAdresses() {
 		return adresses;
 	}
@@ -143,7 +140,7 @@ public abstract class Personnes implements Serializable{
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 	}
-*/	
+
 	
 
 }//END CLASS

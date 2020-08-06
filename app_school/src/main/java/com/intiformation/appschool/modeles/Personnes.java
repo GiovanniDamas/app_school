@@ -25,13 +25,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="personnes")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class Personnes implements Serializable{
+public abstract class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="idPersonne")
-	private int idPersonne;
+	@GeneratedValue(strategy=GenerationType.TABLE)
+	@Column(name="id_personne")
+	private Long idPersonne;
 	
 	@Column(name="identifiant")
 	private String identifiant;
@@ -50,7 +50,7 @@ public class Personnes implements Serializable{
 	
 	
 	@Column(name="adresse")
-	@OneToMany(mappedBy="personnes", cascade= CascadeType.ALL)
+	@OneToMany(mappedBy="personne", cascade= CascadeType.ALL)
 	private List<Adresse> adresses;
 	
 	/////// CTOR ////////
@@ -81,11 +81,11 @@ public class Personnes implements Serializable{
 	
 	////// GETTERS / SETTERS //////////
 
-	public int getIdPersonne() {
+	public Long getIdPersonne() {
 		return idPersonne;
 	}
 
-	public void setIdPersonne(int idPersonne) {
+	public void setIdPersonne(Long idPersonne) {
 		this.idPersonne = idPersonne;
 	}
 

@@ -11,7 +11,7 @@
 	<h1>Hello !</h1>
 	
 	
-	<a href="${pageContext.request.contextPath}/listeEtudiants">lien test liste etudiants</a>
+	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
 
 </body>
 </html>

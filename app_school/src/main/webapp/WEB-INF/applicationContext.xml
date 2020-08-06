@@ -15,8 +15,6 @@
 		location="classpath:db.properties" />
 
 
-
-
 	<!-- ====================================================== -->
 	<!-- ======== Déclaration du Bean de la DataSource ======== -->
 	<!-- ====================================================== -->
@@ -55,7 +53,7 @@
 
 
 		<!-- declaration des classes entités annotés avec @Entity de mapping -->
-		<property name="annotatedPackages">
+		<property name="annotatedClasses">
 			<list>
 				<value>com.intiformation.appschool.modeles.Etudiants</value>
 				<value>com.intiformation.appschool.modeles.Administrateurs</value>
@@ -65,6 +63,10 @@
 				<value>com.intiformation.appschool.modeles.Matiere</value>
 				<value>com.intiformation.appschool.modeles.Personnes</value>
 				<value>com.intiformation.appschool.modeles.Promotion</value>
+				<value>com.intiformation.appschool.modeles.Aide</value>
+				<value>com.intiformation.appschool.modeles.Adresse</value>
+				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
+				<value>com.intiformation.appschool.modeles.Cours</value>
 			</list>
 		</property>
 	</bean>

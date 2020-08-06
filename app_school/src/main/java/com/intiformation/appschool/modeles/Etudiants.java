@@ -25,7 +25,7 @@ public class Etudiants extends Personnes implements Serializable {
 	//@Id
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_etudiant")
-	int idEtudiant;
+	Long idEtudiant;
 	
 	@Column(name="Photo")
 	String photo;
@@ -73,11 +73,11 @@ public class Etudiants extends Personnes implements Serializable {
 		this.dateDeNaissance = dateDeNaissance;
 	}
 
-	public int getIdEtudiant() {
+	public Long getIdEtudiant() {
 		return idEtudiant;
 	}
 
-	public void setIdEtudiant(int idEtudiant) {
+	public void setIdEtudiant(Long idEtudiant) {
 		this.idEtudiant = idEtudiant;
 	}
 	

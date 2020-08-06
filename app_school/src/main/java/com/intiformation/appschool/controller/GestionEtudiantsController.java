@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -138,13 +138,14 @@ public class GestionEtudiantsController {
 	}// END METHODE
 
 	/**
-	 * Méthode permettant de supprimer l'étudiant de la bdd 
-	 * Appelée via une requête HTTP de type GET
+	 * Méthode permettant de supprimer l'étudiant de la bdd Appelée via une requête
+	 * HTTP de type GET
+	 * 
 	 * @param pIdEtudiant
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/gestionEtudiants/delete", method = RequestMethod.GET )
+	@RequestMapping(value = "/gestionEtudiants/delete", method = RequestMethod.GET)
 	public String supprimerEtudiantsBDD(@RequestParam("idPersonne") int pIdEtudiant, ModelMap model) {
 
 		// Récup de l'étudiant à supprimer

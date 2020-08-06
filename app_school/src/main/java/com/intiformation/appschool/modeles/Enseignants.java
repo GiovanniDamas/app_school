@@ -26,7 +26,7 @@ public class Enseignants extends Personnes implements Serializable {
 	
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_enseignant")
-	int idEnseignant;
+	Long idEnseignant;
 	
 	
 
@@ -57,11 +57,11 @@ public class Enseignants extends Personnes implements Serializable {
 	}
 
 	
-	public int getIdPersonne() {
+	public Long getIdPersonne() {
 		return idEnseignant;
 	}
 
-	public void setIdPersonne(int idPersonne) {
+	public void setIdPersonne(Long idPersonne) {
 		this.idEnseignant = idPersonne;
 	}
 

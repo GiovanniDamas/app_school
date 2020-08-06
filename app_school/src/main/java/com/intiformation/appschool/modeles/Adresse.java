@@ -2,6 +2,7 @@ package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,8 +40,10 @@ public class Adresse implements Serializable  {
 	@Column(name="ville")
 	private String ville;
 
-	@ManyToOne
-	@JoinColumn(name="id_personne")
+	/*
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "personne_id", referencedColumnName="id_personne")
+	*/
 	private Personnes personne;
 	
 	

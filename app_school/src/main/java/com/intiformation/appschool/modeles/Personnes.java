@@ -50,10 +50,11 @@ public abstract class Personnes implements Serializable {
 
 	// _________________ ASSOCIATIONS ___________________ //
 
-	@Column(name="adresse")
-	@OneToMany(mappedBy="personnes", cascade= CascadeType.ALL)
+	/*
+//	@Column(name="adresse")
+	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
 	private List<Adresse> adresses;
-	
+	*/
 
 	/////// CTOR ////////
 	/**

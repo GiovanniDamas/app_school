@@ -61,7 +61,7 @@ public class GestionEnseignantsController {
 
 		// 3. renvoie du nom logique de la vue
 
-		return "listeEnseignants";
+		return "Personnels/listeEnseignants";
 
 	}// END RECUP LISTE
 
@@ -102,7 +102,7 @@ public class GestionEnseignantsController {
 
 		} // END IF ELSE IF
 
-		return "formulaireEditionEnseignants";
+		return "Personnels/formulaireEditionEnseignants";
 
 	}// END METHODE
 
@@ -130,7 +130,7 @@ public class GestionEnseignantsController {
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-			return "listeEnseignants";
+			return "Personnels/listeEnseignants";
 
 		}
 		if (pEnseignant.getIdPersonne() != 0) {
@@ -143,11 +143,11 @@ public class GestionEnseignantsController {
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-			return "listeEnseignants";
+			return "Personnels/listeEnseignants";
 
 		} // END IF
 
-		return "listeEnseignants";
+		return "Personnels/listeEnseignants";
 
 	}// END METHODE
 
@@ -170,7 +170,7 @@ public class GestionEnseignantsController {
 
 		model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-		return "listeEnseignants";
+		return "Personnels/listeEnseignants";
 
 	}// END SUPPRIMER
 

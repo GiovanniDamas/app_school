@@ -62,7 +62,7 @@ public class GestionEtudiantsController {
 
 		// 3. renvoie du nom logique de la vue
 
-		return "listeEtudiants";
+		return "Personnels/listeEtudiants";
 
 	}// END RECUP LISTE
 
@@ -101,7 +101,7 @@ public class GestionEtudiantsController {
 
 		} // END IF ELSE IF
 
-		return "formulaireEditionEtudiants";
+		return "Personnels/formulaireEditionEtudiants";
 
 	}// END METHODE
 
@@ -127,7 +127,7 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 			
-			return "listeEtudiants";
+			return "Personnels/listeEtudiants";
 
 		}
 		if (pEtudiant.getIdPersonne() != 0) {			
@@ -140,11 +140,11 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-			return "listeEtudiants";
+			return "Personnels/listeEtudiants";
 		
 		} // END IF
 
-		return "listeEtudiants";
+		return "Personnels/listeEtudiants";
 
 	}// END METHODE
 
@@ -167,7 +167,7 @@ public class GestionEtudiantsController {
 
 		model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-		return "listeEtudiants";
+		return "Personnels/listeEtudiants";
 
 	}// END SUPPRIMER
 

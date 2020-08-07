@@ -27,14 +27,14 @@ public interface IAdministrateursService {
 	 * Méthode pour supprimer un administrateur à partir de son ID
 	 * @param pIdAdministrateur
 	 */
-	public void suppAdministrateur(int pIdAdministrateur);
+	public void suppAdministrateur(Long pIdAdministrateur);
 	
 	/**
 	 * Méthode pour récupérer un administrateur via son ID
 	 * @param pIdAdministrateur
 	 * @return
 	 */
-	public Administrateurs findAdministrateurById(int pIdAdministrateur);
+	public Administrateurs findAdministrateurById(Long pIdAdministrateur);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les administrateurs </br>

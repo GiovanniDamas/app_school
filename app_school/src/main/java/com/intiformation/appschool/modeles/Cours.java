@@ -63,10 +63,6 @@ public class Cours implements Serializable{
 	 */
 
 	@ManyToOne(cascade=CascadeType.ALL)
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 	@JoinColumn(name="promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotions;
 	

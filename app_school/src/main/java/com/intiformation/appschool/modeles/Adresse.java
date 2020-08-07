@@ -40,15 +40,11 @@ public class Adresse implements Serializable  {
 	@Column(name="ville")
 	private String ville;
 
-<<<<<<< HEAD
-	@ManyToOne (cascade = CascadeType.ALL)
-	@JoinColumn(name="personne_id", referencedColumnName = "id_personne")
-=======
+
+
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "personne_id", referencedColumnName="id_personne")
-	
->>>>>>> master
 	private Personnes personne;
 	
 	

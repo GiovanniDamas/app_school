@@ -11148,3 +11148,9 @@ org.xml.sax.SAXParseException; lineNumber: 2; columnNumber: 2; Le balisage du do
 	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2316)
 	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:86)
 	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+
+!ENTRY org.eclipse.jface.text 2 0 2020-08-07 12:36:06.496
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2020-08-07 12:36:06.497
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'

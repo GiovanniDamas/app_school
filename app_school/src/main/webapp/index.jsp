@@ -24,8 +24,7 @@
 	
 	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
 
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	<h1 class="">Hello !</h1>
+	
 
 
 </body>

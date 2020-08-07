@@ -6,8 +6,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Liste des cours</title>
+
+<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+    rel="stylesheet">
+    
 </head>
 <body>
+
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 
 	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
 	<%-- ++++++++++++ AFFICHAGE LISTE DES COURS DE LA BDD ++++++++++++++++++ --%>

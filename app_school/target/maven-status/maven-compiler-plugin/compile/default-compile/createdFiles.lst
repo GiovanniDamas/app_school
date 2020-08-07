@@ -17,17 +17,11 @@ com\intiformation\appschool\dao\AdministrateursDAOImpl.class
 com\intiformation\appschool\modeles\Matiere.class
 com\intiformation\appschool\service\IPromotionService.class
 com\intiformation\appschool\dao\EtudiantCoursDAOImpl.class
-<<<<<<< HEAD
 com\intiformation\appschool\controller\GestionEtudiantCoursController.class
 com\intiformation\appschool\service\IAideService.class
 com\intiformation\appschool\service\IAdresseService.class
 com\intiformation\appschool\service\MatiereServiceImpl.class
 com\intiformation\appschool\controller\GestionCoursController.class
-=======
-com\intiformation\appschool\service\IAideService.class
-com\intiformation\appschool\service\IAdresseService.class
-com\intiformation\appschool\service\MatiereServiceImpl.class
->>>>>>> master
 com\intiformation\appschool\dao\IEnseignantMatierePromotionLinkDAO.class
 com\intiformation\appschool\modeles\EtudiantCours.class
 com\intiformation\appschool\controller\GestionMatiereController.class

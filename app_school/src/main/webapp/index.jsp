@@ -8,17 +8,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
-
+<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+    rel="stylesheet">
 
 </head>
 <body>
 
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	<h1 class="">Hello !</h1>
-<%
-		response.sendRedirect("matiere/liste");
-	%>
 
-	<a href="${pageContext.request.contextPath}/cours/liste">Lien vers les cours</a>
 </body>
 </html>

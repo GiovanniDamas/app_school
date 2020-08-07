@@ -6,9 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Formulaire de modification d'un cours</title>
+
+<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+    rel="stylesheet">
+    
 </head>
 <body>
 
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+
+<div class="container-fluid">
 		<form:form modelAttribute="attribut_cours" 
 					method="POST" 
 					action="${pageContext.request.contextPath}/cours/modifier">
@@ -57,6 +64,7 @@
 			</table>
 		
 		</form:form>
+</div>
 	
 </body>
 </html>

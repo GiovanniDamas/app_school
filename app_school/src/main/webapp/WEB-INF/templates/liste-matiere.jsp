@@ -15,13 +15,13 @@
 </head>
 <body>
 
-
-
-	<h1>
+	<%@include file="../generic/header.jsp" %>
+	
+	<h1 style="margin-left:20px">
 		<u>Liste des matières:</u>
 	</h1>
 
-	<table border="1" width="70%">
+	<table border="1" width="70%" style="margin: 0 0 10px 20px">
 
 		<tr>
 		
@@ -66,7 +66,7 @@
 		</c:forEach>
 	</table>
 	
-	<button type="button" class="btn btn-danger">Hello</button>
+	<button type="button" class="btn btn-danger" style="margin-left:20px">Hello</button>
 
 
 </body>

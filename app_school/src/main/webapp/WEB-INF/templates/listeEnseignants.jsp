@@ -9,60 +9,70 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Page gestion des Enseignants</title>
+
+<link
+	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+	rel="stylesheet">
+	
 </head>
 <body>
 
-	<h1>Liste des Enseignants</h1>
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 
-	<table border="1" width="60%">
+	<div style="width: 70%; float: right; margin-right: 10%">
 
-		<tr>
-			<td colspan="5" align="right"><a
-				style="background-color: lightBlue"
-				href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=0">
-					Ajout d'un enseignant </a></td>
-		</tr>
+		<a
+			href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=0"
+			class="btn btn-primary btn-md active" role="button"
+			aria-pressed="true" style="align-content: left"> Ajout d'un
+			étudiant</a>
 
-		<!-- en tete de la table  -->
-		<tr>
-			<th>ID Enseignant</th>
-			<th>Nom</th>
-			<th>Prenom</th>
-			<th>Email</th>
-			<th>Identifiant</th>
-			<th>Mot de passe</th>
-			<th>Modifier</th>
-			<th>Supprimer</th>
-		</tr>
+		<table class="table table-bordered">
 
-		<!-- donnée de la table -->
-		<c:forEach items="${attribut_liste_enseignants}" var="ens">
-			<tr>
-				<td>${ens.idPersonne}</td>
-				<td>${ens.nom}</td>
-				<td>${ens.prenom}</td>
-				<td>${ens.email}</td>
-				<td>${ens.identifiant}</td>
-				<td>${ens.motDePasse}</td>
+			<h3 align="center">Liste des Enseignant</h3>
+			<thead style="background-color: black; color: white">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">E-mail</th>
+					<th scope="col">Identifiant</th>
+					<th scope="col">Mot de passe</th>
+					<th scope="col">Modifier</th>
+					<th scope="col">Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${attribut_liste_enseignants}" var="ens">
+					<tr>
+						<th scope="row">${ens.idPersonne}</th>
+						<th>${ens.nom}</th>
+						<th>${ens.prenom}</th>
+						<td>${ens.email}</td>
+						<td>${ens.identifiant}</td>
+						<td>${ens.motDePasse}</td>
+						<td><a
+							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
+							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
+						</a></td>
 
-				<!-- colonne pour la modification de l'enseignant -->
-				<td>
-					<!-- 
-						- passage d'un param de requete nommé 'idemploye' ayant
-					--> <a
-					href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}">Modifier</a>
-				</td>
+						<!-- colonne pour la suppression de l'emploe -->
+						<td><a
+							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 
-				<!-- colonne pour la suppression de l'emploe -->
-				<td><a
-					href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
-				</td>
-			</tr>
+	</div>
 
-		</c:forEach>
-	</table>
-	
-	<a href="${pageContext.request.contextPath}/index.jsp">lien vers accueil</a>
+	<div style="float: none; margin-top: 50%">
+		<a href="${pageContext.request.contextPath}/index.jsp">lien vers
+			accueil</a>
+
+		<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
+	</div>
 
 </body>
 </html>

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,9 +14,6 @@
 
 </head>
 <body>
-
-
-	<h1>Hello !</h1>
 	
 	
 	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
@@ -24,7 +22,11 @@
 	
 	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
 
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	
+		<h1>Hello !</h1>	
+		
+	<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
 
 
 </body>

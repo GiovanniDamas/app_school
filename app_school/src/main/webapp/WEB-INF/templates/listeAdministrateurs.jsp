@@ -9,64 +9,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Page gestion des Administrateurs</title>
+
+<link
+	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+	rel="stylesheet">
+	
 </head>
 <body>
 
-	<h1>Liste des Administrateurs</h1>
-
-	<table border="1" width="60%">
-
-		<tr>
-			<td colspan="5" align="right">
-				<%-- au click sur le lien : envoie d'une requete http en GET vers méthode afficherFormulaireEdition() 
-					 du controleur employeController. Cette methode est associée à l'url /employe/add-employe-form
-				 --%> <a style="background-color: lightBlue"
-				href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=0">
-					Ajout d'un administrateur </a>
-			</td>
-		</tr>
-
-		<!-- en tete de la table  -->
-		<tr>
-			<th>ID Admin</th>
-			<th>Nom</th>
-			<th>Prenom</th>
-			<th>Email</th>
-			<th>Identifiant</th>
-			<th>Mot de passe</th>
-			<th>Modifier</th>
-			<th>Supprimer</th>
-		</tr>
-
-		<!-- donnée de la table -->
-		<c:forEach items="${attribut_liste_admin}" var="admin">
-			<tr>
-				<td>${admin.idAdmin}</td>
-				<td>${admin.nom}</td>
-				<td>${admin.prenom}</td>
-				<td>${admin.email}</td>
-				<td>${admin.identifiant}</td>
-				<td>${admin.motDePasse}</td>
-
-				<!-- colonne pour la modification de l'employé -->
-				<td>
-					<!--
-						- passage d'un param de requete nommé 'idemploye' ayant
-					--> 
-					<a href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=${admin.idPersonne}">Modifier</a>
-				</td>
-
-				<!-- colonne pour la suppression de l'emploe -->
-				<td><a
-					href="${pageContext.request.contextPath}/gestionAdmin/delete?idPersonne=${admin.idPersonne}">Supprimer</a>
-				</td>
-			</tr>
-			
-		</c:forEach>
-
-	</table>
 	
-	<a href="${pageContext.request.contextPath}/index.jsp">lien vers accueil</a>
+	
+	
+		<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+
+	<div style="width: 70%; float: right; margin-right: 10%">
+
+		<a
+			href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=0"
+			class="btn btn-primary btn-md active" role="button"
+			aria-pressed="true" style="align-content: left"> Ajout d'un
+			étudiant</a>
+
+		<table class="table table-bordered">
+
+			<h3 align="center">Liste des Administrateurs</h3>
+			<thead style="background-color: black; color: white">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">E-mail</th>
+					<th scope="col">Identifiant</th>
+					<th scope="col">Mot de passe</th>
+					<th scope="col">Modifier</th>
+					<th scope="col">Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${attribut_liste_admin}" var="admin">
+					<tr>
+						<th scope="row">${admin.idPersonne}</th>
+						<th>${admin.nom}</th>
+						<th>${admin.prenom}</th>
+						<td>${admin.email}</td>
+						<td>${admin.identifiant}</td>
+						<td>${admin.motDePasse}</td>
+						<td><a
+							href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=${admin.idPersonne}"
+							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
+						</a></td>
+
+						<!-- colonne pour la suppression de l'emploe -->
+						<td><a
+							href="${pageContext.request.contextPath}/gestionAdmin/delete?idPersonne=${admin.idPersonne}">Supprimer</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div style="float: none; margin-top: 50%">
+		<a href="${pageContext.request.contextPath}/index.jsp">lien vers
+			accueil</a>
+
+		<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
+	</div>
 
 </body>
 </html>

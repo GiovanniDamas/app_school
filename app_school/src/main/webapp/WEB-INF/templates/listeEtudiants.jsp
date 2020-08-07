@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,67 +11,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Page gestion des Etudiants</title>
+
+<link
+	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+	rel="stylesheet">
+
+
+
 </head>
 <body>
 
-	<h1>Liste des Etudiants</h1>
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 
-	<table border="1" width="60%">
+	<div style="width: 70%; float: right; margin-right: 10%">
 
-		<tr>
-			<td colspan="5" align="right">
-				<%-- au click sur le lien : envoie d'une requete http en GET vers méthode afficherFormulaireEdition() 
-					 du controleur employeController. Cette methode est associée à l'url /employe/add-employe-form
-				 --%> <a style="background-color: lightBlue"
-				href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=0">
-					Ajout d'un étudiant </a>
-			</td>
-		</tr>
+		<a
+			href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=0"
+			class="btn btn-primary btn-md active" role="button"
+			aria-pressed="true" style="align-content: left"> Ajout d'un
+			étudiant</a>
 
-		<!-- en tete de la table  -->
-		<tr>
-			<th>ID Etudiant</th>
-			<th>Nom</th>
-			<th>Prenom</th>
-			<th>Date de naissance</th>
-			<th>Email</th>
-			<th>Identifiant</th>
-			<th>Mot de passe</th>
-			<th>Photo </th>
-			<th>Modifier</th>
-			<th>Supprimer</th>
-		</tr>
+		<table class="table table-bordered">
 
-		<!-- donnée de la table -->
-		<c:forEach items="${attribut_liste_etudiants}" var="etu">
-			<tr>
-				<td>${etu.idPersonne}</td>
-				<td>${etu.nom}</td>
-				<td>${etu.prenom}</td>
-				<td>${etu.dateDeNaissance}</td>
-				<td>${etu.email}</td>
-				<td>${etu.identifiant}</td>
-				<td>${etu.motDePasse}</td>
+			<h3 align="center">Liste des Etudiants</h3>
+			<thead style="background-color: black; color: white">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">Date de Naissance</th>
+					<th scope="col">E-mail</th>
+					<th scope="col">Identifiant</th>
+					<th scope="col">Mot de passe</th>
+					<th scope="col">Modifier</th>
+					<th scope="col">Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${attribut_liste_etudiants}" var="etu">
+					<tr>
+						<th scope="row">${etu.idPersonne}</th>
+						<th>${etu.nom}</th>
+						<th>${etu.prenom}</th>
+						<td>${etu.dateDeNaissance}</td>
+						<td>${etu.email}</td>
+						<td>${etu.identifiant}</td>
+						<td>${etu.motDePasse}</td>
+						<td><a
+							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
+							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
+						</a></td>
 
-				<!-- colonne pour la modification de l'étudiant -->
-				<td>
-					<!-- 
-						- passage d'un param de requete nommé 'idemploye' ayant
-					--> 
-					<a href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}">Modifier</a>
-				</td>
+						<!-- colonne pour la suppression de l'emploe -->
+						<td><a
+							href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
 
-				<!-- colonne pour la suppression de l'emploe -->
-				<td><a
-					href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
-				</td>
-			</tr>
-			
-		</c:forEach>
+	</div>
 
-	</table>
+	<div style="float: none; margin-top: 50%">
+		<a href="${pageContext.request.contextPath}/index.jsp">lien vers
+			accueil</a>
 
-	<a href="${pageContext.request.contextPath}/index.jsp">lien vers accueil</a>
-	
+		<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
+	</div>
+
 </body>
 </html>

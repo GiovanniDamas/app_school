@@ -46,10 +46,10 @@
 	  <div class="collapse navbar-collapse" id="navbarColor01">
 	    <ul class="navbar-nav mr-auto flex-md-column flex-row navbar-nav w-100 justify-content-between" id="navul">
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Etudiant</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Enseignant</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
 	      </li>
 	      <li class="nav-item navli">
 	        <a class="nav-link" href="#">Promotion</a>

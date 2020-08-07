@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 
 import javax.persistence.CascadeType;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

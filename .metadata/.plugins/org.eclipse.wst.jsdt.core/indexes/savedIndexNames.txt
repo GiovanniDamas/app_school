@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 INDEX VERSION 1.4+/Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
 848054896.index
 2060218696.index
@@ -8,3 +9,14 @@ INDEX VERSION 1.4+/Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_sc
 2265098167.index
 1600490099.index
 1395458612.index
+=======
+INDEX VERSION 1.4+C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2330117737.index
+452377060.index
+2413512326.index
+458248613.index
+3862176066.index
+1893570921.index
+3089524507.index
+3240728432.index
+>>>>>>> master

@@ -50,6 +50,7 @@ public class Enseignants extends Personnes implements Serializable {
 
 	}
 
+<<<<<<< HEAD
 	//// GETTERS / SETTERS ////
 
 	public Long getIdEnseignant() {
@@ -57,7 +58,16 @@ public class Enseignants extends Personnes implements Serializable {
 	}
 
 	public void setIdEnseignant(Long idEnseignant) {
+=======
+	public int getIdEnseignant() {
+		return idEnseignant;
+	}
+
+	public void setIdEnseignant(int idEnseignant) {
+>>>>>>> master
 		this.idEnseignant = idEnseignant;
 	}
+
+	
 
 }// END CLASS

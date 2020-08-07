@@ -29,6 +29,7 @@ public abstract class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
+<<<<<<< HEAD
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(name="id_personne")
 	private Long idPersonne;
@@ -51,8 +52,34 @@ public abstract class Personnes implements Serializable{
 	
 	@Column(name="adresse")
 	@OneToMany(mappedBy="personne", cascade= CascadeType.ALL)
-	private List<Adresse> adresses;
+=======
+	@GeneratedValue(strategy = GenerationType.TABLE) // changement à .TABLE
+	@Column(name = "id_personne")
+	Long idPersonne;
+
+	@Column(name = "Identifiant")
+	String identifiant;
+
+	@Column(name = "MotDePasse")
+	String motDePasse;
+
+	@Column(name = "Nom")
+	String nom;
+
+	@Column(name = "Prenom")
+	String prenom;
+
+	@Column(name = "Email")
+	String email;
+
+	// _________________ ASSOCIATIONS ___________________ //
+
 	
+	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
+>>>>>>> master
+	private List<Adresse> adresses;
+
+
 	/////// CTOR ////////
 	/**
 	 * ctor vide
@@ -136,7 +163,7 @@ public abstract class Personnes implements Serializable{
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
 	}
-	
+
 	
 
 }//END CLASS

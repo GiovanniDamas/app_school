@@ -65,13 +65,13 @@
 				<value>com.intiformation.appschool.modeles.Promotion</value>
 				<value>com.intiformation.appschool.modeles.Aide</value>
 				<value>com.intiformation.appschool.modeles.Adresse</value>
-<<<<<<< HEAD
+
 				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
 				<value>com.intiformation.appschool.modeles.Cours</value>
-=======
+
 				<value>com.intiformation.appschool.modeles.Cours</value>
 				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
->>>>>>> master
+
 			</list>
 		</property>
 	</bean>

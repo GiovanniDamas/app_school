@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<<<<<<< HEAD
+
 	<h1>Hello !</h1>
 	
 	
@@ -23,10 +23,10 @@
 	<a href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">lien test liste enseignants</a>
 	
 	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
-=======
+
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	<h1 class="">Hello !</h1>
->>>>>>> master
+
 
 </body>
 </html>

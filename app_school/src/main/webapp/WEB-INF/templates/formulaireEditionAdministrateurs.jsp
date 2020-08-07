@@ -10,28 +10,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Formulaire pour l'édition de l'étudiant</title>
+<title>Formulaire pour l'édition de l'administrateurs</title>
 </head>
 <body>
 
 	<br />
 	<div align="center">
-		<h1>Formulaire édition d'un étudiant</h1>
+		<h1>Formulaire édition d'un administrateur</h1>
 	</div>
 
 	<br />
 	<div align="center">
 
-		<form:form modelAttribute="attribut_etudiants" method="POST"
-			action="${pageContext.request.contextPath}/gestionEtudiants/edit">
+		<form:form modelAttribute="attribut_administrateurs" method="POST"
+			action="${pageContext.request.contextPath}/gestionAdmin/edit">
 
 			<%-- affichage de tous les messages d'erreurs --%>
 			<form:errors path="*" cssClass="erreur_validation" element="div" />
 
 			<tr>
 				<c:if test="${idPersonne} != 0"></c:if>
-				<td><form:hidden path="idPersonne"/></td>
-				
+				<td><form:hidden path="idPersonne" /></td>
+
 			</tr>
 
 			<table width="60%">
@@ -45,12 +45,6 @@
 					<td><form:label path="prenom">Prénom :</form:label></td>
 					<td><form:input path="prenom" /></td>
 					<td><form:errors path="prenom"
-							cssStyle="color:red; font-style:italic;" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="dateDeNaissance">Date de naissance :</form:label></td>
-					<td><form:input type="DATE" path="dateDeNaissance" /></td>
-					<td><form:errors path="dateDeNaissance"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
 				<tr>
@@ -73,11 +67,12 @@
 				</tr>
 
 				<tr>
+					<c:if test="${idPersonne} == 0"></c:if>
 					<td><input type="submit" value="Ajouter" /></td>
 				</tr>
 				<tr>
 					<c:if test="${idPersonne} != 0"></c:if>
-					<td><input type="submit" value="Modifier"/></td>
+					<td><input type="submit" value="Modifier" /></td>
 				</tr>
 			</table>
 

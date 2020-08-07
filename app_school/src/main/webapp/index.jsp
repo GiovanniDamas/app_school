@@ -12,6 +12,10 @@
 	
 	
 	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
+	
+	<a href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">lien test liste enseignants</a>
+	
+	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
 
 </body>
 </html>

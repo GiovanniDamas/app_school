@@ -27,14 +27,14 @@ public interface IEtudiantsService {
 	 * Méthode pour supprimer un étudiant à partir de son ID
 	 * @param pIdEtudiant
 	 */
-	public void suppEtudiant(int pIdEtudiant);
+	public void suppEtudiant(Long pIdEtudiant);
 	
 	/**
 	 * Méthode pour récupérer un étudiant via son ID
 	 * @param pIdEtudiant
 	 * @return
 	 */
-	public Etudiants findEtudiantById(int pIdEtudiant);
+	public Etudiants findEtudiantById(Long pIdEtudiant);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les étudiants

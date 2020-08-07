@@ -2,6 +2,7 @@ package com.intiformation.appschool.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intiformation.appschool.dao.IEnseignantsDAO;
@@ -17,6 +18,7 @@ import com.intiformation.appschool.modeles.Enseignants;
 public class EnseignantsServiceImpl implements IEnseignantsService{
 	
 	//Déclaration de la couche DAO
+	@Autowired
 	private IEnseignantsDAO enseignantsDAO;
 	
 	/**
@@ -39,12 +41,12 @@ public class EnseignantsServiceImpl implements IEnseignantsService{
 	}
 
 	@Override
-	public void suppEnseignant(int pIdEnseignant) {
+	public void suppEnseignant(Long pIdEnseignant) {
 		enseignantsDAO.deleteEnseignant(pIdEnseignant);
 	}
 
 	@Override
-	public Enseignants findEnseignantById(int pIdEnseignant) {
+	public Enseignants findEnseignantById(Long pIdEnseignant) {
 		return enseignantsDAO.getEnseignantById(pIdEnseignant);
 	}
 

@@ -8,11 +8,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Page gestion des Etudiants</title>
+<title>Page gestion des Administrateurs</title>
 </head>
 <body>
 
-	<h1>Liste des Etudiants</h1>
+	<h1>Liste des Administrateurs</h1>
 
 	<table border="1" width="60%">
 
@@ -21,55 +21,52 @@
 				<%-- au click sur le lien : envoie d'une requete http en GET vers méthode afficherFormulaireEdition() 
 					 du controleur employeController. Cette methode est associée à l'url /employe/add-employe-form
 				 --%> <a style="background-color: lightBlue"
-				href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=0">
-					Ajout d'un étudiant </a>
+				href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=0">
+					Ajout d'un administrateur </a>
 			</td>
 		</tr>
 
 		<!-- en tete de la table  -->
 		<tr>
-			<th>ID Etudiant</th>
+			<th>ID Admin</th>
 			<th>Nom</th>
 			<th>Prenom</th>
-			<th>Date de naissance</th>
 			<th>Email</th>
 			<th>Identifiant</th>
 			<th>Mot de passe</th>
-			<th>Photo </th>
 			<th>Modifier</th>
 			<th>Supprimer</th>
 		</tr>
 
 		<!-- donnée de la table -->
-		<c:forEach items="${attribut_liste_etudiants}" var="etu">
+		<c:forEach items="${attribut_liste_admin}" var="admin">
 			<tr>
-				<td>${etu.idPersonne}</td>
-				<td>${etu.nom}</td>
-				<td>${etu.prenom}</td>
-				<td>${etu.dateDeNaissance}</td>
-				<td>${etu.email}</td>
-				<td>${etu.identifiant}</td>
-				<td>${etu.motDePasse}</td>
+				<td>${admin.idAdmin}</td>
+				<td>${admin.nom}</td>
+				<td>${admin.prenom}</td>
+				<td>${admin.email}</td>
+				<td>${admin.identifiant}</td>
+				<td>${admin.motDePasse}</td>
 
-				<!-- colonne pour la modification de l'étudiant -->
+				<!-- colonne pour la modification de l'employé -->
 				<td>
-					<!-- 
+					<!--
 						- passage d'un param de requete nommé 'idemploye' ayant
 					--> 
-					<a href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}">Modifier</a>
+					<a href="${pageContext.request.contextPath}/gestionAdmin/form-edit?idPersonne=${admin.idPersonne}">Modifier</a>
 				</td>
 
 				<!-- colonne pour la suppression de l'emploe -->
 				<td><a
-					href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
+					href="${pageContext.request.contextPath}/gestionAdmin/delete?idPersonne=${admin.idPersonne}">Supprimer</a>
 				</td>
 			</tr>
 			
 		</c:forEach>
 
 	</table>
-
-	<a href="${pageContext.request.contextPath}/index.jsp">lien vers accueil</a>
 	
+	<a href="${pageContext.request.contextPath}/index.jsp">lien vers accueil</a>
+
 </body>
 </html>

@@ -22,18 +22,12 @@ import javax.persistence.Table;
 @Table(name = "enseignants")
 public class Enseignants extends Personnes implements Serializable {
 
-	
-	
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_enseignant")
+	// @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id_enseignant")
 	Long idEnseignant;
-	
-	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enseignant")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
-	
-	
 
 	//////// CTOR ///////
 	/**
@@ -56,13 +50,14 @@ public class Enseignants extends Personnes implements Serializable {
 
 	}
 
-	
-	public Long getIdPersonne() {
+	//// GETTERS / SETTERS ////
+
+	public Long getIdEnseignant() {
 		return idEnseignant;
 	}
 
-	public void setIdPersonne(Long idPersonne) {
-		this.idEnseignant = idPersonne;
+	public void setIdEnseignant(Long idEnseignant) {
+		this.idEnseignant = idEnseignant;
 	}
 
 }// END CLASS

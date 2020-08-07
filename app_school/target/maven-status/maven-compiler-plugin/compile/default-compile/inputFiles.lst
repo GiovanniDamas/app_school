@@ -43,6 +43,7 @@
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/service/MatiereServiceImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAdministrateursDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/service/EnseignantsServiceImpl.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionEnseignantsController.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEtudiantCoursDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/service/IEnseignantMatierePromotionLinkService.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school/app_school/app_school/src/main/java/com/intiformation/appschool/service/PromotionServiceImpl.java

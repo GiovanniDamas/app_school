@@ -1,13 +1,19 @@
 package com.intiformation.appschool.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,10 +27,8 @@ import com.intiformation.appschool.service.IEtudiantsService;
  */
 @Controller
 public class GestionEtudiantsController {
-
-	private Etudiants etudiants;
+	
 	// Déclaration de la couche service Etudiants
-
 	@Autowired
 	private IEtudiantsService etudiantsService;
 
@@ -32,14 +36,14 @@ public class GestionEtudiantsController {
 	 * Déclaration du setter de etudiantsService pour l'injection par modificateur
 	 * </br>
 	 * 
-	 * @param enseignantService
+	 * @param etudiantService
 	 */
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
 	}
 
 	/**
-	 * Méthode permettant de récupérer la liste des admins via le service, Méthode
+	 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
 	 * appellée lors d'une requête HTTP de type GET
 	 * 
 	 * @param model
@@ -71,9 +75,9 @@ public class GestionEtudiantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEtudiants/form-edit", method = RequestMethod.GET)
-	public String afficherFormulaireAjout(@RequestParam("idPersonne") int pIdEtudiant, ModelMap model) {
+	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model) {
 
-		if (etudiants.getIdPersonne() == 0) {
+		if (pIdEtudiant == 0) {
 
 			// définition d'un objet de commande
 
@@ -82,8 +86,9 @@ public class GestionEtudiantsController {
 			// Renvoi de l'objet vers la vue
 
 			model.addAttribute("attribut_etudiants", etudiant);
+			model.addAttribute("idPersonne", pIdEtudiant);
 
-		} else if (etudiants.getIdPersonne() != 0) {
+		} else if (pIdEtudiant != 0) {
 
 			// Récup de l'étudiant à récup
 
@@ -92,6 +97,7 @@ public class GestionEtudiantsController {
 			// Renvoi de l'objet vers la vue
 
 			model.addAttribute("attribut_etudiants", etudiantToUpdate);
+			model.addAttribute("idPersonne", pIdEtudiant);
 
 		} // END IF ELSE IF
 
@@ -110,8 +116,8 @@ public class GestionEtudiantsController {
 	 */
 	@RequestMapping(value = "/gestionEtudiants/edit", method = RequestMethod.POST)
 	public String ajoutEtudiantBdd(@ModelAttribute("attribut_etudiants") Etudiants pEtudiant, ModelMap model) {
-
-		if (etudiants.getIdPersonne() == 0) {
+		
+		if (pEtudiant.getIdPersonne() == null) {
 
 			// Ajout etudiant via couche service
 
@@ -120,8 +126,11 @@ public class GestionEtudiantsController {
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+			
+			return "listeEtudiants";
 
-		} else if (etudiants.getIdPersonne() != 0) {
+		}
+		if (pEtudiant.getIdPersonne() != 0) {			
 
 			// Modif etudiant via couche service
 
@@ -131,7 +140,9 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-		} // END IF ELSE IF
+			return "listeEtudiants";
+		
+		} // END IF
 
 		return "listeEtudiants";
 
@@ -146,7 +157,7 @@ public class GestionEtudiantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEtudiants/delete", method = RequestMethod.GET)
-	public String supprimerEtudiantsBDD(@RequestParam("idPersonne") int pIdEtudiant, ModelMap model) {
+	public String supprimerEtudiantsBDD(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model) {
 
 		// Récup de l'étudiant à supprimer
 
@@ -159,5 +170,12 @@ public class GestionEtudiantsController {
 		return "listeEtudiants";
 
 	}// END SUPPRIMER
+
+	@InitBinder
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
+	}// END Init Binder
 
 }// END CLASS

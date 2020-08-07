@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Classe fille héritant de la classe Personne
@@ -31,6 +35,7 @@ public class Etudiants extends Personnes implements Serializable {
 	String photo;
 	
 	@Column(name="DateDeNaissance")
+	@Temporal(TemporalType.DATE)
 	Date dateDeNaissance;
 
 	///////// CTOR /////////

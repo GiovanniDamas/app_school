@@ -21,7 +21,7 @@ public class Administrateurs extends Personnes implements Serializable{
 	//@Id
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_admin")
-	int idAmin;
+	Long idAdmin;
 	
 	//////// CTOR ///////:
 	public Administrateurs() {
@@ -41,13 +41,13 @@ public class Administrateurs extends Personnes implements Serializable{
 	}
 
 
-	public int getIdAmin() {
-		return idAmin;
+	public Long getIdAmin() {
+		return idAdmin;
 	}
 
 
-	public void setIdAmin(int idAmin) {
-		this.idAmin = idAmin;
+	public void setIdAmin(Long idAmin) {
+		this.idAdmin = idAmin;
 	}
 	
 	

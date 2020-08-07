@@ -27,14 +27,14 @@ public interface IEtudiantsDAO {
 	 * Méthode pour supprimer un étudiant à partir de son ID
 	 * @param pIdEtudiant
 	 */
-	public void deleteEtudiant(int pIdEtudiant);
+	public void deleteEtudiant(Long pIdEtudiant);
 	
 	/**
 	 * Méthode pour récupérer un étudiant via son ID
 	 * @param pIdEtudiant
 	 * @return
 	 */
-	public Etudiants getEtudiantById(int pIdEtudiant);
+	public Etudiants getEtudiantById(Long pIdEtudiant);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les étudiants

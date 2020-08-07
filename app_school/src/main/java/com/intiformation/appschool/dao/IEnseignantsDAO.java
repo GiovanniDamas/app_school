@@ -28,14 +28,14 @@ public interface IEnseignantsDAO {
 	 * Méthode pour supprimer un enseignant à partir de son ID
 	 * @param pIdEnseignant
 	 */
-	public void deleteEnseignant(int pIdEnseignant);
+	public void deleteEnseignant(Long pIdEnseignant);
 	
 	/**
 	 * Méthode pour récupérer un enseignant via son ID
 	 * @param pIdEnseignant
 	 * @return
 	 */
-	public Enseignants getEnseignantById(int pIdEnseignant);
+	public Enseignants getEnseignantById(Long pIdEnseignant);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les enseignants

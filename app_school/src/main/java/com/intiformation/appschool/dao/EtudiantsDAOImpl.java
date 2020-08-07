@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,6 @@ import com.intiformation.appschool.modeles.Etudiants;
  *
  */
 @Repository
-@Transactional
 public class EtudiantsDAOImpl implements IEtudiantsDAO {
 
 	// Déclaration de la session Factory
@@ -26,7 +26,8 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 	private SessionFactory sessionFactory;
 
 	/**
-	 * Déclaration du setter SessionFactory pour l'injection par modificateur 
+	 * Déclaration du setter SessionFactory pour l'injection par modificateur
+	 * 
 	 * @return
 	 */
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -34,6 +35,7 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 	}
 
 	@Override
+	@Transactional
 	public void addEtudiant(Etudiants pEtudiant) {
 
 		// recup de la session
@@ -51,6 +53,7 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 	}// END ADD ETUDIANT
 
 	@Override
+	@Transactional
 	public void updateEtudiant(Etudiants pEtudiant) {
 
 		// recup de la session
@@ -64,11 +67,12 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 			System.out.println("... Erreur lors de la modification de l'Etudiant dans la DAO ...");
 			throw e;
 		} // END CATCH
-	
-	}//END UPDATE
+
+	}// END UPDATE
 
 	@Override
-	public void deleteEtudiant(int pIdEtudiant) {
+	@Transactional
+	public void deleteEtudiant(Long pIdEtudiant) {
 
 		// recup de la session
 
@@ -85,15 +89,17 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 			System.out.println("... Erreur lors de la suppression de l'Etudiant dans la DAO ...");
 			throw e;
 		} // END CATCH
-	
-	}//END DELETE
+
+	}// END DELETE
 
 	@Override
-	public Etudiants getEtudiantById(int pIdEtudiant) {
+	@Transactional(readOnly = true)
+	public Etudiants getEtudiantById(Long pIdEtudiant) {
+
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
 
 		try {
-			// recup de la session hibernate via la factory
-			Session session = this.sessionFactory.getCurrentSession();
 
 			Etudiants etudiant = session.get(Etudiants.class, pIdEtudiant);
 
@@ -103,25 +109,31 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 			System.out.println("... Erreur lors de la récupération de l'Etudiant par son ID dans la DAO ...");
 		}
 		return null;
-	
-	}//END GET BY ID
+
+	}// END GET BY ID
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Etudiants> getAllEtudiant() {
+
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+
 		try {
 
-			// recup de la session hibernate via la factory
-			Session session = this.sessionFactory.getCurrentSession();
+			// création requete HQL
+			Query queryGetAll = session.createQuery("From Etudiants");
 			
-			List<Etudiants> listeEtudiants = session.createQuery("from etudiants").getResultList();
+			// envoi, execution, resultat
+			List<Etudiants> listeEtudiantsBDD = queryGetAll.list();
 			
-			return listeEtudiants;
+			return listeEtudiantsBDD;
 
 		} catch (Exception e) {
 			System.out.println("... Erreur lors de la récupération de la liste des Etudiants dans la DAO ...");
 		}
 		return null;
-	
+
 	}// END GET ALL
 
-}//END CLASS
+}// END CLASS

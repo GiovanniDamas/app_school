@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.persistence.Column"/>
 <fullyQualifiedTypeName name="javax.persistence.Entity"/>
 <fullyQualifiedTypeName name="javax.persistence.Table"/>
 <fullyQualifiedTypeName name="javax.persistence.Inheritance"/>
@@ -30,13 +29,8 @@
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.EnseignantsServiceImpl"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.AdministrateursServiceImpl"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.EtudiantsServiceImpl"/>
-<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.IAdministrateursService"/>
-<fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Administrateurs"/>
-<fullyQualifiedTypeName name="com.intiformation.appschool.service.IEnseignantsService"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.service.IEtudiantsService"/>
-<fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Enseignants"/>
-<fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ModelAttribute"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
@@ -45,7 +39,6 @@
 <fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
 <fullyQualifiedTypeName name="org.hibernate.query.Query"/>
 <fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Etudiants"/>
 <fullyQualifiedTypeName name="javax.persistence.Temporal"/>
 <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
@@ -60,4 +53,11 @@
 <fullyQualifiedTypeName name="org.apache.taglibs.standard.tag.common.xml.IfTag"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+<fullyQualifiedTypeName name="com.intiformation.appschool.service.IEnseignantsService"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Enseignants"/>
+<fullyQualifiedTypeName name="org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer.AmbiguousBindingException"/>
+<fullyQualifiedTypeName name="com.intiformation.appschool.modeles.Administrateurs"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 </qualifiedTypeNameHistroy>

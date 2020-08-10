@@ -13,9 +13,14 @@
 <style>
 
 	.footer{
-	 background: rgb(192,192,192);
+	position: absolute;
+	bottom:0;
+	background: rgb(192,192,192);
 	background: linear-gradient(180deg, rgba(192,192,192,1) 0%, rgba(255,255,255,1) 56%); 
-	
+	min-width : 100%; 
+	height:10vh;
+	padding:15px 50px 20px 50px; 
+	text-align:center;
 	}
 
 </style>
@@ -25,7 +30,7 @@
 
 
 		<!-- ==== Footer ====== -->
-		<footer class="footer" style="min-width : 100%; height:10vh;margin-top: 50px; padding:15px 50px 20px 50px; text-align:center; " >
+		<footer class="footer" >
   
             <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          

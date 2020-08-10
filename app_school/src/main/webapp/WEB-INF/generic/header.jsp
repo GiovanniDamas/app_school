@@ -52,10 +52,10 @@
 	        <a class="nav-link" href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Promotion</a>
+	        <a class="nav-link" href="">Promotion</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Matière</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière</a>
 	      </li>
 	      <li class="nav-item navli">
 	        <a class="nav-link" href="${pageContext.request.contextPath}/cours/liste">Cours</a>

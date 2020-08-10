@@ -12,9 +12,11 @@
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
 
+
 </head>
 <body>
 	
+	<a href="${pageContext.request.contextPath}/matiere/liste-matiere"">lien test liste matières</a>
 	
 	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
 	

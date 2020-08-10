@@ -16,7 +16,7 @@
 <body>
 	
 	<!-- =========================================================== -->
-	<!-- ======== Header (navabar) ================================= -->
+	<!-- ======== Header (navbar) ================================= -->
 	<!-- =========================================================== -->
 	
 	<%@include file="../generic/header.jsp" %>
@@ -34,7 +34,7 @@
 		<tr>
 		
 			<td colspan="5" align="right"><a
-				href="${pageContext.request.contextPath}/employe/add-employe-form">
+				href="${pageContext.request.contextPath}/matiere/edit-matiere-form?idMatiere=0">
 					Ajout d'une matière </a></td>
 		</tr>
 
@@ -49,23 +49,15 @@
 		<!-- données de la table -->
 		<c:forEach items="${attribut_liste_matieres }" var="mat">
 			<tr>
-				<td>${mat.libelle}</td>
-				
-
-			
-				<td>
-				
+				<td>${mat.libelle}</td>		
+				<td>				
 					<a
-					href="${pageContext.request.contextPath}/employe/update-employe-form?idemploye=${employe.idEmploye}">
+					href="${pageContext.request.contextPath}/employe/update-employe-form?idemploye=${mat.idMatiere}">
 						Modifier</a>
-				</td>
-				
-
-			
-				<td>
-				
+				</td>					
+				<td>				
 					<a
-					href="${pageContext.request.contextPath}/employe/delete/${employe.idEmploye}">
+					href="${pageContext.request.contextPath}/matiere/delete/${mat.idMatiere}">
 						Supprimer</a>
 				</td>
 
@@ -74,8 +66,6 @@
 		</c:forEach>
 	</table>
 	
-	<button type="button" class="btn btn-danger" style="margin-left:20px">Hello</button>
-
 
 	<!-- =========================================================== -->
 	<!-- ======== FOOTER  ========================================== -->

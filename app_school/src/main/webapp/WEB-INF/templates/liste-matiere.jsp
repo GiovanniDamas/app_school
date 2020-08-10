@@ -52,12 +52,12 @@
 				<td>${mat.libelle}</td>		
 				<td>				
 					<a
-					href="${pageContext.request.contextPath}/employe/update-employe-form?idemploye=${mat.idMatiere}">
+					href="${pageContext.request.contextPath}/matiere/edit-matiere-form?idMatiere=${mat.idMatiere}">
 						Modifier</a>
 				</td>					
 				<td>				
 					<a
-					href="${pageContext.request.contextPath}/matiere/delete/${mat.idMatiere}">
+					href="${pageContext.request.contextPath}/matiere/delete?idMatiere=${mat.idMatiere}">
 						Supprimer</a>
 				</td>
 

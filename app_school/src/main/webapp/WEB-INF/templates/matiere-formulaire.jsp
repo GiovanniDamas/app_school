@@ -34,7 +34,7 @@
 	<div align="center">
 
 		<form:form modelAttribute="attribut_matiere" method="POST"
-			action="${pageContext.request.contextPath}/matiere/edit-matiere-form">
+			action="${pageContext.request.contextPath}/matiere/add">
 
 			<%-- affichage de tous les messages d'erreurs --%>
 			<form:errors path="*" cssClass="erreur_validation" element="div" />

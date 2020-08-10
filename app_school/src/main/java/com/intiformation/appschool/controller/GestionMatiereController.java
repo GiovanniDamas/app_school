@@ -80,8 +80,8 @@ public class GestionMatiereController {
 	 * 
 	 * @return le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/delete/{matiere-id}", method = RequestMethod.GET)
-	public String supprimerMatiereDB(@PathVariable("matiere-id") Long pIdMatiere, ModelMap model) {
+	@RequestMapping(value = "/matiere/delete", method = RequestMethod.GET)
+	public String supprimerMatiereDB(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		// 1. Suppresion de la matière de la database via le service
 		matiereService.supprimerMatiere(pIdMatiere);
@@ -154,7 +154,7 @@ public class GestionMatiereController {
 
 			// Recup nouvelle liste d'etudiant après ajout
 
-			model.addAttribute("attribut_liste_etudiants", matiereService.trouverAllMatieres());
+			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
 			return "liste-matiere";
 

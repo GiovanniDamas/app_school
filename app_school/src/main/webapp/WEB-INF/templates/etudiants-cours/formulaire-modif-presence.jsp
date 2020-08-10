@@ -9,7 +9,8 @@
 
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/resources/styles/perso.css"
+    rel="stylesheet">  
 </head>
 <body>
 
@@ -18,11 +19,15 @@
 	<%-- ====================================================== --%>
 	<%-- FORMULAIRE POUR MODIFIER LA PRESENCE D UN ETUDIANT A COURS --%>
 	<%-- ====================================================== --%>
-	<br/>
 	
 	<%-- à la soumission envoi d'une requête HTTP en POST vers 'GestionEtudiantCoursController' et sa méthode modifierEtudiantCoursBdd--%>
+<div class="content">
+
+	<h3>Modification de la présence d'un étudiant</h3>
 	
-	<form:form modelAttribute="attribut_etudiant_cours" method="POST" action="${pageContext.request.contextPath}/etudiant-cours/modifier">
+	<br/>
+	
+	<form:form modelAttribute="attribut_etudiant_cours" method="POST" action="${pageContext.request.contextPath}/etudiants-cours/modifier">
 	
 		<table>
 		
@@ -45,13 +50,19 @@
 	 			<td><form:input path="etudiant"/></td>
 	 		</tr>
 	 		<tr>
-	 			<td><form:label path="cours">Id Cours : </form:label></td>
-	 			<td><form:input path="cours"/></td>
+	 			<td><form:label path="cours.idCours">Id Cours : </form:label></td>
+	 			<td>
+	 				<form:select path="cours.idCours">
+              			<form:option value="" label="--Sélectionner"/>
+            			<form:options items="${attribut_cours}" itemValue="idCours" itemLabel="libelle"/>
+         			</form:select>
+	 			</td>
 	 		</tr>	
 			<tr>
 				<td colspan="2"> <input type="submit" value="Modifier"/></td>
 			</tr>
 		</table>
 	</form:form>
+</div>	
 </body>
 </html>

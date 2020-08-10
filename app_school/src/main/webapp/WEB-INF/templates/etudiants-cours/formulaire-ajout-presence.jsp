@@ -9,7 +9,8 @@
 
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/resources/styles/perso.css"
+    rel="stylesheet">  
 </head>
 <body>
 
@@ -19,10 +20,15 @@
 	<%-- = FORMULAIRE POUR AJOUTER UN ETUDIANT A COURS ======== --%>
 	<%-- ====================================================== --%>
 	<br/>
+<div class="content">
+	
+	<h3>Ajout de l'absence d'un étudiant à un cours</h3>
+	
+	<br/>	
 	
 	<%-- à la soumission envoi d'une requête HTTP en POST vers 'GestionEtudiantCoursController' et sa méthode ajouterEtudiantCoursBdd--%>
 	
-	<form:form modelAttribute="attribut_etudiant_cours" method="POST" action="${pageContext.request.contextPath}/etudiant-cours/ajouter">
+	<form:form modelAttribute="attribut_etudiant_cours" method="POST" action="${pageContext.request.contextPath}/etudiants-cours/ajouter">
 	
 		<table>
 	 		<tr>
@@ -38,14 +44,19 @@
 	 			<td><form:input path="etudiant"/></td>
 	 		</tr>
 	 		<tr>
-	 			<td>Id Cours : </td>
-	 			<td><form:input path="cours"/></td>
+	 			<td>Cours : </td>
+	 			<td>
+	 				<form:select path="cours.idCours">
+              			<form:option value="" label="--Sélectionner"/>
+            			<form:options items="${attribut_cours}" itemValue="idCours" itemLabel="libelle"/>
+         			</form:select>
+         		</td>
 	 		</tr>	
 			<tr>
 				<td colspan="2"> <input type="submit" value="Ajouter"/></td>
 			</tr>
 		</table>
 	</form:form>
-	
+</div>
 </body>
 </html>

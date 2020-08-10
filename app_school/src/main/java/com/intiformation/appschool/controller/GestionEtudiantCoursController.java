@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
+
+
 
 /**
  * contrôleur spring mvc pour la gestion des EtudiantCours 
@@ -34,6 +37,21 @@ public class GestionEtudiantCoursController {
 	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
 		this.etudiantCoursService = etudiantCoursService;
 	}
+	
+	//____________________________________________________________________________________________________
+	//déclaration du service
+	@Autowired //injection par modificateur
+	private ICoursService coursService;
+
+	/** 
+	 * setter pour injection spring du service
+	 * @param coursService
+	 */
+	public void setCoursService(ICoursService coursService) {
+		this.coursService = coursService;
+	}
+	//_____________________________________________________________________________________________________
+	
 	
 	/*__________________________ méthodes gestionnaires _______________*/
 	/**
@@ -60,14 +78,14 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/supprimer", method=RequestMethod.GET)
+	@RequestMapping(value="/etudiants-cours/supprimer", method=RequestMethod.GET)
 	public String supprimerEtudiantCoursBdd(@RequestParam("etudiantCoursId") Long pIdEtudiantCours, ModelMap model) {
 		
 		//1. suppression dans la bdd
 		etudiantCoursService.supprimerEtudiantCours(pIdEtudiantCours);
 		
 		//2. renvoi du nom logique de la vue
-		return "redirect:/etudiant-cours/liste";
+		return "redirect:/etudiants-cours/liste";
 		
 	}//end supprimerEtudiantCoursBdd
 	
@@ -76,7 +94,7 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/formulaire-ajout", method=RequestMethod.GET)
+	@RequestMapping(value="/etudiants-cours/formulaire-ajout-presence", method=RequestMethod.GET)
 	public String chargerEtudiantCoursBdd(ModelMap model) {
 		
 		//1. création objet EtudiantCours
@@ -85,8 +103,12 @@ public class GestionEtudiantCoursController {
 		//2. renvoi de l'étudiantCours vers la vue via l'objet model
 		model.addAttribute("attribut_etudiant_cours", etudiantCours);
 		
+		//_______________________________________________________________________________________
+		model.addAttribute("attribut_cours", coursService.findAllCours());
+		//_______________________________________________________________________________________
+		
 		//3. renvoi du nom logique de la vue
-		return "cours/formulaire-ajout-presence";
+		return "etudiants-cours/formulaire-ajout-presence";
 		
 	}//end chargerEtudiantCoursBdd
 	
@@ -95,14 +117,14 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/ajouter", method=RequestMethod.POST)
+	@RequestMapping(value="/etudiants-cours/ajouter", method=RequestMethod.POST)
 	public String ajouterEtudiantCoursBdd(@ModelAttribute("attribut_etudiant_cours") EtudiantCours pEtudiantCours, BindingResult result) {
 		
 			//1. ajout de l'étudiant cours dans la bdd
 			etudiantCoursService.ajouterEtudiantCours(pEtudiantCours);
 			
 			//3. renvoi du nom logique de la vue
-			return "redirect:/etudiant-cours/liste";		
+			return "redirect:/etudiants-cours/liste";		
 		
 	}//end ajouterEtudiantCoursBdd
 	
@@ -111,7 +133,7 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/formulaire-modif", method=RequestMethod.GET)
+	@RequestMapping(value="/etudiants-cours/formulaire-modif-presence", method=RequestMethod.GET)
 	public String chargerModifEtudiantCoursBdd(@RequestParam("etudiantCoursId") Long pIdEtudiantCours, ModelMap model) {
 		
 		//1. récupération de l'etudiant cours à modifier
@@ -120,8 +142,12 @@ public class GestionEtudiantCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_etudiant_cours", etudiantCoursToUpdate);
 		
+		//_______________________________________________________________________________________
+		model.addAttribute("attribut_cours", coursService.findAllCours());
+		//_______________________________________________________________________________________
+		
 		//3. renvoi du nom logique de la vue
-		return "etudiant-cours/formulaire-modif-presence";
+		return "etudiants-cours/formulaire-modif-presence";
 		
 	}//end chargerModifEtudiantCoursBdd
 	
@@ -130,14 +156,16 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/modifier", method=RequestMethod.POST)
+	@RequestMapping(value="/etudiants-cours/modifier", method=RequestMethod.POST)
 	public String modifierEtudiantCoursBdd(@ModelAttribute("attribut_etudiant_cours") EtudiantCours pEtudiantCours, BindingResult result) {
 		
-			//1. modif de l'étudiant cours dans la bdd
+			//1. modif de l'étudiant cours dans la bdd	
 			etudiantCoursService.modifierEtudiantCours(pEtudiantCours);
 			
+			System.out.println("cours : " + pEtudiantCours.getCours());
+			
 			//2. renvoi du nom logique de la vue
-			return "redirect:/etudiant-cours/liste";		
+			return "redirect:/etudiants-cours/liste";		
 		
 	}//end modifierEtudiantCoursBdd
 	
@@ -146,7 +174,7 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/liste/{etudiant-id}", method=RequestMethod.GET)
+	@RequestMapping(value="/etudiants-cours/liste/{etudiant-id}", method=RequestMethod.GET)
 	public String afficherListeEtudiantCoursByEtudiant(@PathVariable("etudiant-id") Long pIdEtudiant, ModelMap model) {
 		
 		//1. récup de la liste des étudiants cours de la bdd via le service
@@ -156,7 +184,7 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_liste_presence", listeEtudiantCoursByEtudiantBdd);
 		
 		//3. renvoi du nom logique de la vue
-		return "etudiant-cours/liste-presence";
+		return "etudiants-cours/liste-presence";
 		
 	}//end afficherListeCoursByMatiere
 	
@@ -165,7 +193,7 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiant-cours/liste/{cours-id}", method=RequestMethod.GET)
+	@RequestMapping(value="/etudiants-cours/liste/{cours-id}", method=RequestMethod.GET)
 	public String afficherListeEtudiantCoursByCours(@PathVariable("cours-id") Long pIdCours, ModelMap model) {
 		
 		//1. récup de la liste des cours de la bdd via le service
@@ -175,7 +203,7 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_liste_presence", listeEtudiantCoursByCoursBdd);
 		
 		//3. renvoi du nom logique de la vue
-		return "etudiant-cours/liste-presence";
+		return "etudiants-cours/liste-presence";
 		
 	}//end afficherListeEtudiantCoursByCours	
 	

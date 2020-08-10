@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.service.ICoursService;
+import com.intiformation.appschool.service.IMatiereService;
+import com.intiformation.appschool.service.IPromotionService;
 
 /**
  * contrôleur spring mvc pour la gestion des cours
@@ -35,6 +37,34 @@ public class GestionCoursController {
 	public void setCoursService(ICoursService coursService) {
 		this.coursService = coursService;
 	}
+	
+	// ______________________________________________________________________________________________________________
+	//déclaration du service de matière
+	@Autowired //injection par modificateur
+	private IMatiereService matiereService;
+
+	/** 
+	 * setter pour injection spring 
+	 * @param matiereService
+	 */
+	public void setMatiereService(IMatiereService matiereService) {
+		this.matiereService = matiereService;
+	}
+	// ______________________________________________________________________________________________________________
+
+	// ______________________________________________________________________________________________________________
+	//déclaration du service de promotion
+	@Autowired //injection par modificateur
+	private IPromotionService promotionService;
+
+	/** 
+	 * setter pour injection spring 
+	 * @param promotionService
+	 */
+	public void setPromotionService(IPromotionService promotionService) {
+		this.promotionService = promotionService;
+	}
+	// ______________________________________________________________________________________________________________
 	
 	/*__________________________ méthodes gestionnaires _______________*/
 	/**
@@ -86,6 +116,13 @@ public class GestionCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", cours);
 		
+		// ______________________________________________________________________________________________________________
+
+		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
+		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+		
+		// ______________________________________________________________________________________________________________
+
 		//3. renvoi du nom logique de la vue
 		return "cours/formulaire-ajout";
 		
@@ -120,6 +157,13 @@ public class GestionCoursController {
 		
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", coursToUpdate);
+		
+		// ______________________________________________________________________________________________________________
+
+		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
+		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+
+		// ______________________________________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "cours/formulaire-modif";

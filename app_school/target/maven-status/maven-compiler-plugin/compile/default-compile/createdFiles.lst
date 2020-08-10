@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 com\intiformation\appschool\dao\IEnseignantsDAO.class
 com\intiformation\appschool\service\CoursServiceImpl.class
 com\intiformation\appschool\service\EnseignantsServiceImpl.class
@@ -8,6 +7,7 @@ com\intiformation\appschool\service\EtudiantsServiceImpl.class
 com\intiformation\appschool\dao\IPromotionDAO.class
 com\intiformation\appschool\service\ICoursService.class
 com\intiformation\appschool\service\IMatiereService.class
+com\intiformation\appschool\controller\GestionAideService.class
 com\intiformation\appschool\service\IEtudiantsService.class
 com\intiformation\appschool\dao\ICoursDAO.class
 com\intiformation\appschool\modeles\Aide.class
@@ -56,5 +56,3 @@ com\intiformation\appschool\service\PromotionServiceImpl.class
 com\intiformation\appschool\controller\GestionEtudiantsController.class
 com\intiformation\appschool\dao\AdresseDAOImpl.class
 com\intiformation\appschool\service\AdministrateursServiceImpl.class
-=======
->>>>>>> c4eea05bb555244f932a575a2d850bafe27c0f0e

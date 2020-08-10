@@ -9,7 +9,9 @@
 
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
-
+<link href="${pageContext.request.contextPath}/resources/styles/perso.css"
+    rel="stylesheet">
+<script src="https://kit.fontawesome.com/9dde17f0e3.js" crossorigin="anonymous"></script>  
 </head>
 <body>
 
@@ -18,59 +20,69 @@
 	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
 	<%-- ++ AFFICHAGE LISTE DE PRESENCE DES ETUDIANTS AUX COURS DE LA BDD ++ --%>
 	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
-
-	 <h2><u>Liste de présence des étudiants</u></h2>
+<div class="content">
+	 <h3>Liste de présence des étudiants</h3>
 	 
-	 <c:forEach items="${attribut_liste_presence}" var="presence">
+	 <br/><br/>
+	 	 	
+	 <table class="table" style="text-align: center">
 	 	
-	 	<table>
-	 		<tr>
-	 			<td>Id : </td>
+	 	<thead class="thead-light">
+    		<tr>
+      			<th scope="col">Id</th>
+      			<th scope="col">Absence</th>
+    			<th scope="col">Motif</th>
+      			<th scope="col">Etudiant</th>
+      			<th scope="col">Cours</th>
+      			<th scope="col">Modifier</th>
+      			<th scope="col">Supprimer</th>
+    		</tr>
+  	  </thead>
+  	  
+  	  <c:forEach items="${attribut_liste_presence}" var="presence">
+  	  
+  	  	<tbody>
+	 	  
+	 	  	<tr>
 	 			<td>${presence.idEtudiantCours}</td>
-	 		</tr>
-	 		<tr>
-	 			<td>Absence : </td>
-	 			<td>${presence.absence}</td>
-	 		</tr>
-	 		<tr>
-	 			<td>Motif : </td>
+
+	 			<td>
+	 				<c:if test="${presence.absence==true}"><input type="checkbox" checked="checked" disabled="disabled"></c:if>
+	 				<c:if test="${presence.absence==false}"><input type="checkbox" value="" disabled="disabled"></c:if>
+	 			</td>
+
 	 			<td>${presence.motif}</td>
-	 		</tr> 		
-	 		<tr>
-	 			<td>Id Etudiant : </td>
+
 	 			<td>${presence.etudiant}</td>
-	 		</tr>
-	 		<tr>
-	 			<td>Id Cours : </td>
-	 			<td>${presence.cours}</td>
-	 		</tr>	
+
+	 			<td>${presence.cours.libelle}</td>
 
 	 		<%-- lien pour modifier une ligne --%> 		
-	 		<tr>
 	 			<td>
 	 				<%-- au click on appelle le controller 'GestionEtudiantCoursController' et sa méthode chargerModifCoursBdd --%>
-	 				<a href="${pageContext.request.contextPath}/etudiant-cours/formulaire-modif-presence?etudiantCoursId=${presence.idEtudiantCours}">modifier cours</a>
+	 				<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-modif-presence?etudiantCoursId=${presence.idEtudiantCours}">
+	 					<i class="fas fa-pencil-alt"></i>
+	 				</a>
 	 			</td>
-	 		</tr>
 	 		
 	 		<%-- lien pour supprimer une ligne --%> 		
-	 		<tr>
 	 			<td>
 	 				<%-- au click on appelle le controller 'GestionCEtudiantCoursController' et sa méthode supprimerEtudiantCoursBdd --%>
-	 				<a href="${pageContext.request.contextPath}/etudiant-cours/supprimer?etudiantCoursId=${presence.idEtudiantCours}">supprimer cours</a>
+	 				<a href="${pageContext.request.contextPath}/etudiants-cours/supprimer?etudiantCoursId=${presence.idEtudiantCours}">
+	 					<i class="fas fa-trash-alt"></i>
+	 				</a>
 	 			</td>
 	 		</tr>
 	 		
-	 	</table>
-	 	
-	 	<hr/>
-	 	
-	 </c:forEach>
+	 		</tbody>
+	 	</c:forEach>
+	 		
+	 	</table>	 	
 
 	<br/>
 	
 	<%-- lien pour ajouter une ligne dans la bdd : au click on appelle le controller GestionEtudiantCoursController et sa méthode chargerEtudiantCoursBdd --%>
-	<a href="${pageContext.request.contextPath}/etudiant-cours/formulaire-ajout-presence">ajouter présence étudiant</a>
-
+	<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-ajout-presence">Ajouter absence étudiant</a>
+</div>
 </body>
 </html>

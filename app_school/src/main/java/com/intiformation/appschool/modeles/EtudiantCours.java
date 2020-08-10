@@ -43,7 +43,7 @@ public class EtudiantCours implements Serializable{
 	 * relation entre etudiant et etudiantCours 
 	 */
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="etudiant_id", referencedColumnName="id_personne")
 	private Etudiants etudiant;
 	
@@ -51,7 +51,7 @@ public class EtudiantCours implements Serializable{
 	 * relation entre cours et etudiantCours 
 	 */
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="cours_id", referencedColumnName="id_cours")
 	private Cours cours;
 	

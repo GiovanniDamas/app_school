@@ -57,6 +57,7 @@
 						<td>${etu.email}</td>
 						<td>${etu.identifiant}</td>
 						<td>${etu.motDePasse}</td>
+						<td>${etu.photo}</td>
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier

@@ -22,17 +22,20 @@
 	<br />
 	<div align="center">
 
+
 		<form:form modelAttribute="attribut_etudiants" method="POST"
-			action="${pageContext.request.contextPath}/gestionEtudiants/edit">
+			action="${pageContext.request.contextPath}/gestionEtudiants/edit"
+			enctype="multipart/form-data">
 
 			<%-- affichage de tous les messages d'erreurs --%>
 			<form:errors path="*" cssClass="erreur_validation" element="div" />
 
 			<tr>
 				<c:if test="${idPersonne} != 0"></c:if>
-				<td><form:hidden path="idPersonne"/></td>
-				
+				<td><form:hidden path="idPersonne" /></td>
+
 			</tr>
+
 
 			<table width="60%">
 				<tr>
@@ -71,13 +74,19 @@
 					<td><form:errors path="motDePasse"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
+				<tr>
+					<td><input type="file" name="photo" required="" /></td>
+					<td><input type="submit" value="Upload" /></td>
+					<td><form:errors path="photo"
+							cssStyle="color:red; font-style:italic;" /></td>
+				</tr>
 
 				<tr>
 					<td><input type="submit" value="Ajouter" /></td>
 				</tr>
 				<tr>
 					<c:if test="${idPersonne} != 0"></c:if>
-					<td><input type="submit" value="Modifier"/></td>
+					<td><input type="submit" value="Modifier" /></td>
 				</tr>
 			</table>
 

@@ -71,7 +71,7 @@ public class GestionAideService {
 
 			// 3. renvoie du nom logique de la vue
 
-			return "listeAide";
+			return "liste-aide";
 
 		}// END RECUP LISTE
 
@@ -136,7 +136,7 @@ public class GestionAideService {
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
 				
-				return "listeAide";
+				return "liste-aide";
 
 			}
 			if (pAide.getIdAide() != 0) {			
@@ -149,11 +149,11 @@ public class GestionAideService {
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
 
-				return "listeAide";
+				return "liste-aide";
 			
 			}//end if
 
-			return "listeAide";
+			return "liste-aide";
 
 		}//end ajoutAideBdd
 
@@ -176,7 +176,7 @@ public class GestionAideService {
 
 			model.addAttribute("attribut_liste_aide", aideService.findAll());
 
-			return "listeAide";
+			return "liste-aide";
 
 		}//end supprimerAideBDD
 		

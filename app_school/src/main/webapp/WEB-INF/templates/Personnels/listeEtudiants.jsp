@@ -12,9 +12,8 @@
 
 <title>Page gestion des Etudiants</title>
 
-<link
-	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-	rel="stylesheet">
+<link	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
 
 
 

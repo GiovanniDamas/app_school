@@ -57,7 +57,7 @@
 	        <a class="nav-link" href="#">Promotion</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Matière</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
 	      </li>
 	      <li class="nav-item navli">
 	        <a class="nav-link" href="${pageContext.request.contextPath}/cours/liste">Cours</a>
@@ -66,7 +66,7 @@
 	        <a class="nav-link" href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Aide</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
 	      </li>  
 	      <li id="copyright">
 	         <p>© Copyright</p>

@@ -24,8 +24,10 @@
 
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	
+	<div style="height:80vh;">
 		<h1>Hello !</h1>	
-		
+	</div>	
+	
 	<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
 
 

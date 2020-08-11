@@ -17,7 +17,8 @@
 </head>
 <body>
 
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include> 
 
 	<div style="width: 70%; float: right; margin-right: 10%">
 

@@ -17,10 +17,11 @@
 
 <body>
 
-	<h2> Bienvenue dans l'aide ! </h2>
-
 
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include> 
+	
+	<h2> Bienvenue dans l'aide ! </h2>
 
 	<div style="width: 70%; float: right; margin-right: 10%">
 

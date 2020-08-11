@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,19 +24,49 @@
 <div class="content">
 	 <h3>Liste de présence des étudiants</h3>
 	 
-	 <br/><br/>
+	 <br/>
+	 
+	 <div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-cours">
+	 	 <label for="recherche-cours">Rechercher par cours : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-cours" name="id-cours">
+	 		<option value="0" label="Afficher toutes les absences">
+	 		<c:forEach items="${attribut_cours}" var="cours">
+	 			 <option value="${cours.idCours}" label="${cours.libelle}"/>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+  	<br/>
+  	
+  	<div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-etudiant">
+	 	 <label for="recherche-etudiant">Rechercher par étudiant : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-etudiant" name="id-etudiant">
+	 		<option value="0" label="Afficher toutes les absences">
+	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
+	 			 <option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></option>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+	 <br/><br/><br/>
 	 	 	
-	 <table class="table" style="text-align: center">
+	 <table class="table table-hover" style="text-align: center">
 	 	
-	 	<thead class="thead-light">
+	 	<thead>
     		<tr>
-      			<th scope="col">Id</th>
-      			<th scope="col">Absence</th>
-    			<th scope="col">Motif</th>
-      			<th scope="col">Etudiant</th>
-      			<th scope="col">Cours</th>
-      			<th scope="col">Modifier</th>
-      			<th scope="col">Supprimer</th>
+      			<th scope="row">Id</th>
+      			<th scope="row">Absence</th>
+    			<th scope="row">Motif</th>
+      			<th scope="row">Etudiant</th>
+      			<th scope="row">Cours</th>
+      			<th scope="row">Modifier</th>
+      			<th scope="row">Supprimer</th>
     		</tr>
   	  </thead>
   	  

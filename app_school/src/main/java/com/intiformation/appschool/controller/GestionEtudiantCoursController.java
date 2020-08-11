@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
+import com.intiformation.appschool.service.IEtudiantsService;
 
 
 
@@ -50,6 +51,18 @@ public class GestionEtudiantCoursController {
 	public void setCoursService(ICoursService coursService) {
 		this.coursService = coursService;
 	}
+	
+	//déclaration du service
+	@Autowired //injection par modificateur
+	private IEtudiantsService etudiantsService;
+
+	/** 
+	 * setter pour injection spring du service
+	 * @param etudiantsService
+	 */
+	public void setEtudiantsService(IEtudiantsService etudiantsService) {
+		this.etudiantsService = etudiantsService;
+	}
 	//_____________________________________________________________________________________________________
 	
 	
@@ -67,6 +80,11 @@ public class GestionEtudiantCoursController {
 		
 		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 		model.addAttribute("attribut_liste_presence", listePresenceBdd);
+		
+		//_______________________________________________________________________________________
+		model.addAttribute("attribut_cours", coursService.findAllCours());
+		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
+		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/liste-presence";
@@ -105,6 +123,7 @@ public class GestionEtudiantCoursController {
 		
 		//_______________________________________________________________________________________
 		model.addAttribute("attribut_cours", coursService.findAllCours());
+		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
 		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
@@ -144,6 +163,7 @@ public class GestionEtudiantCoursController {
 		
 		//_______________________________________________________________________________________
 		model.addAttribute("attribut_cours", coursService.findAllCours());
+		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
 		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
@@ -174,36 +194,62 @@ public class GestionEtudiantCoursController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/liste/{etudiant-id}", method=RequestMethod.GET)
-	public String afficherListeEtudiantCoursByEtudiant(@PathVariable("etudiant-id") Long pIdEtudiant, ModelMap model) {
+	@RequestMapping(value="/etudiants-cours/recherche-etudiant", method=RequestMethod.GET)
+	public String afficherListeEtudiantCoursByEtudiant(@RequestParam("id-etudiant") Long pIdEtudiant, ModelMap model) {
 		
-		//1. récup de la liste des étudiants cours de la bdd via le service
-		List<EtudiantCours> listeEtudiantCoursByEtudiantBdd = etudiantCoursService.afficherEtudiantCoursByEtudiant(pIdEtudiant);
+		if(pIdEtudiant==0) {
+			
+			return "redirect:/etudiants-cours/liste";
+			
+		}else {
+			
+			//1. récup de la liste des étudiants cours de la bdd via le service
+			List<EtudiantCours> listeEtudiantCoursByEtudiantBdd = etudiantCoursService.afficherEtudiantCoursByEtudiant(pIdEtudiant);
+			
+			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByEtudiantBdd);
+				
+			//_______________________________________________________________________________________
+			model.addAttribute("attribut_cours", coursService.findAllCours());
+			model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
+			//_______________________________________________________________________________________
+			
+			//3. renvoi du nom logique de la vue
+			return "etudiants-cours/liste-presence";			
 		
-		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
-		model.addAttribute("attribut_liste_presence", listeEtudiantCoursByEtudiantBdd);
-		
-		//3. renvoi du nom logique de la vue
-		return "etudiants-cours/liste-presence";
+		}//end else
 		
 	}//end afficherListeCoursByMatiere
 	
 	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une promotion
+	 * permet d'afficher la liste de l'ensemble des étudiants absents d'un cours de la bdd 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/liste/{cours-id}", method=RequestMethod.GET)
-	public String afficherListeEtudiantCoursByCours(@PathVariable("cours-id") Long pIdCours, ModelMap model) {
+	@RequestMapping(value="/etudiants-cours/recherche-cours", method=RequestMethod.GET)
+	public String afficherListeEtudiantCoursByCours(@RequestParam("id-cours") Long pIdCours, ModelMap model) {
 		
-		//1. récup de la liste des cours de la bdd via le service
-		List<EtudiantCours> listeEtudiantCoursByCoursBdd = etudiantCoursService.afficherEtudiantCoursByCours(pIdCours);
+		if(pIdCours==0) {
+			
+			return "redirect:/etudiants-cours/liste";
 		
-		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
-		model.addAttribute("attribut_liste_presence", listeEtudiantCoursByCoursBdd);
-		
-		//3. renvoi du nom logique de la vue
-		return "etudiants-cours/liste-presence";
+		}else {
+						
+			//1. récup de la liste des cours de la bdd via le service
+			List<EtudiantCours> listeEtudiantCoursByCoursBdd = etudiantCoursService.afficherEtudiantCoursByCours(pIdCours);
+			
+			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByCoursBdd);
+			
+			//_______________________________________________________________________________________
+			model.addAttribute("attribut_cours", coursService.findAllCours());
+			model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
+			//_______________________________________________________________________________________
+			
+			//3. renvoi du nom logique de la vue
+			return "etudiants-cours/liste-presence";
+			
+		}//end else
 		
 	}//end afficherListeEtudiantCoursByCours	
 	

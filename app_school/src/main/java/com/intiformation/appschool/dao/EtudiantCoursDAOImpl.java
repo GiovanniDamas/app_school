@@ -172,11 +172,11 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<EtudiantCours> getByCoursQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.cours = :pIdCours");
+			Query<EtudiantCours> getByCoursQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.cours.idCours = :pIdCours");
 			
 			//passage de paramètre
 			getByCoursQuery.setParameter("pIdCours", pIdCours);
-			
+						
 			//envoi, execution et récup résultat
 			return getByCoursQuery.getResultList();			
 			
@@ -202,7 +202,7 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<EtudiantCours> getByEtudiantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.etudiant = :pIdEtudiant");
+			Query<EtudiantCours> getByEtudiantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.etudiant.idPersonne = :pIdEtudiant");
 			
 			//passage de paramètre
 			getByEtudiantQuery.setParameter("pEtudiant", pIdEtudiant);

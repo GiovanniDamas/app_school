@@ -171,7 +171,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<Cours> getByMatiereQuery = session.createQuery("SELECT c FROM Cours c WHERE c.matieres = :pMatiereId");
+			Query<Cours> getByMatiereQuery = session.createQuery("SELECT c FROM Cours c WHERE c.matieres.idMatiere = :pMatiereId");
 			
 			//passage de paramètre
 			getByMatiereQuery.setParameter("pMatiereId", pIdMatiere);
@@ -200,7 +200,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<Cours> getByPromotionQuery = session.createQuery("SELECT c FROM Cours c WHERE c.promotions = :pPromotionId");
+			Query<Cours> getByPromotionQuery = session.createQuery("SELECT c FROM Cours c WHERE c.promotions.idPromotion = :pPromotionId");
 			
 			//passage de paramètre
 			getByPromotionQuery.setParameter("pPromotionId", pIdPromotion);

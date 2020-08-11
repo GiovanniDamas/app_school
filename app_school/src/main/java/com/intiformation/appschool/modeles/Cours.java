@@ -42,7 +42,7 @@ public class Cours implements Serializable{
 	
 	@Column(name="date")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="dd/MM/yyyy")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date date;
 
 	@Column(name="duree")
@@ -56,7 +56,7 @@ public class Cours implements Serializable{
 	 * relation entre cours et matières
 	 */
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="matiere_id", referencedColumnName="id_matiere")
 	private Matiere matieres;
 	
@@ -64,7 +64,7 @@ public class Cours implements Serializable{
 	 * relation entre cours et promotion
 	 */
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotions;
 	

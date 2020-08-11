@@ -28,32 +28,91 @@
 
 	 <h3>Liste de l'ensemble des cours</h3>
 	 
-	 <div class="recherche">
-	 <p>Rechercher selon : </p>
-	 <div class="form-check form-check-inline">
-  		<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
-  		<label class="form-check-label" for="inlineRadio1">Matière</label>
-	</div>
-	<div class="form-check form-check-inline">
-  		<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/>
-  		<label class="form-check-label" for="inlineRadio2">Promotion</label>
-	</div>
-	<div class="form-check form-check-inline">
-  		<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
-  		<label class="form-check-label" for="inlineRadio3">Date</label>
-	</div>
+	 <br/>
 	 
-  	<form class="form-inline">
-    	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    	<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
-  	</form>
-	</div>
+	 <%-- 
+	 
+	 <form id="rechercher" name="rechercher">
+	 
+	 <fieldset class="form-group col-12">
+		<div class="row">
+			<legend class="col-form-label col-sm-2 pt-0">Rechercher selon : </legend>
+		 	<div class="col-sm-10">
+
+				<div class="form-check form-check-inline">
+  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
+  					<label class="form-check-label" for="inlineRadio1">Matière</label>
+				</div>
 	
-	 <br/><br/><br/><br/><br/><br/>
+				<div class="form-check form-check-inline">
+  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/>
+  					<label class="form-check-label" for="inlineRadio2">Promotion</label>
+				</div>
+	
+				<div class="form-check form-check-inline">
+  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"/>
+  					<label class="form-check-label" for="inlineRadio3">Date</label>
+				</div>
+	
+				<div class="form-check form-check-inline">
+  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
+  					<label class="form-check-label" for="inlineRadio3">Afficher tous</label>
+				</div>
+			</div>
+		</div>
+  	</fieldset>
+  	
+  	 <button class="btn btn-outline-success my-2 my-sm-0 col-2" type="submit">Valider</button>
+  		 
+	</form>
+	
+	 <br/><br/><br/><br/>
 	 
- 	<table class="table" style="text-align: center">
+	 --%>
+	 
+	 <div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-matiere">
+	 	 <label for="recherche-matiere">Rechercher par matière : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-matiere" name="id-matiere">
+	 		<option value="0" label="Afficher tous les cours">
+	 		<c:forEach items="${attribut_matieres}" var="matiere">
+	 			 <option value="${matiere.idMatiere}" label="${matiere.libelle}"/>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+  	<br/>
+  	
+  	<div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-promotion">
+	 	 <label for="recherche-promotion">Rechercher par promotion : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-promotion" name="id-promo">
+	 		<option value="0" label="Afficher tous les cours">
+	 		<c:forEach items="${attribut_promotions}" var="promotion">
+	 			 <option value="${promotion.idPromotion}" label="${promotion.libelle}"/>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+  	  	<br/>
+  	
+  	<div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-date">
+	 	 <label for="recherche-date">Rechercher par date :  </label>
+	 	 <input id="recherche-date" name="date" type="date" class="form-control"/>	 	
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+  	<br/><br/>
+	 
+ 	<table class="table table-hover" style="text-align: center">
 	 	
- 	  <thead class="thead-light">
+ 	  <thead>
     		<tr>
       			<th scope="col">Id Cours</th>
       			<th scope="col">Libellé</th>
@@ -76,9 +135,9 @@
 
 	 			<td>${cours.libelle}</td>
 
-	 			<td><fmt:formatDate value="${cours.date}" pattern="dd-MM-yyyy"/></td>
+	 			<td><fmt:formatDate value="${cours.date}" pattern="dd/MM/yyyy"/></td>
 
-	 			<td>${cours.duree}</td>
+	 			<td>${cours.duree} min</td>
 
 	 			<td>${cours.description}</td>
 

@@ -28,41 +28,59 @@
 	<br/>
 	
 	<form:form modelAttribute="attribut_etudiant_cours" method="POST" action="${pageContext.request.contextPath}/etudiants-cours/modifier">
+
+	<%-- affichage de tous les messages d'erreurs --%>		
+	<form:errors path="*" element="div" class="alert alert-dismissible alert-danger" />	
 	
-		<table>
+		<fieldset>
 		
-			<!--  récup de l'id de létudiant cours à modifier dans un champ caché -->
-
-			<tr>
-				<td> <form:hidden path="idEtudiantCours"/> </td>
-			</tr>
-
-	 		<tr>
-	 			<td> <form:label path="absence">Absence : </form:label> </td>
-				<td> <form:checkbox path="absence"/> </td>
-	 		</tr>
-	 		<tr>
-	 			<td> <form:label path="motif">Motif : </form:label> </td>
-	 			<td> <form:input path="motif"/></td>
-	 		</tr> 		
-	 		<tr>
-	 			<td> <form:label path="etudiant">Id Etudiant : </form:label></td>
-	 			<td><form:input path="etudiant"/></td>
-	 		</tr>
-	 		<tr>
-	 			<td><form:label path="cours.idCours">Id Cours : </form:label></td>
-	 			<td>
-	 				<form:select path="cours.idCours">
-              			<form:option value="" label="--Sélectionner"/>
+		<!--  récup de l'id de létudiant cours à modifier dans un champ caché -->
+			<form:hidden path="idEtudiantCours"/> 
+			
+			<div>
+				<legend style="font-size: 12pt;">Absence</legend>
+  				<form:checkbox path="absence"/>
+  				<form:errors path="absence" cssStyle="color:red; font-style:italic;"/>
+			</div>	
+		
+		<br/>
+		
+			<div class="form-group">
+			  	<form:label class="col-form-label" path="motif">Motif</form:label>
+  				<form:textarea class="form-control" placeholder="Entrer la description du cours" path="motif"/>
+  				<form:errors path="motif" cssStyle="color:red; font-style:italic;"/>
+			</div>
+			
+			<div class="form-group">
+			  	<form:label path="etudiant.idEtudiant">Etudiant</form:label>
+         		<form:select path="etudiant.idEtudiant" class="form-control">
+    				<option value="">--Sélectionner l'étudiant</option>
+    					<c:forEach var="etudiant" items="${attribut_etudiants}">
+        					<form:option value="${etudiant.idEtudiant}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></form:option>
+    					</c:forEach>
+				</form:select>			
+         		<form:errors path="etudiant.idEtudiant" cssStyle="color:red; font-style:italic;"/>
+			</div>
+			
+			<div class="form-group">
+			  	<form:label path="cours.idCours">Cours</form:label>
+				<form:select path="cours.idCours" class="form-control">
+              			<form:option value="" label="--Sélectionner le cours"/>
             			<form:options items="${attribut_cours}" itemValue="idCours" itemLabel="libelle"/>
-         			</form:select>
-	 			</td>
-	 		</tr>	
-			<tr>
-				<td colspan="2"> <input type="submit" value="Modifier"/></td>
-			</tr>
-		</table>
-	</form:form>
+         		</form:select>  				
+         		<form:errors path="cours.idCours" cssStyle="color:red; font-style:italic;"/>
+			</div>
+			
+		</fieldset>
+
+		<br/>
+		
+		<input type="submit" class="btn btn-dark" value="Modifier"/>
+		
+		</form:form>
+		
+		<br/><br/><br/>
+		
 </div>	
 </body>
 </html>

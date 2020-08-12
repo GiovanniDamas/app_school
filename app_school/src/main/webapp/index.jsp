@@ -44,7 +44,7 @@
 	<!-- ===================================================== -->
     <div id="divhaute" class="container-fluid col-lg-12">
         <h1 id="titre"> SchoolApp </h1>
-        <a href="#" id="connexion" type="button" class="btn btn-secondary">
+        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
             <span class="fa fa-user-circle"></span>
             Connexion
         </a>
@@ -64,7 +64,7 @@
 
 
 		<div class="sidebar-header">
-			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
     <ul class="sidebar-links">

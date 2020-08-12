@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -204,7 +205,7 @@ public class GestionEtudiantsController {
 
 				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-			}//END if
+			} // END if
 
 		} // END IF idPersonne !=0
 
@@ -235,6 +236,11 @@ public class GestionEtudiantsController {
 
 	}// END SUPPRIMER
 
+	/**
+	 * Méthode pour la gestion de la date
+	 * @param request
+	 * @param binder
+	 */
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -242,4 +248,5 @@ public class GestionEtudiantsController {
 		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
 	}// END Init Binder
 
+	
 }// END CLASS

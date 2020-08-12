@@ -38,7 +38,7 @@
 	<!-- ===================================================== -->
     <div id="divhaute" class="container-fluid col-lg-12">
         <h1 id="titre"> SchoolApp </h1>
-        <a href="#" id="connexion" type="button" class="btn btn-secondary">
+        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
             <span class="fa fa-user-circle"></span>
             Connexion
         </a>
@@ -85,11 +85,8 @@
          <span></span>
      </button>
 
-	
-	
-     <!--Put some content here	
-	<h2 style="text-align: center;"> Bienvenue dans l'aide ! </h2>
-	-->
+
+     <!--Put some content here	-->
 	<br/><br/>
 
 		<table class="table table-bordered rounded"  style="width:90%;margin-left:5%">

@@ -26,19 +26,27 @@
 		<property name="prefix" value="/WEB-INF/templates/"/>
 		<property name="suffix" value=".jsp" />
 	</bean>
-	
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<!-- ++++++ Gestion des resources statiques de l'application  +++++++++++++ -->
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	
-	<!-- 
-			Configurer un gestion pour gérer les ressources statiques
-			
-			- repondre à toutes les ressources privenant de /assets/**
-			en recherchant dans le répertoire 
-	 -->
-	 <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-	
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++ Gestion des resources statiques de l'application +++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+	<!-- Configurer un gestion pour gérer les ressources statiques - repondre 
+		à toutes les ressources privenant de /assets/** en recherchant dans le répertoire -->
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" />
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++ configuration des bundles +++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<bean
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/bundle/validation.properties</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

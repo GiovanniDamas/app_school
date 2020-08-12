@@ -2,6 +2,7 @@ C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\IPromotionDAO.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\controller\GestionAideService.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Matiere.java
+C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\validator\CoursValidator.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Personnes.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\IAdresseDAO.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Aide.java
@@ -14,6 +15,7 @@ C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\Etudiants.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\AdministrateursServiceImpl.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\service\IAdministrateursService.java
+C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\validator\EtudiantCoursValidator.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\modeles\EtudiantCours.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\CoursDAOImpl.java
 C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_groupe_app_school\app_school\app_school\src\main\java\com\intiformation\appschool\dao\IEnseignantsDAO.java

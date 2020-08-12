@@ -1,3 +1,22 @@
 h1 {
 	color: red;
 }
+
+.content{
+	margin-top : 50px;
+	margin-right: 20px;
+	margin-left: 50px;
+	padding-left: 200px;
+}
+
+.recherche{
+	float: right;
+	margin-right: 20px;
+}
+
+.erreurs_validation{
+	color: red;
+	font-style: italic;
+	border: 1px dotted red;
+	margin: 15px;
+}

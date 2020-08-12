@@ -22,7 +22,7 @@
 <body>
 
 
-    <nav class="sidebar" id="sidebar">
+	<nav class="sidebar" id="sidebar">
     
       <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
@@ -30,38 +30,41 @@
 
 
 		<div class="sidebar-header">
-			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-        <ul class="sidebar-links">
-
-            <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="#">Promotion</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/cours/liste">Cours</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
-              </li>
-              <li class="nav-item navli">
-                <a class="nav-link" href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
-              </li>  
-              <li id="copyright">
-                 <p>© Copyright</p>
-              </li>  
-
-
-        </ul>
+	    <ul class="sidebar-links">
+	
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
+	      </li>
+	      
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
+	      </li>
+	
+	      <li >
+	        <a  href="#">Promotion</a>
+	      </li>
+	
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
+	      </li>
+	
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>
+	      </li>
+	
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
+	      </li>
+	      
+	      <li >
+	        <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
+	      </li>  
+	
+	    </ul>
+     
         
 
 	</nav>

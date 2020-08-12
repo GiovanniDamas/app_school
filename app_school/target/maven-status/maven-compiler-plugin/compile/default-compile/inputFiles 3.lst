@@ -16,6 +16,7 @@
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IEnseignantsService.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAdresseDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/EtudiantsServiceImpl.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/cryptage/PasswordEncoderGenerator.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionAideService.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Cours.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAideDAO.java
@@ -27,8 +28,10 @@
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/AdministrateursServiceImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEnseignantsDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IEtudiantsService.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/validator/CoursValidator.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IAdministrateursService.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/EnseignantsDAOImpl.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/validator/EtudiantCoursValidator.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/AideDAOImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IGenerique.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/ICoursDAO.java

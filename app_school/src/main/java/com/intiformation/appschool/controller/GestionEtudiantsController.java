@@ -1,22 +1,34 @@
 package com.intiformation.appschool.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.service.IEtudiantsService;
@@ -27,7 +39,10 @@ import com.intiformation.appschool.service.IEtudiantsService;
  */
 @Controller
 public class GestionEtudiantsController {
-	
+
+	private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images/";
+
+	private Etudiants etudiants;
 	// Déclaration de la couche service Etudiants
 	@Autowired
 	private IEtudiantsService etudiantsService;
@@ -43,8 +58,8 @@ public class GestionEtudiantsController {
 	}
 
 	/**
-	 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
-	 * appellée lors d'une requête HTTP de type GET
+	 * Méthode permettant de récupérer la liste des etudiants via le service,
+	 * Méthode appellée lors d'une requête HTTP de type GET
 	 * 
 	 * @param model
 	 * @return
@@ -98,6 +113,7 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_etudiants", etudiantToUpdate);
 			model.addAttribute("idPersonne", pIdEtudiant);
+			model.addAttribute("photo", etudiantToUpdate.getPhoto());
 
 		} // END IF ELSE IF
 
@@ -113,11 +129,29 @@ public class GestionEtudiantsController {
 	 * @param pEtudiant
 	 * @param model
 	 * @return
+	 * @throws IOException
 	 */
-	@RequestMapping(value = "/gestionEtudiants/edit", method = RequestMethod.POST)
-	public String ajoutEtudiantBdd(@ModelAttribute("attribut_etudiants") Etudiants pEtudiant, ModelMap model) {
-		
+	@RequestMapping(value = "/gestionEtudiants/edit", method = RequestMethod.POST, consumes = { "multipart/form-data" })
+	public String ajoutEtudiantBdd(@ModelAttribute("attribut_etudiants") Etudiants pEtudiant,
+			@RequestParam(name = "file", required = false) MultipartFile file, HttpServletResponse httpServletResponse,
+			ModelMap model) {
+
 		if (pEtudiant.getIdPersonne() == null) {
+
+			String nomPhoto = file.getOriginalFilename();
+
+			pEtudiant.setPhoto(nomPhoto);
+
+			String filePath = UPLOAD_DIRECTORY + nomPhoto;
+
+			File dest = new File(filePath);
+
+			try {
+				file.transferTo(dest);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				return "File uploaded failed:" + nomPhoto;
+			}
 
 			// Ajout etudiant via couche service
 
@@ -126,23 +160,54 @@ public class GestionEtudiantsController {
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
-			
+
 			return "Personnels/listeEtudiants";
 
 		}
-		if (pEtudiant.getIdPersonne() != 0) {			
 
-			// Modif etudiant via couche service
+		if (pEtudiant.getIdPersonne() != 0) {
 
-			etudiantsService.modifierEtudiant(pEtudiant);
+			System.out.println(pEtudiant.getPhoto());
 
-			// Recup nouvelle liste d'etudiant après ajout
+			if (file.isEmpty()) {
 
-			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+				pEtudiant.getPhoto();
 
-			return "Personnels/listeEtudiants";
-		
-		} // END IF
+				// Modif etudiant via couche service
+
+				etudiantsService.modifierEtudiant(pEtudiant);
+
+				// Recup nouvelle liste d'etudiant après ajout
+
+				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+
+			} else {
+				String nomPhoto = file.getOriginalFilename();
+
+				pEtudiant.setPhoto(nomPhoto);
+
+				String filePath = UPLOAD_DIRECTORY + nomPhoto;
+
+				File dest = new File(filePath);
+
+				try {
+					file.transferTo(dest);
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+					return "File uploaded failed:" + nomPhoto;
+				}
+
+				// Modif etudiant via couche service
+
+				etudiantsService.modifierEtudiant(pEtudiant);
+
+				// Recup nouvelle liste d'etudiant après ajout
+
+				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+
+			} // END if
+
+		} // END IF idPersonne !=0
 
 		return "Personnels/listeEtudiants";
 
@@ -171,6 +236,11 @@ public class GestionEtudiantsController {
 
 	}// END SUPPRIMER
 
+	/**
+	 * Méthode pour la gestion de la date
+	 * @param request
+	 * @param binder
+	 */
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -178,4 +248,5 @@ public class GestionEtudiantsController {
 		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
 	}// END Init Binder
 
+	
 }// END CLASS

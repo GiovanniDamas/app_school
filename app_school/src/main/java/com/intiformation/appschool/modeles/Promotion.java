@@ -64,8 +64,8 @@ public class Promotion implements Serializable {
 	 * Mais je ne suis pas trop d'accord : en parler avec les autre
 	 * 	 	 
 	 */
-	//@OneToMany(cascade=CascadeType.ALL, mappedBy="promotions")
-	//private List<Cours> coursPromotion; 
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="promotions")
+	private List<Cours> coursPromotion; 
 	
 	// _________________ CONSTRUCTEUR ___________________ //
 	/**
@@ -110,6 +110,16 @@ public class Promotion implements Serializable {
 
 	public void setEnseignantMatierePromotionLinks(List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks) {
 		this.enseignantMatierePromotionLinks = enseignantMatierePromotionLinks;
+	}
+
+
+	public List<Cours> getCoursPromotion() {
+		return coursPromotion;
+	}
+
+
+	public void setCoursPromotion(List<Cours> coursPromotion) {
+		this.coursPromotion = coursPromotion;
 	}
 
 	

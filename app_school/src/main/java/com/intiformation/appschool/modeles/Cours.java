@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * modèle de données pour un cours
  * ce modèle est mappé vers une table dans la bdd
@@ -39,11 +41,12 @@ public class Cours implements Serializable{
 	private String libelle;
 	
 	@Column(name="date")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date date;
 
 	@Column(name="duree")
-	private Duration duree;
+	private int duree;
 	
 	@Column(name="description")
 	private String description;
@@ -54,7 +57,6 @@ public class Cours implements Serializable{
 	 */
 
 	@ManyToOne(cascade=CascadeType.ALL)
-
 	@JoinColumn(name="matiere_id", referencedColumnName="id_matiere")
 	private Matiere matieres;
 	
@@ -105,11 +107,11 @@ public class Cours implements Serializable{
 		this.date = date;
 	}
 
-	public Duration getDuree() {
+	public int getDuree() {
 		return duree;
 	}
 
-	public void setDuree(Duration duree) {
+	public void setDuree(int duree) {
 		this.duree = duree;
 	}
 

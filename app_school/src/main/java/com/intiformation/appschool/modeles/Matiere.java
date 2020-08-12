@@ -39,8 +39,8 @@ public class Matiere implements Serializable {
 	 * OneToMany
 	 * 	 
 	 */
-	//@OneToMany(cascade=CascadeType.ALL, mappedBy="matieres")
-	//private List<Cours> coursMatiere;
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="matieres")
+	private List<Cours> coursMatiere;
 	
 	/**
 	 * Relation entre Promotion et EnseignantMatierePromotionLink: OneToMany
@@ -76,7 +76,7 @@ public class Matiere implements Serializable {
 		this.libelle = libelle;
 	}
 
-	/*
+	
 	public List<Cours> getCoursMatiere() {
 		return coursMatiere;
 	}
@@ -84,6 +84,6 @@ public class Matiere implements Serializable {
 	public void setCoursMatiere(List<Cours> coursMatiere) {
 		this.coursMatiere = coursMatiere;
 	}
-*/
+
 
 }//end classe

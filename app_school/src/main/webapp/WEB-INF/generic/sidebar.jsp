@@ -17,12 +17,12 @@
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
-
+	<link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 </head>
 <body>
 
 
-    <nav class="sidebar" id="sidebar">
+	<nav class="sidebar" id="sidebar">
     
       <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
@@ -30,7 +30,7 @@
 
 
 		<div class="sidebar-header">
-			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="${pageContext.request.contextPath}index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
         <ul class="sidebar-links">

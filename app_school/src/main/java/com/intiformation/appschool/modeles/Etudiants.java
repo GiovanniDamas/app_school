@@ -36,6 +36,7 @@ public class Etudiants extends Personnes implements Serializable {
 	
 	@Column(name="DateDeNaissance")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date dateDeNaissance;
 
 	///////// CTOR /////////

@@ -246,5 +246,76 @@ public class CoursDAOImpl implements ICoursDAO{
 		}//end catch
 		
 	}//end afficherCoursParDate
+	
+	
+	/*__________________________________________________________________________________________________________________*/
+	/**
+	 * permet de récup la liste des cours de la bdd d'un enseignant
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Cours> afficherCoursEnseignant(Long pIdEnseignant) {
+		
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<Cours> getCoursByEnseignantQuery = session.createQuery("SELECT c FROM Cours c, "
+																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Matiere m "
+																			+ "WHERE c.matieres.idMatiere = m.idMatiere "
+																			+ "AND link.matiere.idMatiere = m.idMatiere "
+																			+ "AND link.enseignant.idPersonne = :pIdEnseignant");
+			
+			//passage de paramètre
+			getCoursByEnseignantQuery.setParameter("pIdEnseignant", pIdEnseignant);
+			
+			//envoi, execution et récup résultat
+			return getCoursByEnseignantQuery.getResultList();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEnseignant ...");
+			throw e;
+		
+		}//end catch
+	}//end afficherCoursEnseignant
+	
+	
+	/**
+	 * permet de récup la liste des cours de la bdd d'un etudiant
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Cours> afficherCoursEtudiant(Long pIdEtudiant) {
+		
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<Cours> getCoursByEtudiantQuery = session.createQuery("SELECT c FROM Cours c, "
+																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Promotion p "
+																			+ "WHERE c.promotions.idPromotion = p.idPromotion "
+																			+ "AND link.promotion.idPromotion = p.idPromotion "
+																			+ "AND link.etudiant.idPersonne = :pIdEtudiant");
+			
+			//passage de paramètre
+			getCoursByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
+			
+			//envoi, execution et récup résultat
+			return getCoursByEtudiantQuery.getResultList();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEtudiant ...");
+			throw e;
+		
+		}//end catch
+	}//end afficherCoursEtudiant
 
 }//end class

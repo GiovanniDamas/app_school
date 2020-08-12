@@ -171,11 +171,6 @@ public class GestionEtudiantsController {
 
 	}// END SUPPRIMER
 
-	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
-	}// END Init Binder
+
 
 }// END CLASS

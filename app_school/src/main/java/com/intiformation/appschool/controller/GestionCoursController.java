@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.service.ICoursService;
+import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
 import com.intiformation.appschool.validator.CoursValidator;
@@ -37,7 +38,7 @@ import com.intiformation.appschool.validator.CoursValidator;
 @Controller 
 public class GestionCoursController {
 
-	//déclaration du service
+	//déclaration du service coursService
 	@Autowired //injection par modificateur
 	private ICoursService coursService;
 
@@ -49,7 +50,6 @@ public class GestionCoursController {
 		this.coursService = coursService;
 	}
 	
-	// ______________________________________________________________________________________________________________
 	//déclaration du service de matière
 	@Autowired //injection par modificateur
 	private IMatiereService matiereService;
@@ -61,9 +61,7 @@ public class GestionCoursController {
 	public void setMatiereService(IMatiereService matiereService) {
 		this.matiereService = matiereService;
 	}
-	// ______________________________________________________________________________________________________________
 
-	// ______________________________________________________________________________________________________________
 	//déclaration du service de promotion
 	@Autowired //injection par modificateur
 	private IPromotionService promotionService;
@@ -75,9 +73,21 @@ public class GestionCoursController {
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
-	// ______________________________________________________________________________________________________________
 	
-	// ______________________________________________________________________________________________________________
+	/*____________________________________________________________________________________________________________*/
+	//déclaration du service de enseignant
+	@Autowired //injection par modificateur
+	private IEnseignantsService enseignantsService;
+
+	/** 
+	 * setter pour injection spring 
+	 * @param promotionService
+	 */
+	public void setEnseignantsService(IEnseignantsService enseignantsService) {
+		this.enseignantsService = enseignantsService;
+	}
+	/*____________________________________________________________________________________________________________*/
+
 	//déclaration du validateur
 	@Autowired //injection par modificateur
 	private CoursValidator coursValidator;
@@ -89,7 +99,6 @@ public class GestionCoursController {
 	public void setCoursValidator(CoursValidator coursValidator) {
 		this.coursValidator = coursValidator;
 	}
-	// ______________________________________________________________________________________________________________
 	
 	/*__________________________ méthodes gestionnaires _______________*/
 	/**
@@ -106,12 +115,10 @@ public class GestionCoursController {
 		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 		model.addAttribute("attribut_liste_cours", listeCoursBdd);
 		
-		// ______________________________________________________________________________________________________________
-
+		// renvoi de la liste des matières et des promotions vers la vue 
+		model.addAttribute("attribut_enseignant", enseignantsService.findAllEnseignant());
 		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-
-		// ______________________________________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "cours/liste-cours";
@@ -148,13 +155,10 @@ public class GestionCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", cours);
 		
-		// ______________________________________________________________________________________________________________
-
+		// renvoi de la liste des matières et des promotions vers la vue 
 		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
 		
-		// ______________________________________________________________________________________________________________
-
 		//3. renvoi du nom logique de la vue
 		return "cours/formulaire-ajout";
 		
@@ -202,12 +206,9 @@ public class GestionCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", coursToUpdate);
 		
-		// ______________________________________________________________________________________________________________
-
+		// renvoi de la liste des matières et des promotions vers la vue 
 		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-
-		// ______________________________________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "cours/formulaire-modif";
@@ -262,12 +263,9 @@ public class GestionCoursController {
 			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_cours", listeCoursByMatiereBdd);
 			
-			// ______________________________________________________________________________________________________________
-
+			// renvoi de la liste des matières et des promotions vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-
-			// ______________________________________________________________________________________________________________
 			
 			//3. renvoi du nom logique de la vue
 			return "cours/liste-cours";
@@ -296,12 +294,9 @@ public class GestionCoursController {
 			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_cours", listeCoursByPromoBdd);
 			
-			// ______________________________________________________________________________________________________________
-
+			// renvoi de la liste des matières et des promotions vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-
-			// ______________________________________________________________________________________________________________
 			
 			//3. renvoi du nom logique de la vue
 			return "cours/liste-cours";
@@ -339,12 +334,9 @@ public class GestionCoursController {
 			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_cours", listeCoursByDateBdd);
 			
-			// ______________________________________________________________________________________________________________
-
+			// renvoi de la liste des matières et des promotions vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
 			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-
-			// ______________________________________________________________________________________________________________
 			
 			//3. renvoi du nom logique de la vue
 			return "cours/liste-cours";
@@ -358,5 +350,38 @@ public class GestionCoursController {
 		return "cours/liste-cours";
 	
 	}//end afficherListeCoursByDate
+	
+	/*_____________________________________________________________________________________________________*/
+	/**
+	 * permet d'afficher la liste de l'ensemble des cours de la bdd donné par un enseignant
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/cours/recherche-enseignant", method=RequestMethod.GET)
+	public String afficherListeCoursByEns(@RequestParam("id-enseignant") Long pIdEnseignant, ModelMap model) {
+		
+		if (pIdEnseignant == 0) {
+			
+			return "redirect:/cours/liste";
+		
+		} else {
+			
+			//1. récup de la liste des cours de la bdd via le service
+			List<Cours> listeCoursByEnsBdd = coursService.findCoursEnseignant(pIdEnseignant);
+			
+			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_cours", listeCoursByEnsBdd);
+			
+			// renvoi de la liste des matières et des promotions vers la vue 
+			model.addAttribute("attribut_enseignant", enseignantsService.findAllEnseignant());
+			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
+			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+			
+			//3. renvoi du nom logique de la vue
+			return "cours/liste-cours";
+			
+		}
+		
+	}//end afficherListeCoursByPromo
 	
 }//end class

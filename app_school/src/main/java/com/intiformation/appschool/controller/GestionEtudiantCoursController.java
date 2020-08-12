@@ -16,6 +16,8 @@ import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
+import com.intiformation.appschool.validator.CoursValidator;
+import com.intiformation.appschool.validator.EtudiantCoursValidator;
 
 
 
@@ -27,7 +29,7 @@ import com.intiformation.appschool.service.IEtudiantsService;
 @Controller
 public class GestionEtudiantCoursController {
 
-	//déclaration de la couche service
+	//déclaration de la couche service etudiantCoursService
 	@Autowired
 	private IEtudiantCoursService etudiantCoursService;
 
@@ -39,8 +41,7 @@ public class GestionEtudiantCoursController {
 		this.etudiantCoursService = etudiantCoursService;
 	}
 	
-	//____________________________________________________________________________________________________
-	//déclaration du service
+	//déclaration du service coursService
 	@Autowired //injection par modificateur
 	private ICoursService coursService;
 
@@ -52,7 +53,7 @@ public class GestionEtudiantCoursController {
 		this.coursService = coursService;
 	}
 	
-	//déclaration du service
+	//déclaration du service etudiantsService
 	@Autowired //injection par modificateur
 	private IEtudiantsService etudiantsService;
 
@@ -63,8 +64,18 @@ public class GestionEtudiantCoursController {
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
 	}
-	//_____________________________________________________________________________________________________
+		
+	//déclaration du validateur
+	@Autowired //injection par modificateur
+	private EtudiantCoursValidator etudiantCoursValidator;
 	
+	/** 
+	 * setter pour injection spring 
+	 * @param coursValidator
+	 */
+	public void setEtudiantCoursValidator(EtudiantCoursValidator etudiantCoursValidator) {
+		this.etudiantCoursValidator = etudiantCoursValidator;
+	}
 	
 	/*__________________________ méthodes gestionnaires _______________*/
 	/**
@@ -81,10 +92,9 @@ public class GestionEtudiantCoursController {
 		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 		model.addAttribute("attribut_liste_presence", listePresenceBdd);
 		
-		//_______________________________________________________________________________________
+		// renvoi de la liste des cours et des étudiants vers la vue 
 		model.addAttribute("attribut_cours", coursService.findAllCours());
 		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
-		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/liste-presence";
@@ -121,10 +131,9 @@ public class GestionEtudiantCoursController {
 		//2. renvoi de l'étudiantCours vers la vue via l'objet model
 		model.addAttribute("attribut_etudiant_cours", etudiantCours);
 		
-		//_______________________________________________________________________________________
+		// renvoi de la liste des cours et des étudiants vers la vue 
 		model.addAttribute("attribut_cours", coursService.findAllCours());
 		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
-		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/formulaire-ajout-presence";
@@ -139,11 +148,23 @@ public class GestionEtudiantCoursController {
 	@RequestMapping(value="/etudiants-cours/ajouter", method=RequestMethod.POST)
 	public String ajouterEtudiantCoursBdd(@ModelAttribute("attribut_etudiant_cours") EtudiantCours pEtudiantCours, BindingResult result) {
 		
-			//1. ajout de l'étudiant cours dans la bdd
+		//1. application du validateur sur l'objet pEtudiantCours
+		etudiantCoursValidator.validate(pEtudiantCours, result);
+		
+		if (result.hasErrors()) {
+			
+			//2.a renvoi vers le formulaire
+			return "etudiants-cours/formulaire-ajout-presence";
+		
+		}else {
+			
+			//2.b ajout de l'étudiant cours dans la bdd	
 			etudiantCoursService.ajouterEtudiantCours(pEtudiantCours);
 			
 			//3. renvoi du nom logique de la vue
-			return "redirect:/etudiants-cours/liste";		
+			return "redirect:/etudiants-cours/liste";	
+			
+		}//end else		
 		
 	}//end ajouterEtudiantCoursBdd
 	
@@ -161,10 +182,9 @@ public class GestionEtudiantCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_etudiant_cours", etudiantCoursToUpdate);
 		
-		//_______________________________________________________________________________________
+		// renvoi de la liste des cours et des étudiants vers la vue 
 		model.addAttribute("attribut_cours", coursService.findAllCours());
 		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
-		//_______________________________________________________________________________________
 		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/formulaire-modif-presence";
@@ -179,13 +199,23 @@ public class GestionEtudiantCoursController {
 	@RequestMapping(value="/etudiants-cours/modifier", method=RequestMethod.POST)
 	public String modifierEtudiantCoursBdd(@ModelAttribute("attribut_etudiant_cours") EtudiantCours pEtudiantCours, BindingResult result) {
 		
-			//1. modif de l'étudiant cours dans la bdd	
+		//1. application du validateur sur l'objet pEtudiantCours
+		etudiantCoursValidator.validate(pEtudiantCours, result);
+		
+		if (result.hasErrors()) {
+			
+			//2.a renvoi vers le formulaire
+			return "etudiants-cours/formulaire-modif-presence";
+		
+		}else {
+			
+			//2.b modif de l'étudiant cours dans la bdd	
 			etudiantCoursService.modifierEtudiantCours(pEtudiantCours);
 			
-			System.out.println("cours : " + pEtudiantCours.getCours());
+			//3. renvoi du nom logique de la vue
+			return "redirect:/etudiants-cours/liste";	
 			
-			//2. renvoi du nom logique de la vue
-			return "redirect:/etudiants-cours/liste";		
+		}//end else			
 		
 	}//end modifierEtudiantCoursBdd
 	
@@ -209,10 +239,9 @@ public class GestionEtudiantCoursController {
 			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByEtudiantBdd);
 				
-			//_______________________________________________________________________________________
+			// renvoi de la liste des cours et des étudiants vers la vue 
 			model.addAttribute("attribut_cours", coursService.findAllCours());
 			model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
-			//_______________________________________________________________________________________
 			
 			//3. renvoi du nom logique de la vue
 			return "etudiants-cours/liste-presence";			
@@ -241,10 +270,9 @@ public class GestionEtudiantCoursController {
 			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByCoursBdd);
 			
-			//_______________________________________________________________________________________
+			// renvoi de la liste des cours et des étudiants vers la vue 
 			model.addAttribute("attribut_cours", coursService.findAllCours());
 			model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
-			//_______________________________________________________________________________________
 			
 			//3. renvoi du nom logique de la vue
 			return "etudiants-cours/liste-presence";

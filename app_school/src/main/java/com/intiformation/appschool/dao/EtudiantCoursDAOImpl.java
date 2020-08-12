@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
 
 /**
@@ -218,5 +219,43 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		}//end catch
 	
 	}//end afficherEtudiantCoursByEtudiant
+	
+	/*________________________________________________________________________________________________________________________*/
+	
+	/**
+	 * permet de récup la liste des absences de la bdd liées à un enseignant
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EtudiantCours> afficherAbsenceEnseignant(Long pIdEnseignant) {
+		
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec, "
+																			+ "Cours c, "
+																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Matiere m "
+																			+ "WHERE ec.cours.idCours = c.idCours "
+																			+ "AND c.matieres.idMatiere = m.idMatiere "
+																			+ "AND link.matiere.idMatiere = m.idMatiere "
+																			+ "AND link.enseignant.idPersonne = :pIdEnseignant");
+			
+			//passage de paramètre
+			getAbsenceByEnseignantQuery.setParameter("pIdEnseignant", pIdEnseignant);
+			
+			//envoi, execution et récup résultat
+			return getAbsenceByEnseignantQuery.getResultList();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherAbsenceEnseignant ...");
+			throw e;
+		
+		}//end catch
+	}//end afficherAbsenceEnseignant
 
 }//end class

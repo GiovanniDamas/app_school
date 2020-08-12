@@ -3,15 +3,8 @@ h1 {
 }
 
 .content{
-	margin-top : 50px;
 	margin-right: 20px;
 	margin-left: 50px;
-	padding-left: 200px;
-}
-
-.recherche{
-	float: right;
-	margin-right: 20px;
 }
 
 .erreurs_validation{

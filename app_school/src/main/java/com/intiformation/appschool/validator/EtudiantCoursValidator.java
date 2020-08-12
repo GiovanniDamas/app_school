@@ -33,10 +33,10 @@ public class EtudiantCoursValidator implements Validator {
 	public void validate(Object objetAValider, Errors errors) {
 		
 		//1. validation du champ 'etudiant'
-		//ValidationUtils.rejectIfEmptyOrWhitespace(errors, "etudiant.idEtudiant", "required.etudiant", "le champ est obligatoire");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "etudiant.idPersonne", "required.etudiant", "le champ est obligatoire");
 	
 		//2. validation du champ 'cours'
-		//ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cours.idCours", "required.cours", "le champ est obligatoire");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cours.idCours", "required.cours", "le champ est obligatoire");
 		
 	}//end validate
 }//end class

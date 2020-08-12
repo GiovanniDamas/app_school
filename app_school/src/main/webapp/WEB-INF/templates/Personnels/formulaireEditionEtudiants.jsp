@@ -49,7 +49,7 @@
 				</tr>
 				<tr>
 					<td><form:label path="dateDeNaissance">Date de naissance :</form:label></td>
-					<td><form:input type="DATE" path="dateDeNaissance" /></td>
+					<td><form:input type="date" path="dateDeNaissance" /></td>
 					<td><form:errors path="dateDeNaissance"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>

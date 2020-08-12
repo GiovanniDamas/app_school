@@ -75,6 +75,28 @@
 	 
 	 --%>
 	 
+	 <%-- ================== TEST COURS D'UN ENSEIGNANT ======================================== --%>
+	 
+	 	 <br/><br/><br/><br/>
+	 
+	 <div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-enseignant">
+	 	 <label for="recherche-enseignant">Rechercher cours d'un enseignant : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-enseignant" name="id-enseignant">
+	 		<option value="0" label="Afficher tous les cours">
+	 		<c:forEach items="${attribut_enseignant}" var="ens">
+	 			 <option value="${ens.idPersonne}" label="${ens.nom}"/>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+	 
+	 	 <br/><br/><br/><br/>
+	 
+	 <%-- ================================================================================================== --%>
+	 
+	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-matiere">
 	 	 <label for="recherche-matiere">Rechercher par matière : </label>	 	
@@ -124,8 +146,8 @@
     			<th scope="col">Date</th>
       			<th scope="col">Durée</th>
       			<th scope="col">Description</th>
-      			<th scope="col">Id Matière</th>
-     			<th scope="col">Id Promotion</th>
+      			<th scope="col">Matière</th>
+     			<th scope="col">Promotion</th>
       			<th scope="col">Modifier</th>
       			<th scope="col">Supprimer</th>
     		</tr>

@@ -33,9 +33,10 @@
 			<tr>
 				<c:if test="${idPersonne} != 0"></c:if>
 				<td><form:hidden path="idPersonne" /></td>
+				<td><form:hidden path="photo" /></td>
+
 
 			</tr>
-
 
 			<table width="60%">
 				<tr>
@@ -52,7 +53,7 @@
 				</tr>
 				<tr>
 					<td><form:label path="dateDeNaissance">Date de naissance :</form:label></td>
-					<td><form:input type="DATE" path="dateDeNaissance" /></td>
+					<td><form:input type="text" path="dateDeNaissance" placeholder="dd/mm/yyyy"/></td>
 					<td><form:errors path="dateDeNaissance"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
@@ -75,15 +76,15 @@
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
 				<tr>
-					<td><input type="file" name="photo" required="" /></td>
-					<td><input type="submit" value="Upload" /></td>
-					<td><form:errors path="photo"
-							cssStyle="color:red; font-style:italic;" /></td>
+					<td><form:label path="photo" />Photo</td>
+					<td><input  type="file" name="file" /></td>
+
 				</tr>
 
 				<tr>
 					<td><input type="submit" value="Ajouter" /></td>
 				</tr>
+
 				<tr>
 					<c:if test="${idPersonne} != 0"></c:if>
 					<td><input type="submit" value="Modifier" /></td>

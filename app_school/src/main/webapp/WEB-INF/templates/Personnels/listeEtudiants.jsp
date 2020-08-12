@@ -12,16 +12,16 @@
 
 <title>Page gestion des Etudiants</title>
 
-<link
-	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-	rel="stylesheet">
+<link	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
 
 
 
 </head>
 <body>
 
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include> 
 
 	<div style="width: 70%; float: right; margin-right: 10%">
 

@@ -12,22 +12,40 @@
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
 
+<link href="${pageContext.request.contextPath}/resources/styles/index.css"
+    rel="stylesheet">
+    
+        <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
 </head>
 <body>
 	
-	
+	<%--   
 	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
 	
 	<a href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">lien test liste enseignants</a>
 	
 	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
-
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	--%>
 	
-		<h1>Hello !</h1>	
-		
-	<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
 
 
+	<div>
+
+     	<!--Put some content here-->
+
+		<h1>Hello world !!</h1>
+ 	</div>
+ 
+ 
+
+  <div class="clear" style="clear:both"></div>
+ <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
+
+    
+    
 </body>
 </html>

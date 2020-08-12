@@ -4,7 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%-- 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+--%>
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/styles/header.css"
     rel="stylesheet">
@@ -24,17 +26,19 @@
 		Connexion
 	</a>
 </div>
-
-<aside class="col-12 col-md-2 p-0 bg-light" id="sidebar">
+<%-- 
+<aside class="col-12 col-md-2 p-0 bg-light" id="sidebar" style="margin-bottom:50px">
 
 	<div id="navig" class="col-lg-3">
 	
 	<nav class="navbar navbar-expand navbar-light flex-md-column flex-row align-items-start">
-	  <a class="navbar-brand" href="#" id="accueil">
-	  	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house navicon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-	  		<path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-	  		<path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
-		</svg>Accueil</a>
+		<a class="navbar-brand" href="#" id="accueil">
+		  	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house navicon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		  		<path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+		  		<path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+			</svg>
+			Accueil
+		</a>
 	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="margin-bottom:50px">
 	  <!-- <a class="navbar-brand" href="#">Navbar</a>-->
@@ -55,7 +59,7 @@
 	        <a class="nav-link" href="#">Promotion</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Matière</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
 	      </li>
 	      <li class="nav-item navli">
 	        <a class="nav-link" href="${pageContext.request.contextPath}/cours/liste">Cours</a>
@@ -64,7 +68,7 @@
 	        <a class="nav-link" href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="#">Aide</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
 	      </li>  
 	      <li id="copyright">
 	         <p>© Copyright</p>
@@ -77,7 +81,7 @@
 	</div>
 
  </aside>
-
+--%>
 
 </body>
 </html>

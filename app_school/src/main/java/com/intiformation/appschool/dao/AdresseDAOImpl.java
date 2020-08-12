@@ -157,7 +157,9 @@ public class AdresseDAOImpl implements IAdresseDAO {
 			Session session = sessionFactory.getCurrentSession();
 
 			// 2. Définition de la requete HQL à envoyer
-			Query query = session.createQuery("SELECT P.adresses FROM Personnes P");
+			Query query = session.createQuery("FROM adresses A WHERE A.personne_id = :personne_id");
+			
+			query.setParameter("personne_id", pIdPersonne);
 
 			// 3. Envoi, exécution, résultat
 			List<Adresse> listAdresseBDD = query.list();

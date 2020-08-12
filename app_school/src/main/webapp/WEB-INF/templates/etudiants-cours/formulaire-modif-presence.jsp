@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,8 +14,13 @@
 </head>
 <body>
 
+	<!-- =========================================================== -->
+	<!-- ======== Header (navabar) ================================= -->
+	<!-- =========================================================== -->
+	
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
+	
 	<%-- ====================================================== --%>
 	<%-- FORMULAIRE POUR MODIFIER LA PRESENCE D UN ETUDIANT A COURS --%>
 	<%-- ====================================================== --%>
@@ -52,14 +57,14 @@
 			</div>
 			
 			<div class="form-group">
-			  	<form:label path="etudiant.idEtudiant">Etudiant</form:label>
-         		<form:select path="etudiant.idEtudiant" class="form-control">
+			  	<form:label path="etudiant.idPersonne">Etudiant</form:label>
+         		<form:select path="etudiant.idPersonne" class="form-control">
     				<option value="">--Sélectionner l'étudiant</option>
     					<c:forEach var="etudiant" items="${attribut_etudiants}">
-        					<form:option value="${etudiant.idEtudiant}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></form:option>
+        					<form:option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></form:option>
     					</c:forEach>
 				</form:select>			
-         		<form:errors path="etudiant.idEtudiant" cssStyle="color:red; font-style:italic;"/>
+         		<form:errors path="etudiant.idPersonne" cssStyle="color:red; font-style:italic;"/>
 			</div>
 			
 			<div class="form-group">
@@ -82,5 +87,11 @@
 		<br/><br/><br/>
 		
 </div>	
+
+	<!-- =========================================================== -->
+	<!-- ======== FOOTER  ========================================== -->
+	<!-- =========================================================== -->
+	
+	<%@include file="/WEB-INF/generic/footer.jsp" %>
 </body>
 </html>

@@ -205,7 +205,7 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 			Query<EtudiantCours> getByEtudiantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.etudiant.idPersonne = :pIdEtudiant");
 			
 			//passage de paramètre
-			getByEtudiantQuery.setParameter("pEtudiant", pIdEtudiant);
+			getByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
 			
 			//envoi, execution et récup résultat
 			return getByEtudiantQuery.getResultList();			

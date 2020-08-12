@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -16,8 +16,13 @@
 </head>
 <body>
 
+	<!-- =========================================================== -->
+	<!-- ======== Header (navabar) ================================= -->
+	<!-- =========================================================== -->
+	
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
+	
 	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
 	<%-- ++ AFFICHAGE LISTE DE PRESENCE DES ETUDIANTS AUX COURS DE LA BDD ++ --%>
 	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
@@ -84,7 +89,7 @@
 
 	 			<td>${presence.motif}</td>
 
-	 			<td>${presence.etudiant}</td>
+	 			<td>${presence.etudiant.nom} ${presence.etudiant.prenom}</td>
 
 	 			<td>${presence.cours.libelle}</td>
 
@@ -115,5 +120,13 @@
 	<%-- lien pour ajouter une ligne dans la bdd : au click on appelle le controller GestionEtudiantCoursController et sa méthode chargerEtudiantCoursBdd --%>
 	<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-ajout-presence">Ajouter absence étudiant</a>
 </div>
+
+<br/><br/><br/>
+	
+	<!-- =========================================================== -->
+	<!-- ======== FOOTER  ========================================== -->
+	<!-- =========================================================== -->
+	
+	<%@include file="/WEB-INF/generic/footer.jsp" %>
 </body>
 </html>

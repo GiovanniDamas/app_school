@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
     
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -16,7 +16,12 @@
 </head>
 <body>
 
+	<!-- =========================================================== -->
+	<!-- ======== Header (navabar) ================================= -->
+	<!-- =========================================================== -->
+	
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
 
 	<%-- ====================================================== --%>
 	<%-- ========= FORMULAIRE POUR AJOUTER UN COURS =========== --%>
@@ -98,5 +103,11 @@
 	<br/><br/><br/>
 	
 	</div>
+	
+	<!-- =========================================================== -->
+	<!-- ======== FOOTER  ========================================== -->
+	<!-- =========================================================== -->
+	
+	<%@include file="/WEB-INF/generic/footer.jsp" %>
 </body>
 </html>

@@ -5,7 +5,7 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-08-12T11:48:47Z</updated>
+  <updated>2020-08-12T11:48:00Z</updated>
   <entry>
     <title>Spring Data Neumann SR3 released</title>
     <link rel="alternate" href="https://spring.io/blog/2020/08/12/spring-data-neumann-sr3-released" />
@@ -14,9 +14,9 @@
       <name>Mark Paluch</name>
     </author>
     <id>tag:spring.io,2020-08-12:4164</id>
-    <updated>2020-08-12T11:48:47Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the Spring Data team I’m pleased to announce the availability of the third service release of the Spring Data release train Neumann. &lt;code&gt;Neumann SR3&lt;/code&gt; ships with &lt;a href="https://jira.spring.io/issues/?filter=17036"&gt;34 tickets fixed&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This release ships with mostly bugfixes and dependency upgrades and will be picked up by Spring Boot 2.3.3 in the next days.&lt;/p&gt;
+    <updated>2020-08-12T11:48:00Z</updated>
+    <content type="html">&lt;p&gt;On behalf of the Spring Data team, I’m pleased to announce the availability of the third service release of the Spring Data Neumann release train. &lt;code&gt;Neumann SR3&lt;/code&gt; ships with &lt;a href="https://jira.spring.io/issues/?filter=17036"&gt;34 tickets fixed&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This release ships with mostly bug fixes and dependency upgrades and will be picked up by Spring Boot 2.3.3 in the coming days.&lt;/p&gt;
 &lt;p&gt;Here are the detailed links to each individual artifact and the reference documentation:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Spring Data Commons 2.3.3 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-commons/2.3.3.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.3.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.3.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/commons/docs/2.3.3.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;

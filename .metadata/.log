@@ -9874,3 +9874,6 @@ Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Could not find
 
 !ENTRY org.eclipse.jface.text 2 0 2020-08-12 13:58:15.065
 !MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.wst.server.core 4 0 2020-08-12 18:05:54.252
+!MESSAGE Server Tomcat v8.5 Server at localhost was unable to start within 200 seconds. If the server requires more time, try increasing the timeout in the server editor.

@@ -163,8 +163,6 @@
 			<version>1.6.1</version>
 		</dependency>
 
-<<<<<<< HEAD
-=======
 		<!-- Apache Commons Upload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -179,7 +177,6 @@
 			<version>1.3.2</version>
 		</dependency>
 
->>>>>>> c5fb3dffac9b75dadcaeb3b28795192c74ba28b6
 
 	</dependencies>
 

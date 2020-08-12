@@ -8,12 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mysql.jdbc.Blob;
 
 /**
  * Classe fille héritant de la classe Personne
@@ -29,14 +34,17 @@ public class Etudiants extends Personnes implements Serializable {
 	//@Id
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_etudiant")
-	Long idEtudiant;
+	private Long idEtudiant;
+	
 	
 	@Column(name="Photo")
-	String photo;
+	private String photo;
+	
 	
 	@Column(name="DateDeNaissance")
 	@Temporal(TemporalType.DATE)
-	Date dateDeNaissance;
+	//@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date dateDeNaissance;
 
 	///////// CTOR /////////
 	/**
@@ -85,6 +93,7 @@ public class Etudiants extends Personnes implements Serializable {
 	public void setIdEtudiant(Long idEtudiant) {
 		this.idEtudiant = idEtudiant;
 	}
+
 	
 	
 

@@ -8,11 +8,16 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 
+
+
 	<!-- ====================================================== -->
 	<!-- ======== Emplacement des fichiers propriétés ========= -->
 	<!-- ====================================================== -->
 	<context:property-placeholder
 		location="classpath:db.properties" />
+
+	<context:property-placeholder
+		location="classpath:application.properties" />
 
 
 	<!-- ====================================================== -->
@@ -77,6 +82,13 @@
 	</bean>
 
 
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="10000000" />
+	</bean>
+
 	<!-- ====================================================== -->
 	<!-- === Configuration des annotations des transactions === -->
 	<!-- ====================================================== -->
@@ -89,7 +101,7 @@
 		transaction-manager="transactionManagerBean" />
 
 
-		<!-- ====================================================== -->
+	<!-- ====================================================== -->
 	<!-- ========== Déclaration bean gestionnaire des tx ====== -->
 	<!-- ====================================================== -->
 	<!-- - va gérer pour nous les tx -->
@@ -110,7 +122,7 @@
 	<!-- Config des annotations -->
 
 	<context:annotation-config />
-	
+
 	<!-- Activation de la detection des beans de spring ex @Component, @Repository -->
 
 	<context:component-scan

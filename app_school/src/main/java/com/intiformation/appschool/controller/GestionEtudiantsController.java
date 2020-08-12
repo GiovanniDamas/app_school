@@ -40,7 +40,7 @@ import com.intiformation.appschool.service.IEtudiantsService;
 @Controller
 public class GestionEtudiantsController {
 
-	private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images/";
+	private static final String UPLOAD_DIRECTORY = "/Users/marle/Desktop/Marlene/Formation_INTI_JAVA/Projet_groupe_app_school/app_school/app_school/src/main/webapp/resources/Images/";
 
 	private Etudiants etudiants;
 	// Déclaration de la couche service Etudiants
@@ -236,17 +236,6 @@ public class GestionEtudiantsController {
 
 	}// END SUPPRIMER
 
-	/**
-	 * Méthode pour la gestion de la date
-	 * @param request
-	 * @param binder
-	 */
-	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
-	}// END Init Binder
 
 	
 }// END CLASS

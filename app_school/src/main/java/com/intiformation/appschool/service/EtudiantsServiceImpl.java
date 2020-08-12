@@ -40,12 +40,12 @@ public class EtudiantsServiceImpl implements IEtudiantsService {
 	}
 
 	@Override
-	public void suppEtudiant(int pIdEtudiant) {
+	public void suppEtudiant(Long pIdEtudiant) {
 		etudiantsDAO.deleteEtudiant(pIdEtudiant);
 	}
 
 	@Override
-	public Etudiants findEtudiantById(int pIdEtudiant) {
+	public Etudiants findEtudiantById(Long pIdEtudiant) {
 		return etudiantsDAO.getEtudiantById(pIdEtudiant);
 	}
 

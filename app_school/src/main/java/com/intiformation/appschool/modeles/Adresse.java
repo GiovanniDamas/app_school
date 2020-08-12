@@ -40,11 +40,9 @@ public class Adresse implements Serializable  {
 	@Column(name="ville")
 	private String ville;
 
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "personne_id", referencedColumnName="id_personne")
-	
-	private Personnes personne;
+	private Personnes proprio;
 	
 	
 	/*_____________________ctors_________________________*/
@@ -58,7 +56,7 @@ public class Adresse implements Serializable  {
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
-		this.personne = personne;
+		this.proprio = personne;
 	}
 
 	public Adresse(int numero, String rue, String codePostal, String ville, Personnes personne) {
@@ -67,7 +65,7 @@ public class Adresse implements Serializable  {
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
-		this.personne = personne;
+		this.proprio = personne;
 	}
 
 	
@@ -114,11 +112,11 @@ public class Adresse implements Serializable  {
 	}
 
 	public Personnes getPersonne() {
-		return personne;
+		return proprio;
 	}
 
 	public void setPersonne(Personnes personne) {
-		this.personne = personne;
+		this.proprio = personne;
 	}
 	
 	

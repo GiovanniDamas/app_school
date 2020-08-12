@@ -16,8 +16,6 @@ import javax.persistence.Table;
 
 
 
-
-
 /**
  * Entité mère des classes etudiant, enseignant, administrateur </br>
  * Classe mappé par rapport à la table Personne </br>
@@ -27,33 +25,31 @@ import javax.persistence.Table;
 @Entity
 @Table(name="personnes")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Personnes implements Serializable{
+public class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE) // changement à .TABLE
-	@Column(name = "id_personne")
-	Long idPersonne;
-
-	@Column(name = "Identifiant")
-	String identifiant;
-
-	@Column(name = "MotDePasse")
-	String motDePasse;
-
-	@Column(name = "Nom")
-	String nom;
-
-	@Column(name = "Prenom")
-	String prenom;
-
-	@Column(name = "Email")
-	String email;
-
-	// _________________ ASSOCIATIONS ___________________ //
-
+	@GeneratedValue(strategy=GenerationType.TABLE)
+	@Column(name="id_personne")
+	private Long idPersonne;
 	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
+	@Column(name="identifiant")
+	private String identifiant;
+	
+	@Column(name="mot_de_passe")
+	private String motDePasse;
+	
+	@Column(name="nom")
+	private String nom;
+	
+	@Column(name="prenom")
+	private String prenom; 
+	
+	@Column(name="email")
+	private String email;	
+
+
+	@OneToMany(cascade= CascadeType.ALL, mappedBy="proprio")
 	private List<Adresse> adresses;
 
 
@@ -84,12 +80,12 @@ public abstract class Personnes implements Serializable{
 
 	
 	////// GETTERS / SETTERS //////////
-	
-	public long getIdPersonne() {
+
+	public Long getIdPersonne() {
 		return idPersonne;
 	}
 
-	public void setIdPersonne(long idPersonne) {
+	public void setIdPersonne(Long idPersonne) {
 		this.idPersonne = idPersonne;
 	}
 

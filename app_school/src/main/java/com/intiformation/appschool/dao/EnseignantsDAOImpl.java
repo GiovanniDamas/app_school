@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +68,7 @@ public class EnseignantsDAOImpl implements IEnseignantsDAO {
 	}// END UPDATE
 
 	@Override
-	public void deleteEnseignant(int pIdEnseignant) {
+	public void deleteEnseignant(Long pIdEnseignant) {
 		try {
 			// recup de la session
 
@@ -87,7 +88,7 @@ public class EnseignantsDAOImpl implements IEnseignantsDAO {
 	}// END DELETE
 
 	@Override
-	public Enseignants getEnseignantById(int pIdEnseignant) {
+	public Enseignants getEnseignantById(Long pIdEnseignant) {
 
 		try {
 			// recup de la session hibernate via la factory
@@ -107,14 +108,14 @@ public class EnseignantsDAOImpl implements IEnseignantsDAO {
 
 	@Override
 	public List<Enseignants> getAllEnseignant() {
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+		
 		try {
 
-			// recup de la session hibernate via la factory
-			Session session = this.sessionFactory.getCurrentSession();
+			Query getAllEnseignant = session.createQuery("From Enseignants");
 
-			List<Enseignants> listeEnseignants = session.createQuery("from enseignants").getResultList();
-
-			return listeEnseignants;
+			return getAllEnseignant.list();
 
 		} catch (Exception e) {
 			System.out.println("... Erreur lors de la récupération de la liste des Enseignants dans la DAO ...");

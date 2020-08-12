@@ -23,6 +23,24 @@
 1596543255994	Delete elements
 1596543489643	Delete element
 1596629644403	Delete element
+<<<<<<< HEAD
+1596633420292	Delete element
+1596633472126	Delete elements
+1596633477527	Delete elements
+1596633484041	Delete element
+1596633487856	Delete element
+1596633500460	Delete elements
+1596633513594	Delete elements
+1596633521059	Delete elements
+1596700243284	Rename resource 'FormulaireEditionEtudiants.jsp'
+1596707481274	Delete element
+1596707494674	Delete elements
+1596707783421	Delete element
+1596707786211	Delete element
+1596791726533	Copy files
+1596791770897	Copy files
+=======
 1596719811589	Move file
 1596723681271	Rename resource 'fomulaire-modif.jsp'
 1596724960416	Rename resource 'formulaire-ajout.jsp'
+>>>>>>> master

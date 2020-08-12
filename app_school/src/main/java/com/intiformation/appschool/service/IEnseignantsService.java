@@ -27,14 +27,14 @@ public interface IEnseignantsService {
 	 * Méthode pour supprimer un enseignant à partir de son ID
 	 * @param pIdEnseignant
 	 */
-	public void suppEnseignant(int pIdEnseignant);
+	public void suppEnseignant(Long pIdEnseignant);
 	
 	/**
 	 * Méthode pour récupérer un enseignant via son ID
 	 * @param pIdEnseignant
 	 * @return
 	 */
-	public Enseignants findEnseignantById(int pIdEnseignant);
+	public Enseignants findEnseignantById(Long pIdEnseignant);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les enseignants

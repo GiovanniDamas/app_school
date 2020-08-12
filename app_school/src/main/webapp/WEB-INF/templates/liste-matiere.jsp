@@ -11,11 +11,20 @@
 <link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
     rel="stylesheet">
 
-<title>Insert title here</title>
+<title>Liste des matières</title>
 </head>
 <body>
-
-	<%@include file="../generic/header.jsp" %>
+	
+	<!-- =========================================================== -->
+	<!-- ======== Header (navabar) ================================= -->
+	<!-- =========================================================== -->
+	
+	
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include> 
+	<!-- =========================================================== -->
+	<!-- ======== Content ========================================== -->
+	<!-- =========================================================== -->
 	
 	<h1 style="margin-left:20px">
 		<u>Liste des matières:</u>
@@ -69,5 +78,12 @@
 	<button type="button" class="btn btn-danger" style="margin-left:20px">Hello</button>
 
 
+	<!-- =========================================================== -->
+	<!-- ======== FOOTER  ========================================== -->
+	<!-- =========================================================== -->
+	
+	<%@include file="../generic/footer.jsp" %>
+	
+	
 </body>
 </html>

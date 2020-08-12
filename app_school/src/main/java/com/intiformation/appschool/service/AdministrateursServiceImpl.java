@@ -2,6 +2,7 @@ package com.intiformation.appschool.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intiformation.appschool.dao.IAdministrateursDAO;
@@ -17,6 +18,7 @@ import com.intiformation.appschool.modeles.Administrateurs;
 public class AdministrateursServiceImpl implements IAdministrateursService{
 	
 	//Déclaration de la couche DAO 
+	@Autowired
 	private IAdministrateursDAO adminDAO;
 	
 	/**
@@ -38,12 +40,12 @@ public class AdministrateursServiceImpl implements IAdministrateursService{
 	}
 
 	@Override
-	public void suppAdministrateur(int pIdAdministrateur) {
+	public void suppAdministrateur(Long pIdAdministrateur) {
 		adminDAO.deleteAdministrateur(pIdAdministrateur);
 	}
 
 	@Override
-	public Administrateurs findAdministrateurById(int pIdAdministrateur) {
+	public Administrateurs findAdministrateurById(Long pIdAdministrateur) {
 		return adminDAO.getAdministrateurById(pIdAdministrateur);
 	}
 

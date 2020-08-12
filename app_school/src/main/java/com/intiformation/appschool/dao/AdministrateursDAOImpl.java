@@ -1,10 +1,11 @@
-   package com.intiformation.appschool.dao;
+package com.intiformation.appschool.dao;
 
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class AdministrateursDAOImpl implements IAdministrateursDAO {
 	}// END UPDATE
 
 	@Override
-	public void deleteAdministrateur(int pIdAdministrateur) {
+	public void deleteAdministrateur(Long pIdAdministrateur) {
 
 		try {
 			// recup de la session
@@ -90,7 +91,7 @@ public class AdministrateursDAOImpl implements IAdministrateursDAO {
 	}// END DETELE
 
 	@Override
-	public Administrateurs getAdministrateurById(int pIdAdministrateur) {
+	public Administrateurs getAdministrateurById(Long pIdAdministrateur) {
 
 		try {
 			// recup de la session
@@ -111,14 +112,15 @@ public class AdministrateursDAOImpl implements IAdministrateursDAO {
 	@Override
 	public List<Administrateurs> getAllAdministrateur() {
 
+		// recup de la session
+
+		Session session = sessionFactory.getCurrentSession();
+
 		try {
-			// recup de la session
+			
+			Query getAllAdmin = session.createQuery("From Administrateurs");
 
-			Session session = sessionFactory.getCurrentSession();
-
-			List<Administrateurs> listeAdministrateurs = session.createQuery("from administrateurs").getResultList();
-
-			return listeAdministrateurs;
+			return getAllAdmin.list();
 
 		} catch (HibernateException e) {
 

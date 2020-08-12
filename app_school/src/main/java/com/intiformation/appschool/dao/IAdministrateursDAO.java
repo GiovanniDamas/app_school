@@ -28,14 +28,14 @@ public interface IAdministrateursDAO {
 	 * Méthode pour supprimer un administrateur à partir de son ID
 	 * @param pIdAdministrateur
 	 */
-	public void deleteAdministrateur(int pIdAdministrateur);
+	public void deleteAdministrateur(Long pIdAdministrateur);
 	
 	/**
 	 * Méthode pour récupérer un administrateur via son ID
 	 * @param pIdAdministrateur
 	 * @return
 	 */
-	public Administrateurs getAdministrateurById(int pIdAdministrateur);
+	public Administrateurs getAdministrateurById(Long pIdAdministrateur);
 	
 	/**
 	 * Méthode permettant la récupération de la liste de tous les administrateurs </br>

@@ -56,20 +56,14 @@
 				</tr>
 
 
-
-
 				<tr>
-					<td><form:select path="enseignant">
-
+					<td><form:select path="enseignant.idPersonne">
 							<c:forEach items="${attribut_liste_enseignants}" var="ens">
 								<form:option value="${ens.idPersonne}">
 									<c:out value="${ens.nom} ${ens.prenom}" />
 								</form:option>
 							</c:forEach>
-
 						</form:select></td>
-
-
 				</tr>
 
 				<c:if test="${promotion.idPromotion == null}">

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -130,10 +131,9 @@ public class GestionPromotionController {
 
 		if (pIdPromotion == 0) {
 
-			Promotion promotion = new Promotion();
+			//Promotion promotion = new Promotion();
 			
 			EnseignantMatierePromotionLink enseignantMatierePromotionLink =new EnseignantMatierePromotionLink();
-			
 			
 			
 			// ajout liste des enseignants
@@ -143,7 +143,7 @@ public class GestionPromotionController {
 			
 
 			Map<String, Object> dataCommand = new HashMap<>();
-			dataCommand.put("promotionCommand", promotion);
+			//dataCommand.put("promotionCommand", promotion);
 			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
 			String viewName = "Promotions/promotion-formulaire";
@@ -173,17 +173,25 @@ public class GestionPromotionController {
 	 * @return : le nom logique de la vue
 	 */
 	@RequestMapping(value = "/promotion/add", method = RequestMethod.POST)
-	public String ajouterPromotionDB(@ModelAttribute("attribut_link") EnseignantMatierePromotionLink pLink, ModelMap model) {
+	public String ajouterPromotionDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink, ModelMap model) {
 
 		if (pLink.getPromotion().getIdPromotion() == null) {
 
 			// Ajout etudiant via couche service
 
 			promotionService.ajouterPromotion(pLink.getPromotion());
-
+			
+			System.out.println("Id Promotion" + pLink.getPromotion().getIdPromotion());
+			System.out.println("Id Prof" + pLink.getEnseignant().getIdPersonne());
+			
+			enseignantMatierePromotionLinkService.ajouterLink(pLink);
+		
+			
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
+			
+			
 
 			return "Promotions/liste-promotion";
 

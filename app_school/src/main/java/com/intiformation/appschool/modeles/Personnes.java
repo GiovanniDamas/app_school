@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="personnes")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Personnes implements Serializable{
+public class Personnes implements Serializable{
 	
 	////////// PROPS ////////
 	@Id
@@ -49,11 +49,7 @@ public abstract class Personnes implements Serializable{
 	private String email;	
 
 
-	// _________________ ASSOCIATIONS ___________________ //
-
-	
-	@OneToMany(cascade= CascadeType.ALL, mappedBy="personne")
-	@Column(name="adresse")
+	@OneToMany(cascade= CascadeType.ALL, mappedBy="proprio")
 	private List<Adresse> adresses;
 
 

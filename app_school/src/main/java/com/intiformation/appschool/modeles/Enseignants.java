@@ -23,8 +23,8 @@ import javax.persistence.Table;
 public class Enseignants extends Personnes implements Serializable {
 
 	// @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id_enseignant")
-	Long idEnseignant;
+	//@Column(name = "id_enseignant")
+	//Long idEnseignant;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enseignant")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
@@ -52,7 +52,7 @@ public class Enseignants extends Personnes implements Serializable {
 
 
 	//// GETTERS / SETTERS ////
-	
+	/*
 	public Long getIdEnseignant() {
 		return idEnseignant;
 	}
@@ -61,6 +61,6 @@ public class Enseignants extends Personnes implements Serializable {
 		this.idEnseignant = idEnseignant;
 	}
 	
-	
+	*/
 
 }// END CLASS

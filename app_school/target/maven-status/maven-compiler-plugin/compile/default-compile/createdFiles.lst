@@ -39,6 +39,7 @@ com/intiformation/appschool/dao/IAdresseDAO.class
 com/intiformation/appschool/modeles/EnseignantMatierePromotionLink.class
 com/intiformation/appschool/modeles/Etudiants.class
 com/intiformation/appschool/controller/GestionMatiereController.class
+com/intiformation/appschool/controller/GestionPromotionController.class
 com/intiformation/appschool/service/ICoursService.class
 com/intiformation/appschool/service/MatiereServiceImpl.class
 com/intiformation/appschool/modeles/Administrateurs.class

@@ -47,7 +47,6 @@ public class GestionMatiereController {
 	// Declaration du validator:
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
-	// //
 
 	/**
 	 * <pre>
@@ -94,7 +93,7 @@ public class GestionMatiereController {
 
 		// 4 OU : rédirection vers l'url '/employe/liste' pour invoquer la méthode
 		// 'recupererListeEmployesDB' et rediriger vers liste-employes.jsp
-		return "redirect:/matiere/liste";
+		return "redirect:/matiere/liste-matiere";
 
 	}// end supprimerEmployeDB
 
@@ -109,26 +108,38 @@ public class GestionMatiereController {
 	 */
 	@RequestMapping(value = "/matiere/edit-matiere-form", method = RequestMethod.GET)
 	// @GetMapping
-	public String afficherFormulaire(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
+	public ModelAndView afficherFormulaire(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		if (pIdMatiere == 0) {
 
 			Matiere matiere = new Matiere();
 
-			model.addAttribute("attribut_matiere", matiere);
-			model.addAttribute("idMatiere", pIdMatiere);
+			String nomObjetCommande = "matiereCommand";
+
+			Map<String, Object> dataCommand = new HashMap<>();
+			dataCommand.put(nomObjetCommande, matiere);
+
+			String viewName = "matiere-formulaire";
+
+			return new ModelAndView(viewName, dataCommand);
+
+			// model.addAttribute("attribut_matiere", matiere);
+			// model.addAttribute("idMatiere", pIdMatiere);
 
 		} else {
 
-			Matiere matiereToUpdate = new Matiere();
+			Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
 
-			model.addAttribute("attribut_matiere", matiereToUpdate);
-			model.addAttribute("idMatiere", pIdMatiere);
+			System.out.println("Id matiere to update = " + matiereToUpdate.getIdMatiere());
+		
+			return new ModelAndView("matiere-formulaire", "matiereCommand", matiereToUpdate );
+
+			//model.addAttribute("attribut_matiere", matiereToUpdate);
+			//model.addAttribute("idMatiere", pIdMatiere);
 
 		} // end else
-		return "matiere-formulaire";
 
-	}// end afficherFormulaireAjout
+	}// end afficherFormulaire
 
 	/**
 	 * <pre>
@@ -168,7 +179,7 @@ public class GestionMatiereController {
 
 			// Recup nouvelle liste d'etudiant après ajout
 
-			model.addAttribute("attribut_liste_etudiants", matiereService.trouverAllMatieres());
+			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
 			return "liste-matiere";
 

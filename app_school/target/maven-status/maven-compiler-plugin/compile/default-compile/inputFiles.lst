@@ -12,6 +12,7 @@
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Etudiants.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAideDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAdresseDAO.java
+/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionPromotionController.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IGenerique.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/service/CoursServiceImpl.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/service/IAdministrateursService.java

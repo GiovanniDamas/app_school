@@ -57,6 +57,9 @@ public class Promotion implements Serializable {
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="promotion")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
+
+	
+	
 	
 	/**
 	 * Relation entre Promotion et Cours: OneToMany
@@ -73,6 +76,7 @@ public class Promotion implements Serializable {
 	 */
 	public Promotion() {
 	}
+	
 	
 	
 	// _________________ GETTER / SETTER ___________________ //

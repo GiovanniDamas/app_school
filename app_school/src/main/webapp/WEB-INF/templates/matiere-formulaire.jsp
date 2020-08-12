@@ -20,7 +20,9 @@
 	<!-- =========================================================== -->
 	<!-- ======== Header (navbar) ================================= -->
 	<!-- =========================================================== -->
-	<%@include file="../generic/header.jsp"%>
+	
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
 
 
 	<!-- =========================================================== -->
@@ -30,7 +32,6 @@
 	<h2 style="margin-left: 20px">
 		<u>Formulaire d'ajout/édition d'une matière :</u>
 	</h2>
-
 	<div class="form-group">
 
 		<form:form modelAttribute="matiereCommand"  method="POST"
@@ -54,9 +55,10 @@
 					<td><form:errors path="libelle"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
-
 				
-					
+				
+				
+				
 				<c:if test="${idMatiere == null}"  >
 					<tr>
 						<td><input type="submit" value="Ajouter" /></td>
@@ -68,13 +70,8 @@
 						<td><input type="submit" value="Modifier" /></td>
 					</tr>
 				</c:if>
-				
-
 			</table>
-
 		</form:form>
-
-
 	</div>
 
 	<!-- =========================================================== -->

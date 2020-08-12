@@ -20,7 +20,9 @@
 	<!-- =========================================================== -->
 	<!-- ======== Header (navbar) ================================= -->
 	<!-- =========================================================== -->
-	<%@include file="/WEB-INF/generic/header.jsp"%>
+
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
 
 	<!-- =========================================================== -->
 	<!-- ======== Content ========================================== -->
@@ -30,7 +32,8 @@
 		<u>Formulaire d'ajout/édition d'une promotion :</u>
 	</h2>
 	<div class="form-group">
-		<form:form modelAttribute="promotionCommand" method="POST"
+
+		<form:form modelAttribute="linkCommand" method="POST"
 			action="${pageContext.request.contextPath}/promotion/add">
 
 			<%-- affichage de tous les messages d'erreurs --%>
@@ -41,36 +44,53 @@
 			<table width="60%">
 				<tr>
 
-					<td><form:hidden path="idPromotion" /></td>
+					<td><form:hidden path="promotion.idPromotion" /></td>
 
 				</tr>
 				<tr>
-					<td><form:label class="col-form-label" path="libelle"> Libellé : </form:label></td>
-					<td><form:input class="form-control" path="libelle" /></td>
-					<td><form:errors path="libelle"
+					<td><form:label class="col-form-label"
+							path="promotion.libelle"> Libellé : </form:label></td>
+					<td><form:input class="form-control" path="promotion.libelle" /></td>
+					<td><form:errors path="promotion.libelle"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
 
-			
 
-				<c:if test="${idMatiere == null}">
+
+
+				<tr>
+					<td><form:select path="enseignant">
+
+							<c:forEach items="${attribut_liste_enseignants}" var="ens">
+								<form:option value="${ens.idPersonne}">
+									<c:out value="${ens.nom} ${ens.prenom}" />
+								</form:option>
+							</c:forEach>
+
+						</form:select></td>
+
+
+				</tr>
+
+				<c:if test="${promotion.idPromotion == null}">
 					<tr>
 						<td><input type="submit" value="Ajouter" /></td>
 					</tr>
 				</c:if>
 
-				<c:if test="${idMatiere != null}">
+				<c:if test="${promotion.idPromotion != null}">
 					<tr>
 						<td><input type="submit" value="Modifier" /></td>
 					</tr>
 				</c:if>
-
 			</table>
+
+
+
+
 
 		</form:form>
 	</div>
-
-
 
 	<!-- =========================================================== -->
 	<!-- ======== FOOTER  ========================================== -->

@@ -81,6 +81,14 @@ public class EnseignantMatierePromotionLink implements Serializable {
 		this.promotion = promotion;
 	}
 
+	public Enseignants getEnseignant() {
+		return enseignant;
+	}
+
+	public void setEnseignant(Enseignants enseignant) {
+		this.enseignant = enseignant;
+	}
+
 
 
 	

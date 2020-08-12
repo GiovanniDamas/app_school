@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.intiformation.appschool.modeles.Matiere;
+import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
+import com.intiformation.appschool.modeles.Enseignants;
 import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
+import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IPromotionService;
 
 
@@ -33,8 +36,13 @@ public class GestionPromotionController {
 	// Declaration de la couche Service:
 	@Autowired // injectiion du bean dans la propriété 'matiereService'
 	private IPromotionService promotionService;
+	@Autowired
+	private IEnseignantsService enseignantService; 
+	@Autowired
+	private IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService;
 
-	
+
+
 	/**
 	 * 
 	 * Setter de la couche service pour injection pour modificateur de Spring
@@ -43,6 +51,15 @@ public class GestionPromotionController {
 	 */
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
+	}
+	
+	public void setEnseignantService(IEnseignantsService enseignantService) {
+		this.enseignantService = enseignantService;
+	}
+	
+
+	public void setEnseignantMatierePromotionLinkService(IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService) {
+		this.enseignantMatierePromotionLinkService = enseignantMatierePromotionLinkService;
 	}
 	
 	// Declaration du validator:
@@ -114,13 +131,22 @@ public class GestionPromotionController {
 		if (pIdPromotion == 0) {
 
 			Promotion promotion = new Promotion();
-
-			String nomObjetCommande = "promotionCommand";
+			
+			EnseignantMatierePromotionLink enseignantMatierePromotionLink =new EnseignantMatierePromotionLink();
+			
+			
+			
+			// ajout liste des enseignants
+			List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant(); 
+			model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
+		
+			
 
 			Map<String, Object> dataCommand = new HashMap<>();
-			dataCommand.put(nomObjetCommande, promotion);
+			dataCommand.put("promotionCommand", promotion);
+			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
-			String viewName = "promotion-formulaire";
+			String viewName = "Promotions/promotion-formulaire";
 
 			return new ModelAndView(viewName, dataCommand);
 
@@ -128,7 +154,7 @@ public class GestionPromotionController {
 
 			Promotion promotionToUpdate = promotionService.trouverPromotionId(pIdPromotion);
 
-			return new ModelAndView("promotion-formulaire", "promotionCommand", promotionToUpdate );
+			return new ModelAndView("Promotions/promotion-formulaire", "promotionCommand", promotionToUpdate );
 
 		} // end else
 
@@ -146,41 +172,45 @@ public class GestionPromotionController {
 	 *            contient le resultat du processe dd la validation
 	 * @return : le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/add", method = RequestMethod.POST)
-	public String ajouterPromotionDB(@ModelAttribute("attribut_promotion") Promotion pPromotion, ModelMap model) {
+	@RequestMapping(value = "/promotion/add", method = RequestMethod.POST)
+	public String ajouterPromotionDB(@ModelAttribute("attribut_link") EnseignantMatierePromotionLink pLink, ModelMap model) {
 
-		if (pPromotion.getIdPromotion() == null) {
+		if (pLink.getPromotion().getIdPromotion() == null) {
 
 			// Ajout etudiant via couche service
 
-			promotionService.ajouterPromotion(pPromotion);
+			promotionService.ajouterPromotion(pLink.getPromotion());
 
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 
-			return "liste-promotion";
+			return "Promotions/liste-promotion";
 
 		} // end if
 
-		if (pPromotion.getIdPromotion() != 0) {
+		if (pLink.getPromotion().getIdPromotion()  != 0) {
 
 			// Modif etudiant via couche service
 
-			promotionService.ajouterPromotion(pPromotion);
+			promotionService.ajouterPromotion(pLink.getPromotion());
 
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 
-			return "liste-promotion";
+			return "Promotions/liste-promotion";
 
 		} // END IF
 
-		return "liste-promotion";
+		return "Promotions/liste-promotion";
 
 		
 	}// end ajouterMatiereDB
+
+
+
+	
 	
 	
 	

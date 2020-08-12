@@ -22,7 +22,8 @@
 	<!-- ======== Header (navbar) ================================= -->
 	<!-- =========================================================== -->
 
-	<%@include file="/WEB-INF/generic/header.jsp"%>
+	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
 
 
 	<!-- =========================================================== -->

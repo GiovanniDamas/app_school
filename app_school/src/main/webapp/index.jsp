@@ -9,25 +9,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
-<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-    rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+	rel="stylesheet">
 
 
 </head>
 <body>
-	
-	<a href="${pageContext.request.contextPath}/matiere/liste-matiere"">lien test liste matières</a>
-	
-	<a href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien test liste etudiants</a>
-	
-	<a href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">lien test liste enseignants</a>
-	
-	<a href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien test liste admin</a>
 
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	
-		<h1>Hello !</h1>	
-		
+	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
+
+
+	<a href="${pageContext.request.contextPath}/matiere/liste-matiere"">lien
+		test liste matières</a>
+
+	<a
+		href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">lien
+		test liste etudiants</a>
+
+	<a
+		href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">lien
+		test liste enseignants</a>
+
+	<a
+		href="${pageContext.request.contextPath}/gestionAdmin/listeAdministrateurs">lien
+		test liste admin</a>
+
+
 	<jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
 
 

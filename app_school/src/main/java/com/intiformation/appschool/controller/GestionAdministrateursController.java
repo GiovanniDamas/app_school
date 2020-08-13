@@ -3,6 +3,7 @@ package com.intiformation.appschool.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,7 +111,22 @@ public class GestionAdministrateursController {
 	public String ajoutAdminBdd(@ModelAttribute("attribut_administrateurs") Administrateurs pAdmin, ModelMap model) {
 
 		if (pAdmin.getIdPersonne() == null) {
-
+			
+			//recup mdp 
+			String MDP = pAdmin.getMotDePasse();
+			
+			// objet pour le  cryptage
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			// cryptage du mot de passe avec la méthode encode()
+			String hashedMotDePasse = passwordEncoder.encode(MDP);
+			
+			// passage du mdp crypté
+			pAdmin.setMotDePasse(hashedMotDePasse);
+			
+			// passage du role 
+			pAdmin.setRole("ROLE_ADMIN");
+			
 			// Ajout enseignant via couche service
 
 			adminService.ajouterAdministrateur(pAdmin);
@@ -123,7 +139,22 @@ public class GestionAdministrateursController {
 
 		}
 		if (pAdmin.getIdPersonne() != 0) {
-
+			
+			//recup mdp 
+			String MDP = pAdmin.getMotDePasse();
+			
+			// objet pour le  cryptage
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			// cryptage du mot de passe avec la méthode encode()
+			String hashedMotDePasse = passwordEncoder.encode(MDP);
+			
+			// passage du mdp crypté
+			pAdmin.setMotDePasse(hashedMotDePasse);
+			
+			// passage du role 
+			pAdmin.setRole("ROLE_ADMIN");
+			
 			// Modif enseignant via couche service
 
 			adminService.modifierAdministrateur(pAdmin);

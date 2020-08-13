@@ -36,8 +36,8 @@ public class Administrateurs extends Personnes implements Serializable{
 	 * @param prenom
 	 * @param email
 	 */
-	public Administrateurs(String identifiant, String motDePasse, String nom, String prenom, String email) {
-		super(identifiant, motDePasse, nom, prenom, email);
+	public Administrateurs(String identifiant, String motDePasse, String nom, String prenom, String email, String role) {
+		super(identifiant, motDePasse, nom, prenom, email, role);
 	}
 
 

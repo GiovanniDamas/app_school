@@ -45,8 +45,8 @@ public class Enseignants extends Personnes implements Serializable {
 	 * @param prenom
 	 * @param email
 	 */
-	public Enseignants(String identifiant, String motDePasse, String nom, String prenom, String email) {
-		super(identifiant, motDePasse, nom, prenom, email);
+	public Enseignants(String identifiant, String motDePasse, String nom, String prenom, String email, String role) {
+		super(identifiant, motDePasse, nom, prenom, email, role);
 
 	}
 

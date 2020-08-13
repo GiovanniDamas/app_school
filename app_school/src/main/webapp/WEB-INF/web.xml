@@ -4,7 +4,21 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 	<display-name>app_gestion_ecole</display-name>
-
+	
+	<!-- ////////////// configuration de spring security /////////////////// -->
+	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<!-- url-pattern : les URLs à intercepter -->
+		<!-- /* : toutes les requêtes (URLs) sont interceptées par le filtre -->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- ========================================================= -->
 	<!-- Emplacement des fichiers de définition des beans Spring -->
 	<!-- ========================================================= -->
@@ -17,6 +31,7 @@
 		<param-value>
 				/WEB-INF/applicationContext.xml
 				/WEB-INF/school-servlet.xml
+				/WEB-INF/school-security.xml
 		</param-value>
 	</context-param>
 

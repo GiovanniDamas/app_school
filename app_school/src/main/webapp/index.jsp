@@ -8,31 +8,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
 
-<link
-	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-	rel="stylesheet">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Accueil</title>
 
-<link
-	href="${pageContext.request.contextPath}/resources/styles/index.css"
-	rel="stylesheet">
+	<!-- Lien vers feuille de style de Bootstrap -->
+	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
 
-<!-- Lien vers font awesome 4.7.0-->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<!-- Lien vers feuille de style perso de index -->
+	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
+	    rel="stylesheet">
 
-<link
-	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
-	rel="stylesheet">
+    <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
 </head>
 <body>
 
 
 	<%-- 
+	
+	
+<%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
+	
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
 
@@ -87,6 +89,7 @@
 		<div class="sidebar-header">
 			<a href="${pageContext.request.contextPath}/index.jsp"><span
 				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 
 		<ul class="sidebar-links">
@@ -141,23 +144,24 @@
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->
-	<div class="clear" style="clear: both"></div>
+  <div class="clear" style="clear:both"></div>
+     
+	<footer class="footer" >
+  
+        <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
+         
+  </footer>
+    
+    
+	<!-- ===================================================================== -->
+	<!-- ==================  SCRIPTS  ======================================== -->
+	<!-- ===================================================================== -->	    
+ 
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
 
-	<footer class="footer">
-
-	<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
-
-	</footer>
-
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
-
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
+    
 </body>
 </html>

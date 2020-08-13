@@ -85,4 +85,14 @@ public class EtudiantCoursServiceImpl implements IEtudiantCoursService{
 		return etudiantCoursDAO.afficherEtudiantCoursByEtudiant(pIdEtudiant);
 	}//end afficherEtudiantCoursByEtudiant
 
+	/*________________________________________________________________________________________________________________________*/
+	
+	/**
+	 * permet de récup la liste des absences de la bdd liées à un enseignant
+	 */
+	@Override
+	public List<EtudiantCours> findAbsenceEnseignant(Long pIdEnseignant) {
+		return etudiantCoursDAO.afficherAbsenceEnseignant(pIdEnseignant);
+	}//end afficherAbsenceEnseignant
+
 }//end class

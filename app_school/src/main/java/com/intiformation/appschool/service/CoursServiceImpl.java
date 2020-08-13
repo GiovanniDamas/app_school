@@ -94,4 +94,20 @@ public class CoursServiceImpl implements ICoursService{
 		return coursDAO.afficherCoursParDate(pDate);
 	}//end findCoursParDate
 
+	/**
+	 * permet de récup la liste des cours d'un enseignant
+	 */
+	@Override
+	public List<Cours> findCoursEnseignant(Long pIdEnseignant) {
+		return coursDAO.afficherCoursEnseignant(pIdEnseignant);
+	}
+	
+	/**
+	 * permet de récup la liste des cours d'un etudiant
+	 */
+	@Override
+	public List<Cours> findCoursEtudiant(Long pIdEtudiant) {
+		return coursDAO.afficherCoursEtudiant(pIdEtudiant);
+	}
+
 }//end class

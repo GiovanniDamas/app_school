@@ -56,10 +56,10 @@
 			</div>
 			
 			<div class="form-group">
-			  	<form:label path="etudiant.idPersonne">Etudiant</form:label>
+			  	<form:label path="etudiant.idPersonne">Etudiant</form:label>			  	
          		<form:select path="etudiant.idPersonne" class="form-control">
     				<option value="">--Sélectionner l'étudiant</option>
-    					<c:forEach var="etudiant" items="${attribut_etudiants}">
+    					<c:forEach items="${attribut_etudiants}" var="etudiant">
         					<form:option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></form:option>
     					</c:forEach>
 				</form:select>			

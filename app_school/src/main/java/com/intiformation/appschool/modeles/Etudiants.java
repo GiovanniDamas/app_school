@@ -62,8 +62,8 @@ public class Etudiants extends Personnes implements Serializable {
 	 * @param prenom
 	 * @param email
 	 */
-	public Etudiants(String identifiant, String motDePasse, String nom, String prenom, String email, String photo, Date dateDeNaissance) {
-		super(identifiant, motDePasse, nom, prenom, email);
+	public Etudiants(String identifiant, String motDePasse, String nom, String prenom, String email, String role, String photo, Date dateDeNaissance) {
+		super(identifiant, motDePasse, nom, prenom, email, role);
 		this.photo = photo;
 		this.dateDeNaissance = dateDeNaissance ;
 	}

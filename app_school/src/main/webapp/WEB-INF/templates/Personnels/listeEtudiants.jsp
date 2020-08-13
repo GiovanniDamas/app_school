@@ -60,6 +60,7 @@
 						<td>${etu.email}</td>
 						<td>${etu.identifiant}</td>
 						<td>${etu.motDePasse}</td>
+						<td>${etu.role}</td>
 						<td>
 						<img src="${pageContext.request.contextPath}/resources/Images/${etu.photo}" height="5%" width="10%">
 						</td>

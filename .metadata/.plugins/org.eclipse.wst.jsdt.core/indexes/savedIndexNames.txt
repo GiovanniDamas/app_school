@@ -2,7 +2,6 @@ INDEX VERSION 1.4+C:\Users\marle\Desktop\Marlene\Formation_INTI_JAVA\Projet_grou
 2330117737.index
 452377060.index
 2413512326.index
-126309817.index
 458248613.index
 3862176066.index
 1893570921.index

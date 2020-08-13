@@ -47,6 +47,10 @@ public class Personnes implements Serializable{
 	
 	@Column(name="email")
 	private String email;	
+	
+	@Column(name="role")
+	private String role;	
+	
 
 
 	@OneToMany(cascade= CascadeType.ALL, mappedBy="proprio")
@@ -69,13 +73,14 @@ public class Personnes implements Serializable{
 	 * @param prenom
 	 * @param email
 	 */
-	public Personnes(String identifiant, String motDePasse, String nom, String prenom, String email) {
+	public Personnes(String identifiant, String motDePasse, String nom, String prenom, String email, String role) {
 		super();
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
+		this.role = role;
 	}
 
 	
@@ -135,6 +140,14 @@ public class Personnes implements Serializable{
 
 	public void setAdresses(List<Adresse> adresses) {
 		this.adresses = adresses;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	

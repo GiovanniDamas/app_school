@@ -152,7 +152,22 @@ public class GestionEtudiantsController {
 				e.printStackTrace();
 				return "File uploaded failed:" + nomPhoto;
 			}
-
+			
+			//recup mdp 
+			String MDP = pEtudiant.getMotDePasse();
+			
+			// objet pour le  cryptage
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			// cryptage du mot de passe avec la méthode encode()
+			String hashedMotDePasse = passwordEncoder.encode(MDP);
+			
+			// passage du mdp crypté
+			pEtudiant.setMotDePasse(hashedMotDePasse);
+			
+			// passage du role 
+			pEtudiant.setRole("ROLE_ETUDIANT");
+			
 			// Ajout etudiant via couche service
 
 			etudiantsService.ajouterEtudiant(pEtudiant);
@@ -166,8 +181,6 @@ public class GestionEtudiantsController {
 		}
 
 		if (pEtudiant.getIdPersonne() != 0) {
-
-			System.out.println(pEtudiant.getPhoto());
 
 			if (file.isEmpty()) {
 
@@ -196,7 +209,22 @@ public class GestionEtudiantsController {
 					e.printStackTrace();
 					return "File uploaded failed:" + nomPhoto;
 				}
-
+				
+				//recup mdp 
+				String MDP = pEtudiant.getMotDePasse();
+				
+				// objet pour le  cryptage
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				
+				// cryptage du mot de passe avec la méthode encode()
+				String hashedMotDePasse = passwordEncoder.encode(MDP);
+				
+				// passage du mdp crypté
+				pEtudiant.setMotDePasse(hashedMotDePasse);
+				
+				// passage du role 
+				pEtudiant.setRole("ROLE_ETUDIANT");
+				
 				// Modif etudiant via couche service
 
 				etudiantsService.modifierEtudiant(pEtudiant);

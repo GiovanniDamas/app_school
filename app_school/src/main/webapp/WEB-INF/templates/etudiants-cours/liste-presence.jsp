@@ -1,39 +1,100 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Liste de présence</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Liste de prÃ©sence</title>
 
-<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-    rel="stylesheet">
+
+ 
+	<!-- Lien vers feuille de style de Bootstrap -->
+	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
+
+	<!-- Lien vers feuille de style perso de index -->
+	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
+	    rel="stylesheet">
+
+    <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+
+
 <link href="${pageContext.request.contextPath}/resources/styles/perso.css"
     rel="stylesheet">
-<script src="https://kit.fontawesome.com/9dde17f0e3.js" crossorigin="anonymous"></script>  
+    
+<script src="https://kit.fontawesome.com/9dde17f0e3.js" crossorigin="anonymous"></script> 
+
+
 </head>
+
 <body>
 
-	<!-- =========================================================== -->
-	<!-- ======== Header (navabar) ================================= -->
-	<!-- =========================================================== -->
+	<!-- ===================================================== -->
+	<!-- =============== HEADER ============================= -->
+	<!-- ===================================================== -->
+    <div id="divhaute" class="container-fluid col-lg-12">
+        <h1 id="titre"> SchoolApp </h1>
+        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
+            <span class="fa fa-user-circle"></span>
+            Connexion
+        </a>
+    </div>
+
+
+<div class="wrapper">
+
+	<!-- ===================================================== -->
+	<!-- =============== SIDEBAR ============================= -->
+	<!-- ===================================================== -->
+    <nav class="sidebar" id="sidebar">
+    
+      <!--
+        <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
+        -->
+
 	
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>
 	
-	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
-	<%-- ++ AFFICHAGE LISTE DE PRESENCE DES ETUDIANTS AUX COURS DE LA BDD ++ --%>
-	<%-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ --%>
-<div class="content">
-	 <h3>Liste de présence des étudiants</h3>
+		<div class="sidebar-header">
+			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+		</div>
+		
+    <ul class="sidebar-links">
+      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
+      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
+      <li > <a  href="#">Promotion</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">MatiÃ¨re(s)</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
+    </ul>
+    
+	</nav>
+	
+	
+	<!-- ===================================================== -->
+	<!-- =============== CONTENT ============================= -->
+	<!-- ===================================================== -->
+  <div id="content" style="width:100%">
+     <button type="button" id="sidebarCollapse" class="navbar-btn">
+         <span></span>
+         <span></span>
+         <span></span>
+     </button>
+     
+     
+	 <h3>Liste de prÃ©sence des Ã©tudiants</h3>
 	 
 	 <br/>
 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-cours">
-	 	 <label for="recherche-cours">Afficher la liste de présence d'un cours : </label>	 	
+	 	 <label for="recherche-cours">Afficher la liste de prÃ©sence d'un cours : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-cours" name="id-cours">
 	 		<option value="0" label="Afficher tous les cours">
 	 		<c:forEach items="${attribut_cours}" var="cours">
@@ -48,9 +109,9 @@
   	
   	<div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-etudiant">
-	 	 <label for="recherche-etudiant">Afficher les présences/absences d'un étudiant : </label>	 	
+	 	 <label for="recherche-etudiant">Afficher les prÃ©sences/absences d'un Ã©tudiant : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-etudiant" name="id-etudiant">
-	 		<option value="0" label="Afficher tous les étudiants">
+	 		<option value="0" label="Afficher tous les Ã©tudiants">
 	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
 	 			 <option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></option>
 	 		</c:forEach>
@@ -63,7 +124,7 @@
   	
   	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-absence-etudiant">
-	 	 <label for="recherche-abs-etudiant">Afficher les absences d'un étudiant : </label>	 	
+	 	 <label for="recherche-abs-etudiant">Afficher les absences d'un Ã©tudiant : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-abs-etudiant" name="etudiant-id">
 	 		<option value="0" label="Afficher toutes les absences">
 	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
@@ -76,7 +137,7 @@
   	
 	 <br/><br/><br/>
 	 	 	
-	 <table class="table table-hover" style="text-align: center">
+	 <table class="table table-hover" style="width:90%;margin-left:5%";text-align: center">
 	 	
 	 	<thead>
     		<tr>
@@ -110,7 +171,7 @@
 
 	 		<%-- lien pour modifier une ligne --%> 		
 	 			<td>
-	 				<%-- au click on appelle le controller 'GestionEtudiantCoursController' et sa méthode chargerModifCoursBdd --%>
+	 				<%-- au click on appelle le controller 'GestionEtudiantCoursController' et sa mÃ©thode chargerModifCoursBdd --%>
 	 				<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-modif-presence?etudiantCoursId=${presence.idEtudiantCours}">
 	 					<i class="fas fa-pencil-alt"></i>
 	 				</a>
@@ -118,7 +179,7 @@
 	 		
 	 		<%-- lien pour supprimer une ligne --%> 		
 	 			<td>
-	 				<%-- au click on appelle le controller 'GestionCEtudiantCoursController' et sa méthode supprimerEtudiantCoursBdd --%>
+	 				<%-- au click on appelle le controller 'GestionCEtudiantCoursController' et sa mÃ©thode supprimerEtudiantCoursBdd --%>
 	 				<a href="${pageContext.request.contextPath}/etudiants-cours/supprimer?etudiantCoursId=${presence.idEtudiantCours}">
 	 					<i class="fas fa-trash-alt"></i>
 	 				</a>
@@ -132,16 +193,38 @@
 
 	<br/>
 	
-	<%-- lien pour ajouter une ligne dans la bdd : au click on appelle le controller GestionEtudiantCoursController et sa méthode chargerEtudiantCoursBdd --%>
-	<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-ajout-presence">Ajouter absence étudiant</a>
-</div>
+	<%-- lien pour ajouter une ligne dans la bdd : au click on appelle le controller GestionEtudiantCoursController et sa mÃ©thode chargerEtudiantCoursBdd --%>
+	<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-ajout-presence"
+			class="btn btn-primary btn-md active" role="button"
+			aria-pressed="true" style="align-content: left;margin-left:5%" >
+		Ajouter absence Ã©tudiant
+	</a>
+	
+	
+	</div><!-- end content -->
+</div><!-- end wrapper -->
 
-<br/><br/><br/>
+	<!-- ===================================================== -->
+	<!-- =============== FOOTER ============================== -->
+	<!-- ===================================================== -->
+  <div class="clear" style="clear:both"></div>
+     
+	<footer class="footer" >
+  
+        <p>2020 Copyright Â© Groupe2 : Gio, Hannah, MarlÃ¨ne &#x26; Gab  </p>
+         
+  </footer>
+
+
+	<!-- ===================================================================== -->
+	<!-- ==================  SCRIPTS  ======================================== -->
+	<!-- ===================================================================== -->	
+
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
 	
-	<!-- =========================================================== -->
-	<!-- ======== FOOTER  ========================================== -->
-	<!-- =========================================================== -->
-	
-	<%@include file="/WEB-INF/generic/footer.jsp" %>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
+
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
+    
 </body>
 </html>

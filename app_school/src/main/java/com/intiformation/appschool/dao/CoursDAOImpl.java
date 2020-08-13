@@ -317,5 +317,41 @@ public class CoursDAOImpl implements ICoursDAO{
 		
 		}//end catch
 	}//end afficherCoursEtudiant
+	
+	/**
+	 * permet de récup la liste des cours de la bdd d'un enseignant à une date donnée
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate) {
+		
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<Cours> getCoursEnseignantByDateQuery = session.createQuery("SELECT c FROM Cours c, "
+																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Matiere m "
+																			+ "WHERE c.matieres.idMatiere = m.idMatiere "
+																			+ "AND link.matiere.idMatiere = m.idMatiere "
+																			+ "AND link.enseignant.idPersonne = :pIdEnseignant "
+																			+ "AND c.date = :pDate");
+			
+			//passage de paramètre
+			getCoursEnseignantByDateQuery.setParameter("pIdEnseignant", pIdEnseignant);
+			getCoursEnseignantByDateQuery.setParameter("pDate", pDate);
+			
+			//envoi, execution et récup résultat
+			return getCoursEnseignantByDateQuery.getResultList();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEnseignantByDate ...");
+			throw e;
+		
+		}//end catch
+	}//end afficherCoursEnseignantByDate
 
 }//end class

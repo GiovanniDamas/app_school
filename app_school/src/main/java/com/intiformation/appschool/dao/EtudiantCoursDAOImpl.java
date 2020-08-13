@@ -220,6 +220,36 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 	
 	}//end afficherEtudiantCoursByEtudiant
 	
+	/**
+	 * permet de récupérer l'ensemble des absences d'un etudiant dans la bdd
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EtudiantCours> afficherAbsencesByEtudiant(Long pIdEtudiant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<EtudiantCours> getAbsenceByEtudiantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.absence = true AND ec.etudiant.idPersonne = :pIdEtudiant");
+			
+			//passage de paramètre
+			getAbsenceByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
+			
+			//envoi, execution et récup résultat
+			return getAbsenceByEtudiantQuery.getResultList();			
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (EtudiantCoursDAOImpl) Erreur lors de la méthode afficherAbsencesByEtudiant ...");
+			throw e;
+		
+		}//end catch
+	
+	}//end afficherAbsencesByEtudiant
+	
 	/*________________________________________________________________________________________________________________________*/
 	
 	/**

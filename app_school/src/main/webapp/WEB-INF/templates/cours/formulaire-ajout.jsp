@@ -58,7 +58,7 @@
 			<div class="form-group col-md-4">
 			  	<form:label class="col-form-label" path="duree">Durée</form:label>
 			  	<div class="input-group mb-3">
-  				<form:input type="text" class="form-control" path="duree"/>
+  				<form:input type="number" class="form-control" path="duree"/>
   				<div class="input-group-append">
         			<span class="input-group-text">min</span>
       			</div>

@@ -220,7 +220,7 @@ public class GestionEtudiantCoursController {
 	}//end modifierEtudiantCoursBdd
 	
 	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une matière
+	 * permet d'afficher la liste des présneces d'un étudiants 
 	 * @param model
 	 * @return
 	 */
@@ -248,7 +248,7 @@ public class GestionEtudiantCoursController {
 		
 		}//end else
 		
-	}//end afficherListeCoursByMatiere
+	}//end afficherListeEtudiantCoursByEtudiant
 	
 	/**
 	 * permet d'afficher la liste de l'ensemble des étudiants absents d'un cours de la bdd 
@@ -279,6 +279,37 @@ public class GestionEtudiantCoursController {
 			
 		}//end else
 		
-	}//end afficherListeEtudiantCoursByCours	
+	}//end afficherListeEtudiantCoursByCours
+	
+	/**
+	 * permet d'afficher la liste des absences d'un étudiant 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/etudiants-cours/recherche-absence-etudiant", method=RequestMethod.GET)
+	public String afficherListeAbsencesByEtudiant(@RequestParam("etudiant-id") Long pIdEtudiant, ModelMap model) {
+		
+		if(pIdEtudiant==0) {
+			
+			return "redirect:/etudiants-cours/liste";
+			
+		}else {
+			
+			//1. récup de la liste des étudiants cours de la bdd via le service
+			List<EtudiantCours> listeAbsencesByEtudiantBdd = etudiantCoursService.afficherAbsencesByEtudiant(pIdEtudiant);
+			
+			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_presence", listeAbsencesByEtudiantBdd);
+				
+			// renvoi de la liste des cours et des étudiants vers la vue 
+			model.addAttribute("attribut_cours", coursService.findAllCours());
+			model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
+			
+			//3. renvoi du nom logique de la vue
+			return "etudiants-cours/liste-presence";			
+		
+		}//end else
+		
+	}//end afficherListeAbsencesByEtudiant
 	
 }//end class

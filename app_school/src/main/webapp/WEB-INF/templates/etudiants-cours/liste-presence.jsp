@@ -33,9 +33,9 @@
 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-cours">
-	 	 <label for="recherche-cours">Rechercher par cours : </label>	 	
+	 	 <label for="recherche-cours">Afficher la liste de présence d'un cours : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-cours" name="id-cours">
-	 		<option value="0" label="Afficher toutes les absences">
+	 		<option value="0" label="Afficher tous les cours">
 	 		<c:forEach items="${attribut_cours}" var="cours">
 	 			 <option value="${cours.idCours}" label="${cours.libelle}"/>
 	 		</c:forEach>
@@ -48,8 +48,23 @@
   	
   	<div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-etudiant">
-	 	 <label for="recherche-etudiant">Rechercher par étudiant : </label>	 	
+	 	 <label for="recherche-etudiant">Afficher les présences/absences d'un étudiant : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-etudiant" name="id-etudiant">
+	 		<option value="0" label="Afficher tous les étudiants">
+	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
+	 			 <option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></option>
+	 		</c:forEach>
+       	</select>
+    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
+  	</form>
+  	</div>
+  	
+  	<br/>
+  	
+  	 <div>
+	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-absence-etudiant">
+	 	 <label for="recherche-abs-etudiant">Afficher les absences d'un étudiant : </label>	 	
+	 	<select class="form-control ml-2" id="recherche-abs-etudiant" name="etudiant-id">
 	 		<option value="0" label="Afficher toutes les absences">
 	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
 	 			 <option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></option>

@@ -56,6 +56,10 @@ public interface IEtudiantCoursService {
 	 */
 	public List<EtudiantCours> afficherEtudiantCoursByEtudiant(Long pIdEtudiant);
 	
+	/**
+	 * permet de récupérer l'ensemble des absences d'un etudiant dans la bdd
+	 */
+	public List<EtudiantCours> afficherAbsencesByEtudiant(Long pIdEtudiant);
 	/*________________________________________________________________________________________________________________________*/
 	
 	/**

@@ -78,4 +78,16 @@ public interface ICoursService {
 	 */
 	public List<Cours> findCoursEtudiant(Long pIdEtudiant);
 	
+	/**
+	 * permet de récup la liste des cours de la bdd d'un enseignant à une date donnée
+	 */
+	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate);
+	
+	/**
+	 * permet de récup la liste des cours de la bdd associés à une personne
+	 * @param pIdPersonne : l'id de la personne
+	 * @return
+	 */
+	public List<Cours> findCoursPersonne(Long pIdPersonne, String pRole);
+	
 }//end interface

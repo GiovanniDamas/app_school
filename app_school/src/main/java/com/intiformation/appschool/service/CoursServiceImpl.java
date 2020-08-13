@@ -110,4 +110,37 @@ public class CoursServiceImpl implements ICoursService{
 		return coursDAO.afficherCoursEtudiant(pIdEtudiant);
 	}
 
+	/**
+	 * permet de récup la liste des cours de la bdd d'un enseignant à une date donnée
+	 */
+	@Override
+	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate) {
+		return coursDAO.afficherCoursEnseignantByDate(pIdEnseignant, pDate);
+	}
+
+	/**
+	 * permet de récup la liste des cours de la bdd associés à une personne
+	 * @param pIdPersonne : l'id de la personne
+	 * @return
+	 */
+	@Override
+	public List<Cours> findCoursPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole == "ROLE_ADMIN") {
+			//cas d'un role = ROLE_ADMIN
+			return coursDAO.getAll();
+
+		} else if (pRole == "ROLE_ENSEIGNANT"){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return coursDAO.afficherCoursEnseignant(pIdPersonne);
+
+		} else if (pRole == "ROLE_ETUDIANT") {
+			//cas d'un role = ROLE_ETUDIANT
+			return coursDAO.afficherCoursEtudiant(pIdPersonne);
+			
+		}//end else
+		
+		return null;
+	}
+
 }//end class

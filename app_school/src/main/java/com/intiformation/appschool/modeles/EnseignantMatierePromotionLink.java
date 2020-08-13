@@ -34,16 +34,16 @@ public class EnseignantMatierePromotionLink implements Serializable {
 	 * avec Matiere, Promotion et Etudiants: ManyToMany
 	 */
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne // (cascade = CascadeType.ALL)
 	@JoinColumn(name = "matiere_id", referencedColumnName="id_matiere")
 	private Matiere matiere;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne // (cascade = CascadeType.ALL)
 	@JoinColumn(name = "promotion_id", referencedColumnName="id_promotion")
 	private Promotion promotion;
 
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne //(cascade = CascadeType.ALL)
 	@JoinColumn(name = "personne_id", referencedColumnName="id_personne")
 	private Enseignants enseignant;
 

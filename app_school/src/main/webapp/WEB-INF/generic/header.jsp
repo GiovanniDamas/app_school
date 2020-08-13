@@ -59,7 +59,7 @@
 	        <a class="nav-link" href="#">Promotion</a>
 	      </li>
 	      <li class="nav-item navli">
-	        <a class="nav-link" href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/">Matière(s)</a>
 	      </li>
 	      <li class="nav-item navli">
 	        <a class="nav-link" href="${pageContext.request.contextPath}/cours/liste">Cours</a>

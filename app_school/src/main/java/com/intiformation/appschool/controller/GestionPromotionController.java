@@ -85,9 +85,11 @@ public class GestionPromotionController {
 
 		// 1. Récupération de la liste des matières dans la databse via le service
 		List<Promotion> listePromotionsDB = promotionService.trouverAllPromotions();
+		List<EnseignantMatierePromotionLink> listeLinks = enseignantMatierePromotionLinkService.trouverAllLinks();
 
 		// 2. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
+		model.addAttribute("attribut_liste_promotions", listeLinks);
 
 		// 3. Renvoi de la liste vers la vue
 
@@ -152,9 +154,20 @@ public class GestionPromotionController {
 
 		} else {
 
+			
+			
+			EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
+			//enseignantMatierePromotionLinkService.trouverLinkId(pIdLink);
+			
 			Promotion promotionToUpdate = promotionService.trouverPromotionId(pIdPromotion);
+			
+			linkToUpdate.setPromotion(promotionToUpdate);
+			
+			
+			List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant(); 
+			model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
 
-			return new ModelAndView("Promotions/promotion-formulaire", "promotionCommand", promotionToUpdate );
+			return new ModelAndView("Promotions/promotion-formulaire", "linkCommand", linkToUpdate );
 
 		} // end else
 
@@ -185,11 +198,14 @@ public class GestionPromotionController {
 			System.out.println("Id Prof" + pLink.getEnseignant().getIdPersonne());
 			
 			enseignantMatierePromotionLinkService.ajouterLink(pLink);
+			
+			//Long idLink = pLink.getId(); 
 		
 			
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
+			model.addAttribute("attribut_link", pLink );
 			
 			
 

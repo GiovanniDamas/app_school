@@ -89,7 +89,6 @@
 		<div class="sidebar-header">
 			<a href="${pageContext.request.contextPath}/index.jsp"><span
 				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
-			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 
 		<ul class="sidebar-links">

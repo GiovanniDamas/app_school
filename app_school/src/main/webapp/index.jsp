@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -26,6 +28,9 @@
 
 </head>
 <body>
+
+
+	<%-- 
 	
 	
 <%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
@@ -53,29 +58,44 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
-    <div id="divhaute" class="container-fluid col-lg-12">
-        <h1 id="titre"> SchoolApp </h1>
-        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
-            <span class="fa fa-user-circle"></span>
-            Connexion
-        </a>
-    </div>
+	<!-- Affichage d'un message lors de la déconnexion -->
+
+	<c:if test="${not empty param.logout_message}">
+		<font style="color: red;"> Déconnexion avec succès </font>
+	</c:if>
+
+	<div id="divhaute" class="container-fluid col-lg-12">
+		<h1 id="titre">SchoolApp</h1>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-secondary" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+		</s:authorize>
+
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-secondary"> <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
 
 
-<div class="wrapper">
+	</div>
 
-	<!-- ===================================================== -->
-	<!-- =============== SIDEBAR ============================= -->
-	<!-- ===================================================== -->
-    <nav class="sidebar" id="sidebar">
-    
-      <!--
+
+
+	<div class="wrapper">
+
+		<!-- ===================================================== -->
+		<!-- =============== SIDEBAR ============================= -->
+		<!-- ===================================================== -->
+		<nav class="sidebar" id="sidebar"> <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
 
 		<div class="sidebar-header">
-			<a   href="#" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a href="${pageContext.request.contextPath}/index.jsp"><span
+				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
     <ul class="sidebar-links">

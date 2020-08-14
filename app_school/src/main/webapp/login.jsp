@@ -9,7 +9,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++ AFFICHAGE DES MESSAGES D'ERREURS +++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<%-- en cas d'�chec de l'authentification --%>
+	<c:if test="${not empty param.error}">
+		<font style="color: red; font-style: italic;">
+			Erreur d'authentification. Identifiant ou mot de passe invalide. <br/>
+			<b>Raison<b/> : ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} 			
+		</font>
+	</c:if>
 
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- ++++++ FORMULAIRE D'AUTHENTIFICATION ++++++++++++++++ -->
@@ -22,7 +32,7 @@
 		<table>
 			<tr>
 				<td>Identifiant :</td>
-				<td><input type="text" name="identifiant" /></td>
+				<td><input type="text" name="username" /></td>
 			</tr>
 			<tr>
 				<td>Mot de passe :</td>

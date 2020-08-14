@@ -29,15 +29,14 @@
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
+
+
 </head>
 <body>
 
 
-	<%-- 
-	
-	
-<%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
-	
+	<%--	UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
 	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
 
@@ -48,8 +47,8 @@
 		<h1>Hello world !!</h1>
  	</div>
  	
- <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
---%>
+ <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>		--%>
+
 
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
@@ -130,13 +129,13 @@
 
 		<!-- Affichage d'un message lors de la déconnexion -->
 	    <div style="padding: 20px;"> 
-	
-		<c:if test="${not empty param.logout_message}">
-			<div class="alert alert-dismissible alert-success col-12" style="float: right;">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<font> Déconnexion avec succès </font>
-			</div>
-		</c:if>
+			<c:if test="${not empty param.logout_message}">
+				<div class="alert alert-dismissible alert-success col-12" style="float: right;">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<font> Déconnexion avec succès </font>
+				</div>
+			</c:if>
+		</div>
 	
 			<br />
 
@@ -152,10 +151,9 @@
 				perspiciatis sed libero! Adipisci officiis, ea labore vel explicabo
 				magnam illo eius!</p>
 
-		</div>
-		</div>
-	</div>
-	<!-- end wrapper -->
+		
+		</div><!-- end content -->
+	</div>	<!-- end wrapper -->
 
 
 	<!-- ===================================================== -->

@@ -27,27 +27,39 @@
 	
 	<link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch&display=swap" rel="stylesheet"> <!-- 'Cabin Sketch' -->
 	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
-
 	   <link href="https://fonts.googleapis.com/css2?family=Miltonian&display=swap" rel="stylesheet"> <!-- 'Miltonian' -->
 	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	<script src="${pageContext.request.contextPath}/resources/scripts/bootstrap.min.js"></script>
 	
 	 
 </head>
 <body>
+		
 	
 	<a class="brand" href="index.jsp"  >SchoolApp</a>
 	
+
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- ++++++ AFFICHAGE DES MESSAGES D'ERREURS +++++++++++++ -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<%-- en cas d'�chec de l'authentification --%>
+	<%-- en cas d'échec de l'authentification --%>
 	<c:if test="${not empty param.error}">
-		<font style="color: red; font-style: italic;">
-			Erreur d'authentification. Identifiant ou mot de passe invalide. <br/>
-			<b>Raison<b/> : ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} 			
-		</font>
-	</c:if>
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" style="position:absolute;top:10px;right:0">
 
+			<font style="color: red; font-style: italic;">
+				Erreur d'authentification. Identifiant ou mot de passe invalide. <br/>
+				<b>Raison<b/> : ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} 			
+			</font>
+		
+		  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>	
+		</div>
+	</c:if>	
+	
+	
+	
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- ++++++ FORMULAIRE D'AUTHENTIFICATION ++++++++++++++++ -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->      
@@ -56,7 +68,7 @@
 
 	<!-- formulaire -->
 	<form action="${loginUrl}" method="post" class="form-signin">
-		
+	
 		<!-- HEADER -->
 		<h1 class="fa fa-user-o fa-3x" style="align-content: center;color:white; font-size:8em; margin-bottom:50px"></h1>
       
@@ -72,6 +84,8 @@
      	<label for="inputPassword" class="sr-only">Mot de passe</label>
       	<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" >		
 	
+	
+		<!-- BUTTONS -->
 		<div class="container-fluid" style="margin-top:20px" >
 			<div class="row" >
 			  <button type="submit" value="Se connecter" class="btn btn-lg btn-info btn-block" style="margin-left:0">Se connecter </button> 
@@ -79,23 +93,7 @@
 			  <button type="reset" value="Reset" class="btn btn-lg btn-info btn-block" style="margin-right:0" >Reset </button>
 	  		</div>
 		</div>
-
-<%--  
-		<table>
-			<tr>
-				<td>Identifiant :</td>
-				<td><input type="text" name="username" /></td>
-			</tr>
-			<tr>
-				<td>Mot de passe :</td>
-				<td><input type="text" name="password" /></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input type="submit" value="Se connecter" /> |
-					<input type="reset" value="Reset" /></td>
-			</tr>
-		</table>
---%>				
+		
 		
 	</form>
 
@@ -109,6 +107,9 @@
         <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          
   </footer>
+
+
+
 
 </body>
 </html>

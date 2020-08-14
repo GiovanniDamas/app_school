@@ -30,7 +30,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.intiformation.appschool.modeles.Cours;
+import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IPromotionService;
 
@@ -68,6 +72,18 @@ public class GestionEtudiantsController {
 	 */
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
+	}
+	
+	//déclaration couche service de etudiantcours 
+	@Autowired 
+	private IEtudiantCoursService etudiantCoursService;
+
+	/**
+	 * setter de etudiantCoursService pour injection par modificateur
+	 * @param etudiantCoursService
+	 */
+	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
+		this.etudiantCoursService = etudiantCoursService;
 	}
 
 	/**
@@ -184,6 +200,17 @@ public class GestionEtudiantsController {
 			// Ajout etudiant via couche service
 
 			etudiantsService.ajouterEtudiant(pEtudiant);
+			
+			// ajout de l'étudiants dans la liste de présence des cours de sa promo
+			List<Cours> listeCoursPromo = pEtudiant.getPromotion().getCoursPromotion();
+			
+			for (Cours cours : listeCoursPromo) {
+			
+				EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+				etudiantCoursToAdd.setCours(cours);
+				etudiantCoursToAdd.setEtudiant(pEtudiant);
+				etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+			}
 
 			// Recup nouvelle liste d'etudiant après ajout
 
@@ -198,6 +225,35 @@ public class GestionEtudiantsController {
 			if (file.isEmpty()) {
 
 				pEtudiant.getPhoto();
+				
+				//vérification si modif de la promotion
+				Etudiants etudiantUpdate = etudiantsService.findEtudiantById(pEtudiant.getIdPersonne());
+				
+				if (etudiantUpdate.getPromotion().equals(pEtudiant.getPromotion())){
+					//pas de modif dans etudiantcours
+				
+				} else {
+					
+					// suppression des cours de l'ancienne promo de l'étudiant dans etudiantcours
+					Promotion anciennePromo = etudiantUpdate.getPromotion();
+					List<Cours> anciensCours = anciennePromo.getCoursPromotion();
+					
+					for (Cours cours : anciensCours) {
+						etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(pEtudiant.getIdEtudiant(), cours.getIdCours()));
+					}//end for each
+								
+					// ajout des cours de la nouvelle promo de l'étudiant dans etudiantcours
+					List<Cours> listeCoursPromo = pEtudiant.getPromotion().getCoursPromotion(); 
+					
+					for (Cours cours : listeCoursPromo) {
+						
+						EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+						etudiantCoursToAdd.setCours(cours);
+						etudiantCoursToAdd.setEtudiant(pEtudiant);
+						etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+					}//end for each
+					
+				}// end else			
 
 				// Modif etudiant via couche service
 

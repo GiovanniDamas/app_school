@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intiformation.appschool.dao.IEtudiantCoursDAO;
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Etudiants;
 
 /**
  * implémentation concrète de la couche service pour les EtudiantCours
@@ -139,5 +141,13 @@ public class EtudiantCoursServiceImpl implements IEtudiantCoursService{
 		
 		return null;
 	}//end findEtudiantCoursPersonne
+	
+	/**
+	 * permet de récupérer l'id d'un EtudiantCours à partir de l'étudiant et du cours
+	 */
+	@Override
+	public Long findIdEtudiantCours(Long pIdEtudiant, Long pIdCours) {
+		return etudiantCoursDAO.getIdEtudiantCours(pIdEtudiant, pIdCours);
+	}//end findIdEtudiantCours
 
 }//end class

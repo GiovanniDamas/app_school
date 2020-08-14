@@ -6,31 +6,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.taglibs.standard.tag.el.fmt.ParseDateTag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.intiformation.appschool.modeles.Administrateurs;
 import com.intiformation.appschool.modeles.Cours;
-import com.intiformation.appschool.modeles.Enseignants;
+import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Personnes;
+import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
@@ -94,6 +89,14 @@ public class GestionCoursController {
 
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
+	}
+	
+	//___ déclaration du service de etudiantcours avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEtudiantCoursService etudiantCoursService;
+
+	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
+		this.etudiantCoursService = etudiantCoursService;
 	}
 
 	//___ déclaration du validateur
@@ -203,6 +206,16 @@ public class GestionCoursController {
 				
 				//2.b ajout du cours dans la bdd
 				coursService.ajouterCours(pCours);
+
+				// ajout des étudiants de la promo liés au cours dans la liste de présence
+				List<Etudiants> listeEtudiantsPromo = pCours.getPromotions().getEtudiantsPromotions();
+				
+				for (Etudiants etudiants : listeEtudiantsPromo) {
+					EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+					etudiantCoursToAdd.setCours(pCours);
+					etudiantCoursToAdd.setEtudiant(etudiants);
+					etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+				}
 				
 				//3. renvoi du nom logique de la vue
 				return "redirect:/cours/liste";	
@@ -256,6 +269,34 @@ public class GestionCoursController {
 			
 		}else {
 				
+				//vérification si modif de la promotion
+				Cours coursUpdate = coursService.findCoursById(pCours.getIdCours());
+				
+				if (coursUpdate.getPromotions().equals(pCours.getPromotions())){
+					//pas de modif dans etudiantcours
+	
+				} else {
+					
+					// suppression des étudiants de l'ancienne promo liée au cours dans etudiantcours
+					Promotion anciennePromo = coursUpdate.getPromotions();
+					List<Etudiants> anciensEtudiants = anciennePromo.getEtudiantsPromotions();
+					
+					for (Etudiants etudiants : anciensEtudiants) {
+						etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(etudiants.getIdEtudiant(), pCours.getIdCours()));
+					}//end for each
+								
+					// ajout des étudiants de la nouvelle promo liés au cours dans etudiantcours
+					List<Etudiants> listeEtudiantsPromo = pCours.getPromotions().getEtudiantsPromotions();
+					
+					for (Etudiants etudiants : listeEtudiantsPromo) {
+						EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+						etudiantCoursToAdd.setCours(pCours);
+						etudiantCoursToAdd.setEtudiant(etudiants);
+						etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+					}
+					
+				}
+			
 				//2.b modif du cours dans la bdd
 				coursService.modifierCours(pCours);
 				

@@ -29,6 +29,7 @@ com\intiformation\appschool\modeles\EtudiantCours.class
 com\intiformation\appschool\controller\GestionMatiereController.class
 com\intiformation\appschool\dao\IGenerique.class
 com\intiformation\appschool\dao\IMatiereDAO.class
+com\intiformation\appschool\controller\WelcomeController.class
 com\intiformation\appschool\dao\PromotionDAOImpl.class
 com\intiformation\appschool\service\IEnseignantsService.class
 com\intiformation\appschool\service\IEtudiantCoursService.class

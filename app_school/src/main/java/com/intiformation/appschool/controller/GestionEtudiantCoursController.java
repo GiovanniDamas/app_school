@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +19,6 @@ import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
-import com.intiformation.appschool.validator.CoursValidator;
 import com.intiformation.appschool.validator.EtudiantCoursValidator;
 
 
@@ -391,7 +389,7 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_liste_presence", etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
-			
+		
 		//5. renvoi du nom logique de la vue
 		return "etudiants-cours/liste-presence";			
 				

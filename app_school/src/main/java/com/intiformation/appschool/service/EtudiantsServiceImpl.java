@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intiformation.appschool.dao.IEtudiantsDAO;
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.Etudiants;
 
 /**

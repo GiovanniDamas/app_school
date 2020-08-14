@@ -2,7 +2,9 @@ package com.intiformation.appschool.service;
 
 import java.util.List;
 
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Etudiants;
 
 /**
  * interface spécifique de la couche service pour les EtudiantCours 
@@ -71,5 +73,10 @@ public interface IEtudiantCoursService {
 	 * permet de récup la liste des absences de la bdd en fonction de la personne connectée
 	 */
 	public List<EtudiantCours> findAbsencesPersonne(Long pIdPersonne, String pRole);
+	
+	/**
+	 * permet de récupérer l'id d'un EtudiantCours à partir de l'étudiant et du cours
+	 */
+	public Long findIdEtudiantCours(Long pIdEtudiant, Long pIdCours);
 	
 }//end interface

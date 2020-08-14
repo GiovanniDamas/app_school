@@ -105,7 +105,6 @@
 					<th scope="col">Date de Naissance</th>
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
-					<th scope="col">Mot de passe</th>
 					<th scope="col">Photo</th>
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
@@ -121,7 +120,6 @@
 						<td>${etu.dateDeNaissance}</td>
 						<td>${etu.email}</td>
 						<td>${etu.identifiant}</td>
-						<td>${etu.motDePasse}</td>
 						<td>
 						<img src="${pageContext.request.contextPath}/resources/Images/${etu.photo}" height="20%" width="100%">
 						</td>

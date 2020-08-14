@@ -103,7 +103,6 @@
 					<th scope="col">Prénom</th>
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
-					<th scope="col">Mot de passe</th>
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
 				</tr>
@@ -116,7 +115,6 @@
 						<th>${ens.prenom}</th>
 						<td>${ens.email}</td>
 						<td>${ens.identifiant}</td>
-						<td>${ens.motDePasse}</td>
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier

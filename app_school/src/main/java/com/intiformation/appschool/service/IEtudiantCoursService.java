@@ -63,8 +63,13 @@ public interface IEtudiantCoursService {
 	/*________________________________________________________________________________________________________________________*/
 	
 	/**
-	 * permet de récup la liste des absences de la bdd liées à un enseignant
+	 * permet de récup la liste de présence de la bdd en fonction de la personne connectée
 	 */
-	public List<EtudiantCours> findAbsenceEnseignant(Long pIdEnseignant);
+	public List<EtudiantCours> findEtudiantCoursPersonne(Long pIdPersonne, String pRole);
+	
+	/**
+	 * permet de récup la liste des absences de la bdd en fonction de la personne connectée
+	 */
+	public List<EtudiantCours> findAbsencesPersonne(Long pIdPersonne, String pRole);
 	
 }//end interface

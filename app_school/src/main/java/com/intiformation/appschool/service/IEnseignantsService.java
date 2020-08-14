@@ -42,5 +42,7 @@ public interface IEnseignantsService {
 	 */
 	public List<Enseignants> findAllEnseignant();
 
+	public Enseignants findEnseignantByIdentifiant(String pIdentifiant);
+
 
 }//END INTERFACE

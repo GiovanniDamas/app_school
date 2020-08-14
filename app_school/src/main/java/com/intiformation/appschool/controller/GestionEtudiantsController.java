@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.service.IEtudiantsService;
+import com.intiformation.appschool.service.IPromotionService;
 
 /**
  * @author giovanni
@@ -55,6 +56,18 @@ public class GestionEtudiantsController {
 	 */
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
+	}
+	
+	//déclartion couche service promotion
+	@Autowired
+	private IPromotionService promotionService;
+
+	/**
+	 * setter de promotionservice pour injection par modificateur
+	 * @param promotionService
+	 */
+	public void setPromotionService(IPromotionService promotionService) {
+		this.promotionService = promotionService;
 	}
 
 	/**
@@ -99,7 +112,7 @@ public class GestionEtudiantsController {
 			Etudiants etudiant = new Etudiants();
 
 			// Renvoi de l'objet vers la vue
-
+			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());
 			model.addAttribute("attribut_etudiants", etudiant);
 			model.addAttribute("idPersonne", pIdEtudiant);
 
@@ -110,7 +123,7 @@ public class GestionEtudiantsController {
 			Etudiants etudiantToUpdate = etudiantsService.findEtudiantById(pIdEtudiant);
 
 			// Renvoi de l'objet vers la vue
-
+			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());
 			model.addAttribute("attribut_etudiants", etudiantToUpdate);
 			model.addAttribute("idPersonne", pIdEtudiant);
 			model.addAttribute("photo", etudiantToUpdate.getPhoto());

@@ -54,4 +54,25 @@ public interface ICoursDAO extends IGenerique<Cours> {
 	 */
 	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate);
 	
+	/**
+	 * permet de récup la liste des cours de la bdd par matière associés à une personne (enseignant)
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	public List<Cours> afficherCoursEnseignantMatiere(Long pIdEnseignant, Long pIdMatiere);
+	
+	/**
+	 * permet de récup la liste des cours de la bdd par matière associés à une personne (etudiant)
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	public List<Cours> afficherCoursEtudiantMatiere(Long pIdEnseignant, Long pIdMatiere);
+
+	/**
+	 * permet de récup la liste des cours de la bdd par promotion associés à une personne (enseignant)
+	 * @param pIdPromotion : l'id de la promotion
+	 * @return
+	 */
+	public List<Cours> afficherCoursEnseignantByPromotion(Long pIdEnseignant, Long pIdPromotion);
+	
 }//end interface

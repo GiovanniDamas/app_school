@@ -298,11 +298,11 @@ public class CoursDAOImpl implements ICoursDAO{
 			
 			//construction requête HQL
 			Query<Cours> getCoursByEtudiantQuery = session.createQuery("SELECT c FROM Cours c, "
-																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Etudiants e, "
 																			+ "Promotion p "
 																			+ "WHERE c.promotions.idPromotion = p.idPromotion "
-																			+ "AND link.promotion.idPromotion = p.idPromotion "
-																			+ "AND link.etudiant.idPersonne = :pIdEtudiant");
+																			+ "AND p.idPromotion = e.promotion.idPromotion "
+																			+ "AND e.idPersonne = :pIdEtudiant");
 			
 			//passage de paramètre
 			getCoursByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
@@ -353,5 +353,118 @@ public class CoursDAOImpl implements ICoursDAO{
 		
 		}//end catch
 	}//end afficherCoursEnseignantByDate
+
+	/**
+	 * permet de récup la liste des cours de la bdd par matière associés à une personne (enseignant)
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	@Override
+	public List<Cours> afficherCoursEnseignantMatiere(Long pIdEnseignant, Long pIdMatiere) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Cours> getCoursEnseignantByMatiereQuery = session.createQuery("SELECT c FROM Cours c, "
+																					+ "EnseignantMatierePromotionLink link, "
+																					+ "Matiere m "
+																					+ "WHERE c.matieres.idMatiere = m.idMatiere "
+																					+ "AND link.matiere.idMatiere = m.idMatiere "
+																					+ "AND link.enseignant.idPersonne = :pIdEnseignant "
+																					+ "AND m.idMatiere = :pIdMatiere");
+					
+			//passage de paramètre
+			getCoursEnseignantByMatiereQuery.setParameter("pIdMatiere", pIdMatiere);
+			getCoursEnseignantByMatiereQuery.setParameter("pIdEnseignant", pIdEnseignant);
+					
+			//envoi, execution et récup résultat
+			return getCoursEnseignantByMatiereQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEnseignantMatiere ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherCoursEnseignantMatiere
+	
+	/**
+	 * permet de récup la liste des cours de la bdd par matière associés à une personne (etudiant)
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	@Override
+	public List<Cours> afficherCoursEtudiantMatiere(Long pIdEtudiant, Long pIdMatiere) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Cours> getCoursEtudiantByMatiereQuery = session.createQuery("SELECT c FROM Cours c, "
+																						+ "EnseignantMatierePromotionLink link, "
+																						+ "Promotion p "
+																						+ "WHERE c.promotions.idPromotion = p.idPromotion "
+																						+ "AND link.promotion.idPromotion = p.idPromotion "
+																						+ "AND link.etudiant.idPersonne = :pIdEtudiant "
+																						+ "AND c.matieres.idMatiere = :pIdMatiere");
+			//passage de paramètre
+			getCoursEtudiantByMatiereQuery.setParameter("pIdMatiere", pIdMatiere);
+			getCoursEtudiantByMatiereQuery.setParameter("pIdEtudiant", pIdEtudiant);
+					
+			//envoi, execution et récup résultat
+			return getCoursEtudiantByMatiereQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEtudiantMatiere ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherCoursEtudiantMatiere
+	
+	/**
+	 * permet de récup la liste des cours de la bdd par promotion associés à une personne (enseignant)
+	 * @param pIdPromotion : l'id de la promotion
+	 * @return
+	 */
+	@Override
+	public List<Cours> afficherCoursEnseignantByPromotion(Long pIdEnseignant, Long pIdPromotion) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Cours> getCoursEnseignantByPromoQuery = session.createQuery("SELECT c FROM Cours c, "
+																					+ "EnseignantMatierePromotionLink link, "
+																					+ "Matiere m "
+																					+ "WHERE c.matieres.idMatiere = m.idMatiere "
+																					+ "AND link.matiere.idMatiere = m.idMatiere "
+																					+ "AND link.enseignant.idPersonne = :pIdEnseignant "
+																					+ "AND c.promotions.idPromotion = :pIdPromotion");
+					
+			//passage de paramètre
+			getCoursEnseignantByPromoQuery.setParameter("pIdPromotion", pIdPromotion);
+			getCoursEnseignantByPromoQuery.setParameter("pIdEnseignant", pIdEnseignant);
+					
+			//envoi, execution et récup résultat
+			return getCoursEnseignantByPromoQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherCoursEnseignantByPromotion ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherCoursEnseignantByPromotion
 
 }//end class

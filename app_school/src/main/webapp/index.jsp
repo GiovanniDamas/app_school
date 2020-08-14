@@ -1,3 +1,6 @@
+<%@page import="com.intiformation.appschool.modeles.Enseignants"%>
+<%@page import="com.intiformation.appschool.service.EnseignantsServiceImpl"%>
+<%@page import="com.intiformation.appschool.service.IEnseignantsService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -51,30 +54,33 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
-	<!-- Affichage d'un message lors de la déconnexion -->
 
-	<c:if test="${not empty param.logout_message}">
-		<font style="color: red;"> Déconnexion avec succès </font>
-	</c:if>
 
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
 		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, <s:authentication property="name"/> <s:authentication property="authorities"/>
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-secondary" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
 			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
-				type="button" class="btn btn-secondary"> <span class="fa fa-user-circle" ></span> Se Connecter</a>
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
 		</s:authorize>
-
+		</div>
 
 	</div>
-
-
 
 	<div class="wrapper">
 
@@ -117,10 +123,21 @@
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
 		<div id="content">
+							
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
 
+		<!-- Affichage d'un message lors de la déconnexion -->
+	    <div style="padding: 20px;"> 
+	
+		<c:if test="${not empty param.logout_message}">
+			<div class="alert alert-dismissible alert-success col-12" style="float: right;">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<font> Déconnexion avec succès </font>
+			</div>
+		</c:if>
+	
 			<br />
 
 			<!--Put some content here-->
@@ -135,6 +152,7 @@
 				perspiciatis sed libero! Adipisci officiis, ea labore vel explicabo
 				magnam illo eius!</p>
 
+		</div>
 		</div>
 	</div>
 	<!-- end wrapper -->

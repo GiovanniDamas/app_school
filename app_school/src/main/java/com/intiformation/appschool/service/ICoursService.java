@@ -63,25 +63,11 @@ public interface ICoursService {
 	 * @return la liste des cours à la date souhaitée
 	 */
 	public List<Cours> findCoursParDate(Date pDate);
-		
-	/**
-	 * permet de récup la liste des cours de la bdd d'un enseignant
-	 * @param pIdEnseignant : l'enseignant
-	 * @return
-	 */
-	public List<Cours> findCoursEnseignant(Long pIdEnseignant);
-	
-	/**
-	 * permet de récup la liste des cours de la bdd d'un etudiant
-	 * @param pIdEtudiant : l'etudiant
-	 * @return
-	 */
-	public List<Cours> findCoursEtudiant(Long pIdEtudiant);
 	
 	/**
 	 * permet de récup la liste des cours de la bdd d'un enseignant à une date donnée
 	 */
-	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate);
+	public List<Cours> findCoursEnseignantByDate(Long pIdEnseignant, Date pDate);
 	
 	/**
 	 * permet de récup la liste des cours de la bdd associés à une personne
@@ -89,5 +75,24 @@ public interface ICoursService {
 	 * @return
 	 */
 	public List<Cours> findCoursPersonne(Long pIdPersonne, String pRole);
+	
+	/**
+	 * Méthode pour afficher la liste des cours par matière associés à une personne
+	 * @param pIdMatiere
+	 * @return la liste des cours de la matière souhaitée
+	 */
+	public List<Cours> findCoursPersonneMatiere(Long pIdPersonne, String pRole, Long pIdMatiere);
+	
+	/**
+	 * permet de récup la liste des cours de la bdd d'une promotion associés à une personne
+	 */
+	public List<Cours> findCoursPersonneByPromotion(Long pIdPersonne, Long pIdPromotion, String pRole);
+	
+	/**
+	 * méthode pour affichier la liste des cours par date associés à une personne
+	 * @param pDate
+	 * @return la liste des cours à la date souhaitée
+	 */
+	public List<Cours> findCoursPersonneByDate(Long pIdPersonne, String pRole, Date pDate);
 	
 }//end interface

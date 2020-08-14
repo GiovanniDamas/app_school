@@ -8,8 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Liste des cours</title>
-
-
    
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
@@ -24,13 +22,9 @@
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
     
-<link href="${pageContext.request.contextPath}/resources/styles/perso.css"
-    rel="stylesheet">
-    
-<script src="https://kit.fontawesome.com/9dde17f0e3.js" crossorigin="anonymous"></script>
-
+    <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 </head>
 
@@ -40,13 +34,30 @@
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
     <div id="divhaute" class="container-fluid col-lg-12">
-        <h1 id="titre"> SchoolApp </h1>
-        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
-            <span class="fa fa-user-circle"></span>
-            Connexion
-        </a>
-    </div>
+		<h1 id="titre">SchoolApp</h1>
+		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+		</s:authorize>
 
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
+		</div>
+
+	</div>
 
 <div class="wrapper">
 
@@ -59,8 +70,6 @@
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-	
-	
 		<div class="sidebar-header">
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
@@ -76,19 +85,18 @@
     </ul>
     
 	</nav>
-	
-	
+		
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
 	<!-- ===================================================== -->
-  <div id="content" style="width:100%">
+  <div id="content" style="width:100%" align="left">
      <button type="button" id="sidebarCollapse" class="navbar-btn">
          <span></span>
          <span></span>
          <span></span>
      </button>
 
-
+	<div style="padding: 30px;">
 	 <h3>Liste de l'ensemble des cours</h3>
 	 
 	 <br/>
@@ -138,10 +146,10 @@
 	 <s:authentication property="authorities" var="authorites"/>
 	 
 	 <c:if test="${authorites.authority} == 'ROLE_ENSEIGNANT' "></c:if>
-	 --%>
+
 	 	 <br/><br/><br/><br/>
 	 
-	 <div>
+	 <div class="content">
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-enseignant">
 	 	 <label for="recherche-enseignant">Rechercher cours d'un enseignant : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-enseignant" name="id-enseignant">
@@ -155,10 +163,9 @@
   	</div>
 	 
 	 	 <br/><br/><br/><br/>
-	 
+	 --%>	 
 	 <%-- ================================================================================================== --%>
-	 
-	 
+	 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-matiere">
 	 	 <label for="recherche-matiere">Rechercher par matière : </label>	 	
@@ -199,9 +206,9 @@
   	
   	<br/><br/>
 	 
- 	<table class="table table-hover" style="width:90%;margin-left:5%";text-align: center">
+ 	<table class="table table-hover" style="width:90%; margin-left:5%";">
 	 	
- 	  <thead>
+ 	  <thead style="text-align: center;">
     		<tr>
       			<th scope="col">Id Cours</th>
       			<th scope="col">Libellé</th>
@@ -217,7 +224,7 @@
 	 
 	 <c:forEach items="${attribut_liste_cours}" var="cours">
 	 	
-	 	  <tbody>
+	 	  <tbody style="text-align: center;">
 	 	  
 	 	  	<tr>
 	 			<td>${cours.idCours}</td>
@@ -266,8 +273,8 @@
 		Ajouter un cours
 	</a>
 	
-	
-	
+	<br/><br/>
+	</div>
 	</div><!-- end content -->
 </div><!-- end wrapper -->
 
@@ -281,7 +288,6 @@
         <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          
   </footer>
-
 
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->

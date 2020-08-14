@@ -66,4 +66,24 @@ public class MatiereServiceImpl implements IMatiereService {
 		return matiereDAO.getAll();
 	}//end trouverAllMatieres
 
+	@Override
+	public List<Matiere> findMatiereByPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return matiereDAO.getAll();
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return matiereDAO.afficherMatiereByEnseignant(pIdPersonne);
+			
+		} else if (pRole.contains("ROLE_ETUDIANT")){
+			//cas d'un role = ROLE_ETUDIANT
+			return matiereDAO.afficherMatiereByEtudiant(pIdPersonne);
+			
+		}//end else
+		
+		return null;		
+	}//end findMatiereByPersonne
+
 }// end classe

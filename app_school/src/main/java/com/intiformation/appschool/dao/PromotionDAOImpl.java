@@ -170,5 +170,78 @@ public class PromotionDAOImpl implements IPromotionDAO {
 			throw e;
 		} // end catch		
 	}//end getAll()
+	
+	/*_______________________________________________________________________________________________________*/
+	/**
+	 * permet de récup la liste des promotions associés à une personne (enseignant)
+	 * @param pIdEnseignant : l'id de l'enseignant
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Promotion> afficherPromotionByEnseignant(Long pIdEnseignant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+																					+ "EnseignantMatierePromotionLink link, "
+																					+ "Enseignants e "
+																					+ "WHERE p.idPromotion = link.promotion.idPromotion "
+																					+ "AND link.enseignant.idPersonne = e.idPersonne "
+																					+ "AND e.idPersonne = :pIdEnseignant ");
+					
+			//passage de paramètre
+			getPromotionByEnseignantQuery.setParameter("pIdEnseignant", pIdEnseignant);
+					
+			//envoi, execution et récup résultat
+			return getPromotionByEnseignantQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherPromotionByEnseignant ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherPromotionByEnseignant
+	
+	/**
+	 * permet de récup la liste des promotions associés à une personne (etudiant)
+	 * @param pIdEtudiant : l'id de l'étudiant
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Promotion> afficherPromotionByEtudiant(Long pIdEtudiant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+																					+ "Etudiants e "
+																					+ "WHERE p.idPromotion = e.promotion.idPromotion "
+																					+ "AND e.idPersonne = :pIdEtudiant ");
+					
+			//passage de paramètre
+			getPromotionByEnseignantQuery.setParameter("pIdEtudiant", pIdEtudiant);
+					
+			//envoi, execution et récup résultat
+			return getPromotionByEnseignantQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherPromotionByEnseignant ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherPromotionByEnseignant
 
 }// end classe

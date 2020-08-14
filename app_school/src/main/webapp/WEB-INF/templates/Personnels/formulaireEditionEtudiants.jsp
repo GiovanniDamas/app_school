@@ -11,6 +11,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Formulaire pour l'édition de l'étudiant</title>
+
+     <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+
 </head>
 <body>
 
@@ -34,8 +38,7 @@
 				<c:if test="${idPersonne} != 0"></c:if>
 				<td><form:hidden path="idPersonne" /></td>
 				<td><form:hidden path="photo" /></td>
-
-
+				<td><form:hidden path="role" /></td>
 			</tr>
 
 			<table width="60%">
@@ -79,6 +82,17 @@
 					<td><form:label path="photo" />Photo</td>
 					<td><input  type="file" name="file" /></td>
 
+				</tr>
+				
+				<tr>
+			  		<td><form:label path="promotion.idPromotion">Promotion</form:label></td>
+					<td>
+					<form:select path="promotion.idPromotion" class="form-control">
+            			<form:option value="" label="--Sélectionner la promotion"/>
+           				<form:options items="${attribut_promotions}" itemValue="idPromotion" itemLabel="libelle"/>
+         			</form:select>
+         			</td>  				
+         			<td><form:errors path="promotion.idPromotion" cssStyle="color:red; font-style:italic;"/><td>
 				</tr>
 
 				<tr>

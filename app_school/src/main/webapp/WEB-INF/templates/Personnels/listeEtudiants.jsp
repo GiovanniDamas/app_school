@@ -26,7 +26,9 @@
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
+    
+    <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 	<style>
 	
@@ -106,7 +108,9 @@
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
 					<th scope="col">Mot de passe</th>
+					<th scope="col">Role</th>
 					<th scope="col">Photo</th>
+					<th scope="col">Promotion</th>				
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
 				</tr>
@@ -118,7 +122,7 @@
 						<th scope="row">${etu.idPersonne}</th>
 						<th>${etu.nom}</th>
 						<th>${etu.prenom}</th>
-						<td>${etu.dateDeNaissance}</td>
+						<td><fmt:formatDate value="${etu.dateDeNaissance}" pattern="dd/MM/yyyy"/></td>
 						<td>${etu.email}</td>
 						<td>${etu.identifiant}</td>
 						<td>${etu.motDePasse}</td>
@@ -126,6 +130,7 @@
 						<td>
 						<img src="${pageContext.request.contextPath}/resources/Images/${etu.photo}" height="5%" width="10%">
 						</td>
+						<td>${etu.promotion.libelle}</td>
 						
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"

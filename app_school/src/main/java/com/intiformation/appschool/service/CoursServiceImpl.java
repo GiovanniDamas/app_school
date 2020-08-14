@@ -95,26 +95,10 @@ public class CoursServiceImpl implements ICoursService{
 	}//end findCoursParDate
 
 	/**
-	 * permet de récup la liste des cours d'un enseignant
-	 */
-	@Override
-	public List<Cours> findCoursEnseignant(Long pIdEnseignant) {
-		return coursDAO.afficherCoursEnseignant(pIdEnseignant);
-	}
-	
-	/**
-	 * permet de récup la liste des cours d'un etudiant
-	 */
-	@Override
-	public List<Cours> findCoursEtudiant(Long pIdEtudiant) {
-		return coursDAO.afficherCoursEtudiant(pIdEtudiant);
-	}
-
-	/**
 	 * permet de récup la liste des cours de la bdd d'un enseignant à une date donnée
 	 */
 	@Override
-	public List<Cours> afficherCoursEnseignantByDate(Long pIdEnseignant, Date pDate) {
+	public List<Cours> findCoursEnseignantByDate(Long pIdEnseignant, Date pDate) {
 		return coursDAO.afficherCoursEnseignantByDate(pIdEnseignant, pDate);
 	}
 
@@ -126,21 +110,87 @@ public class CoursServiceImpl implements ICoursService{
 	@Override
 	public List<Cours> findCoursPersonne(Long pIdPersonne, String pRole) {
 		
-		if (pRole == "ROLE_ADMIN") {
+		if (pRole.contains("ROLE_ADMIN")) {
 			//cas d'un role = ROLE_ADMIN
 			return coursDAO.getAll();
 
-		} else if (pRole == "ROLE_ENSEIGNANT"){
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
 			//cas d'un role = ROLE_ENSEIGNANT
 			return coursDAO.afficherCoursEnseignant(pIdPersonne);
 
-		} else if (pRole == "ROLE_ETUDIANT") {
+		} else if (pRole.contains("ROLE_ETUDIANT")) {
 			//cas d'un role = ROLE_ETUDIANT
 			return coursDAO.afficherCoursEtudiant(pIdPersonne);
 			
 		}//end else
 		
 		return null;
-	}
+	}//end findCoursPersonne
+	
+	/**
+	 * permet de récup la liste des cours de la bdd associés à une personne d'une matière
+	 * @param pIdPersonne : l'id de la personne
+	 * @return
+	 */
+	@Override
+	public List<Cours> findCoursPersonneMatiere(Long pIdPersonne, String pRole, Long pIdMatiere){
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return coursDAO.afficherCoursParMatiere(pIdMatiere);
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return coursDAO.afficherCoursEnseignantMatiere(pIdPersonne, pIdMatiere);
+
+		} else if (pRole.contains("ROLE_ETUDIANT")) {
+			//cas d'un role = ROLE_ETUDIANT
+			return coursDAO.afficherCoursEtudiantMatiere(pIdPersonne, pIdMatiere);
+			
+		}//end else
+		
+		return null;
+	}//end findCoursPersonneMatiere
+
+	/**
+	 * permet de récup la liste des cours de la bdd associés à une personne d'une promotion
+	 */
+	@Override
+	public List<Cours> findCoursPersonneByPromotion(Long pIdPersonne, Long pIdPromotion, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return coursDAO.afficherCoursParPromotion(pIdPromotion);
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return coursDAO.afficherCoursEnseignantByPromotion(pIdPersonne, pIdPromotion);
+			
+		}//end else
+		
+		return null;	
+		
+	}//end findCoursEnseignantByPromotion
+
+	/**
+	 * méthode pour affichier la liste des cours par date associés à une personne
+	 * @param pDate
+	 * @return la liste des cours à la date souhaitée
+	 */
+	@Override
+	public List<Cours> findCoursPersonneByDate(Long pIdPersonne, String pRole, Date pDate) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return coursDAO.afficherCoursParDate(pDate);
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return coursDAO.afficherCoursEnseignantByDate(pIdPersonne, pDate);
+			
+		}//end else
+		
+		return null;		
+	}//end findCoursPersonneByDate
 
 }//end class

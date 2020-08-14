@@ -56,7 +56,7 @@ public class GestionAdministrateursController {
 
 		// 3. renvoie du nom logique de la vue
 
-		return "Personnels/listeAdministrateurs";
+		return "personnels/listeAdministrateurs";
 
 	}// END RECUP LISTE
 
@@ -95,7 +95,7 @@ public class GestionAdministrateursController {
 
 		} // END IF ELSE IF
 
-		return "Personnels/formulaireEditionAdministrateurs";
+		return "personnels/formulaireEditionAdministrateurs";
 
 	}// END METHODE
 
@@ -135,7 +135,7 @@ public class GestionAdministrateursController {
 
 			model.addAttribute("attribut_liste_admin", adminService.findAllAdministrateur());
 
-			return "Personnels/listeAdministrateurs";
+			return "personnels/listeAdministrateurs";
 
 		}
 		if (pAdmin.getIdPersonne() != 0) {
@@ -163,7 +163,7 @@ public class GestionAdministrateursController {
 
 			model.addAttribute("attribut_liste_admin", adminService.findAllAdministrateur());
 
-			return "Personnels/listeAdministrateurs";
+			return "personnels/listeAdministrateurs";
 
 		} // END IF
 
@@ -189,7 +189,7 @@ public class GestionAdministrateursController {
 
 		model.addAttribute("attribut_liste_admin", adminService.findAllAdministrateur());
 
-		return "Personnels/listeAdministrateurs";
+		return "personnels/listeAdministrateurs";
 
 	}// END SUPPRIMER
 

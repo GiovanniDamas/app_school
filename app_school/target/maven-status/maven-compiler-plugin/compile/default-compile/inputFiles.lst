@@ -25,6 +25,7 @@
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/AdresseServiceImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEtudiantsDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IAideService.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/validator/EtudiantValidator.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/AdministrateursServiceImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEnseignantsDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IEtudiantsService.java
@@ -43,6 +44,7 @@
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/IMatiereDAO.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/AdresseDAOImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/service/IPromotionService.java
+/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/validator/EnseignantValidator.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/EtudiantsDAOImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/EtudiantCoursDAOImpl.java
 /Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/java/com/intiformation/appschool/dao/MatiereDAOImpl.java

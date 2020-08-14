@@ -13,14 +13,15 @@
 
 
 		<sec:intercept-url pattern="/index*"
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />	
 		<sec:intercept-url pattern="/Personnels/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/etudiants-cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
-
+		<sec:intercept-url pattern="/liste-aide.jsp"
+			access="hasAnyRole('ROLE_ADMIN')" />
 
 		<!-- ================== Formulaire personnalisé ======================== -->
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 
@@ -122,6 +122,21 @@ public class GestionEnseignantsController {
 		
 		if (pEnseignant.getIdPersonne() == null) {
 
+			//recup mdp 
+			String MDP = pEnseignant.getMotDePasse();
+			
+			// objet pour le  cryptage
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			// cryptage du mot de passe avec la méthode encode()
+			String hashedMotDePasse = passwordEncoder.encode(MDP);
+			
+			// passage du mdp crypté
+			pEnseignant.setMotDePasse(hashedMotDePasse);
+			
+			// passage du role 
+			pEnseignant.setRole("ROLE_ENSEIGNANT");
+			
 			// Ajout enseignant via couche service
 
 			enseignantsService.ajouterEnseignant(pEnseignant);
@@ -135,6 +150,21 @@ public class GestionEnseignantsController {
 		}
 		if (pEnseignant.getIdPersonne() != 0) {
 
+			//recup mdp 
+			String MDP = pEnseignant.getMotDePasse();
+			
+			// objet pour le  cryptage
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			
+			// cryptage du mot de passe avec la méthode encode()
+			String hashedMotDePasse = passwordEncoder.encode(MDP);
+			
+			// passage du mdp crypté
+			pEnseignant.setMotDePasse(hashedMotDePasse);
+			
+			// passage du role 
+			pEnseignant.setRole("ROLE_ENSEIGNANT");
+			
 			// Modif enseignant via couche service
 
 			enseignantsService.modifierEnseignant(pEnseignant);

@@ -24,6 +24,7 @@
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
 	<style>
 	
@@ -66,8 +67,8 @@
     <ul class="sidebar-links">
       <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
       <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  

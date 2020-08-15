@@ -47,7 +47,6 @@ public class GestionMatiereController {
 	// Declaration du validator:
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
-	// //
 
 	/**
 	 * <pre>
@@ -60,7 +59,7 @@ public class GestionMatiereController {
 	 *            model de données à renvoyer à la vue
 	 * @return
 	 */
-	@RequestMapping(value = "/matiere/liste", method = RequestMethod.GET)
+	@RequestMapping(value = "/matiere/liste-matiere", method = RequestMethod.GET)
 	public String recupererListeMatieresDB(ModelMap model) {
 
 		// 1. Récupération de la liste des matières dans la databse via le service
@@ -80,8 +79,8 @@ public class GestionMatiereController {
 	 * 
 	 * @return le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/delete/{matiere-id}", method = RequestMethod.GET)
-	public String supprimerMatiereDB(@PathVariable("matiere-id") Long pIdMatiere, ModelMap model) {
+	@RequestMapping(value = "/matiere/delete", method = RequestMethod.GET)
+	public String supprimerMatiereDB(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		// 1. Suppresion de la matière de la database via le service
 		matiereService.supprimerMatiere(pIdMatiere);
@@ -92,45 +91,56 @@ public class GestionMatiereController {
 		// 3. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_matieres", listeMatieresDB);
 
-		
 		// 4 OU : rédirection vers l'url '/employe/liste' pour invoquer la méthode
 		// 'recupererListeEmployesDB' et rediriger vers liste-employes.jsp
-		return "redirect:/matiere/liste";
+		return "redirect:/matiere/liste-matiere";
 
 	}// end supprimerEmployeDB
-	
+
 	/**
 	 * <pre>
 	 * Permet d'afficher le formulaire d'ajout d'une matiere
 	 * Méthode invoquée suite au clic sur le lien '' de liste-matiere.jsp 
 	 * Invoquée avec une requete HTTP GET ayant url "/matiere/add-matiere-form"
 	 * </pre>
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/matiere/add-matiere-form", method = RequestMethod.GET)
+	@RequestMapping(value = "/matiere/edit-matiere-form", method = RequestMethod.GET)
 	// @GetMapping
-	public ModelAndView afficherFormulaireAjout() {
+	public ModelAndView afficherFormulaire(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
-		// 1. Définition d'un objet de commande pour lier les champs
+		if (pIdMatiere == 0) {
 
-		// 1.1 L'objet de commande: objet Matiere vide
-		Matiere matiere = new Matiere();
+			Matiere matiere = new Matiere();
 
-		// 1.2 affectation d'un nom à l'objet de commande (par défaut : ... Command)
-		String nomObjetCommande = "matiereCommand";
+			String nomObjetCommande = "matiereCommand";
 
-		// 2. Envoi de l'objet de commande vers la vue (page du formulaire)
-		Map<String, Object> dataCommand = new HashMap<>();
-		dataCommand.put(nomObjetCommande, matiere);
+			Map<String, Object> dataCommand = new HashMap<>();
+			dataCommand.put(nomObjetCommande, matiere);
 
-		// 3. Définition du nom logique de la vue
-		String viewName = "ajouter-matiere";
+			String viewName = "matiere-formulaire";
 
-		// Renvoie de l'objet ModelAndView vers la dispatcherServle
-		return new ModelAndView(viewName, dataCommand);
+			return new ModelAndView(viewName, dataCommand);
 
-	}// end afficherFormulaireAjout
-	
+			// model.addAttribute("attribut_matiere", matiere);
+			// model.addAttribute("idMatiere", pIdMatiere);
+
+		} else {
+
+			Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
+
+			System.out.println("Id matiere to update = " + matiereToUpdate.getIdMatiere());
+		
+			return new ModelAndView("matiere-formulaire", "matiereCommand", matiereToUpdate );
+
+			//model.addAttribute("attribut_matiere", matiereToUpdate);
+			//model.addAttribute("idMatiere", pIdMatiere);
+
+		} // end else
+
+	}// end afficherFormulaire
+
 	/**
 	 * <pre>
 	 * Méthode qui permet de rajouter una matiere dans la database 
@@ -138,48 +148,77 @@ public class GestionMatiereController {
 	 * Invoquée avec uen requete HTTP en POST et l'URL '/matiere/add' 
 	 * Cette méthode récupère l'objet de commande 'matiereCommand' lié au formulaire
 	 * </pre>
-	 * @param bindingResult: contient le resultat du processe dd la validation
+	 * 
+	 * @param bindingResult:
+	 *            contient le resultat du processe dd la validation
 	 * @return : le nom logique de la vue
 	 */
 	@RequestMapping(value = "/matiere/add", method = RequestMethod.POST)
 	// @PostMapping
-	public String ajouterMatiereDB(@ModelAttribute("matiereCommand") @Validated Matiere pMatiere, 
-									ModelMap model, BindingResult resultatValidation) {
+	public String ajouterMatiereDB(@ModelAttribute("attribut_matiere") Matiere pMatiere, ModelMap model) {
 
-		
-		// Application du validateur de l'objet pEmploye
-		//employeValidator.validate(pEmploye, resultatValidation);
-		/*
-		// Validation de l'objet
-		if (resultatValidation.hasErrors()) {
-			
-			// CAS 1 : La validation retourne des erreurs : 
-			
-			// redirection vers la page du formulaire  ajouter-employe.jsp
-			
-			return "ajouter-employe"; // nom logique de la vue 
-			
-		}else {
-		*/	
-			// CAS 2 : La validation ne détecte pas d'erreur
-			
-			// 1. Ajout de l'employé à la database via couche service
+		if (pMatiere.getIdMatiere() == null) {
+
+			// Ajout etudiant via couche service
+
 			matiereService.ajouterMatiere(pMatiere);
 
-			// 2. Redirection vers la page 'liste-employes.jsp"
+			// Recup nouvelle liste d'etudiant après ajout
 
-			// 2.1 Récup de la nouvelle liste des employés dans la db
 			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-			// 2.2 Redirection
+			return "liste-matiere";
 
-			return "redirect:/matiere/liste";
-					
-		//}//end else
-				
+		} // end if
+
+		if (pMatiere.getIdMatiere() != 0) {
+
+			// Modif etudiant via couche service
+
+			matiereService.modifierMatiere(pMatiere);
+
+			// Recup nouvelle liste d'etudiant après ajout
+
+			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
+
+			return "liste-matiere";
+
+		} // END IF
+
+		return "liste-matiere";
+
+		// Application du validateur de l'objet pEmploye
+		// employeValidator.validate(pEmploye, resultatValidation);
+		/*
+		 * // Validation de l'objet if (resultatValidation.hasErrors()) {
+		 * 
+		 * // CAS 1 : La validation retourne des erreurs :
+		 * 
+		 * // redirection vers la page du formulaire ajouter-employe.jsp
+		 * 
+		 * return "ajouter-employe"; // nom logique de la vue
+		 * 
+		 * }else {
+		 * 
+		 * // CAS 2 : La validation ne détecte pas d'erreur
+		 * 
+		 * // 1. Ajout de l'employé à la database via couche service
+		 * matiereService.ajouterMatiere(pMatiere);
+		 * 
+		 * // 2. Redirection vers la page 'liste-employes.jsp"
+		 * 
+		 * // 2.1 Récup de la nouvelle liste des employés dans la db
+		 * model.addAttribute("attribut_liste_matieres",
+		 * matiereService.trouverAllMatieres());
+		 * 
+		 * // 2.2 Redirection
+		 * 
+		 * return "redirect:/matiere/liste";
+		 * 
+		 * // }//end else
+		 */
 	}// end ajouterMatiereDB
-	
-	
+
 	/**
 	 * Permet d'afficher le formulaire de modification d'un employé Méthode invoquée
 	 * suite au clic sur le lien 'Modifier' de liste-employes.jsp Invoquée avec une
@@ -195,21 +234,18 @@ public class GestionMatiereController {
 		Matiere matiereAModifier = matiereService.trouverMatiereId(pIdMatiere);
 
 		// 2. Définition du modèle de données (objet de commande nommé
-	
+
 		/**
 		 * 'employeModifCommand" + définition du nom logique de la vue + Ajout du modèle
-		 * et du nom dans un objet ModelAndView 
-		 * modifer-employe :
+		 * et du nom dans un objet ModelAndView modifer-employe :
 		 * /WEB-INF/views/mofidier-employe.jsp
 		 */
 		return new ModelAndView("modifier-matiere", "matiereModifCommand", matiereAModifier);
 
 	}// end AfficherFormulaireModification
-	
-	
+
 	/**
-	 * Méthode qui permet de modifier une matiere dans la database 
-	 * Invoquée au clic
+	 * Méthode qui permet de modifier une matiere dans la database Invoquée au clic
 	 * sur le lien 'modifier' de soumission du formulaire de la page
 	 * modifier-employe.jsp Invoquée avec uen requete HTTP en POST et l'URL
 	 * '/employe/update' Cette méthode récupère l'objet de commande
@@ -230,6 +266,5 @@ public class GestionMatiereController {
 		return "liste-matiere";
 
 	}// end modifierEmployeDB()
-
 
 }// end class

@@ -1,6 +1,7 @@
 package com.intiformation.appschool.modeles;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -81,9 +83,14 @@ public class EnseignantMatierePromotionLink implements Serializable {
 		this.promotion = promotion;
 	}
 
+	public Enseignants getEnseignant() {
+		return enseignant;
+	}
+
+	public void setEnseignant(Enseignants enseignant) {
+		this.enseignant = enseignant;
+	}
 
 
-	
-	
 
 }// end class

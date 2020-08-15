@@ -12,6 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Page gestion des Etudiants</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"

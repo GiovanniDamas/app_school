@@ -28,6 +28,7 @@ public class Enseignants extends Personnes implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enseignant")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
+	
 
 	//////// CTOR ///////
 	/**
@@ -50,8 +51,18 @@ public class Enseignants extends Personnes implements Serializable {
 
 	}
 
-
+	
 	//// GETTERS / SETTERS ////
+	public List<EnseignantMatierePromotionLink> getEnseignantMatierePromotionLinks() {
+		return enseignantMatierePromotionLinks;
+	}
+
+	public void setEnseignantMatierePromotionLinks(List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks) {
+		this.enseignantMatierePromotionLinks = enseignantMatierePromotionLinks;
+	}
+
+
+
 	/*
 	public Long getIdEnseignant() {
 		return idEnseignant;

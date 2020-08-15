@@ -23,6 +23,7 @@
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
 	<style>
 	
@@ -98,46 +99,47 @@
 	<table border="1"  style="width:90%;margin-left:5%">
 
 		<tr>
-		
+
 			<td colspan="5" align="right"><a
-				href="${pageContext.request.contextPath}/employe/add-employe-form">
+				href="${pageContext.request.contextPath}/matiere/edit-matiere-form?idMatiere=0">
 					Ajout d'une matière </a></td>
 		</tr>
 
 		<!-- en tête de la table -->
-		<tr>
-			<th>Libelle</th>
-		
-			<th>Modifier</th>
-			<th>Supprimer</th>
-		</tr>
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Libelle</th>
+				<th scope="col">Modifier</th>
+				<th scope="col">Supprimer</th>
+			</tr>
+		</thead>
 
 		<!-- données de la table -->
-		<c:forEach items="${attribut_liste_matieres }" var="mat">
-			<tr>
-				<td>${mat.libelle}</td>
-				
 
-			
-				<td>
-				
-					<a
-					href="${pageContext.request.contextPath}/employe/update-employe-form?idemploye=${employe.idEmploye}">
-						Modifier</a>
-				</td>
-				
+		<tbody>
+			<c:forEach items="${attribut_liste_matieres }" var="mat">
+				<tr>
 
-			
-				<td>
-				
-					<a
-					href="${pageContext.request.contextPath}/employe/delete/${employe.idEmploye}">
-						Supprimer</a>
-				</td>
+					<td>${mat.idMatiere}</td>
+					<td>${mat.libelle}</td>
 
-			</tr>
 
-		</c:forEach>
+
+					<td><a
+						href="${pageContext.request.contextPath}//matiere/edit-matiere-form?idMatiere=${mat.idMatiere}">
+							Modifier</a></td>
+
+
+
+					<td><a
+						href="${pageContext.request.contextPath}/matiere/delete?idMatiere=${mat.idMatiere}">
+							Supprimer</a></td>
+
+				</tr>
+
+			</c:forEach>
+		</tbody>
 	</table>
 	
 

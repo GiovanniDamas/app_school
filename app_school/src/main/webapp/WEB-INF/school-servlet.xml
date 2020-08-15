@@ -48,13 +48,11 @@
 		<property name="defaultEncoding" value="UTF-8" />
 		<property name="basenames">
 			<list>
-				<value>/WEB-INF/bundle/validation.properties</value>
+				<value>/WEB-INF/bundle/validation</value>
 			</list>
 		</property>
 	</bean>
-	<!-- Configurer un gestionnaire pour gérer les ressources statiques - repondre 
-		à toutes les ressources provenant de /assets/** en recherchant dans le répertoire -->
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+
 	
 	<mvc:annotation-driven></mvc:annotation-driven>
 

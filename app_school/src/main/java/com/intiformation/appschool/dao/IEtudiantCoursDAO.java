@@ -27,11 +27,26 @@ public interface IEtudiantCoursDAO extends IGenerique<EtudiantCours>{
 	 */
 	public List<EtudiantCours> afficherEtudiantCoursByEtudiant(Long pIdEtudiant);
 
+	/**
+	 * permet de récupérer l'ensemble des absences d'un etudiant dans la bdd
+	 */
+	public List<EtudiantCours> afficherAbsencesByEtudiant(Long pIdEtudiant);
+	
 	/*________________________________________________________________________________________________________________________*/
 	
 	/**
+	 * permet de récup la liste des présneces de la bdd liées à un enseignant
+	 */
+	public List<EtudiantCours> afficherEtudiantCoursByEnseignant(Long pIdEnseignant);
+
+	/**
 	 * permet de récup la liste des absences de la bdd liées à un enseignant
 	 */
-	public List<EtudiantCours> afficherAbsenceEnseignant(Long pIdEnseignant);
+	public List<EtudiantCours> afficherAbsencesByEnseignant(Long pIdEnseignant);
+
+	/**
+	 * permet de récup la liste des absences de la bdd 
+	 */
+	public List<EtudiantCours> getAllAbsences();
 	
 }//end interface

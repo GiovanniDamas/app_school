@@ -11,10 +11,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Formulaire pour l'édition de l'étudiant</title>
+
+     <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+
 </head>
 <body>
 
-	<br />
+<br />
 	<div align="center">
 		<h1>Formulaire édition d'un étudiant</h1>
 	</div>
@@ -22,16 +26,19 @@
 	<br />
 	<div align="center">
 
+
 		<form:form modelAttribute="attribut_etudiants" method="POST"
-			action="${pageContext.request.contextPath}/gestionEtudiants/edit">
+			action="${pageContext.request.contextPath}/gestionEtudiants/edit"
+			enctype="multipart/form-data">
 
 			<%-- affichage de tous les messages d'erreurs --%>
 			<form:errors path="*" cssClass="erreur_validation" element="div" />
 
 			<tr>
 				<c:if test="${idPersonne} != 0"></c:if>
-				<td><form:hidden path="idPersonne"/></td>
-				
+				<td><form:hidden path="idPersonne" /></td>
+				<td><form:hidden path="photo" /></td>
+				<td><form:hidden path="role" /></td>
 			</tr>
 
 			<table width="60%">
@@ -49,7 +56,7 @@
 				</tr>
 				<tr>
 					<td><form:label path="dateDeNaissance">Date de naissance :</form:label></td>
-					<td><form:input type="date" path="dateDeNaissance" /></td>
+					<td><form:input type="date" path="dateDeNaissance"/></td>
 					<td><form:errors path="dateDeNaissance"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
@@ -71,13 +78,30 @@
 					<td><form:errors path="motDePasse"
 							cssStyle="color:red; font-style:italic;" /></td>
 				</tr>
+				<tr>
+					<td><form:label path="photo" />Photo</td>
+					<td><input  type="file" name="file" /></td>
+
+				</tr>
+				
+				<tr>
+			  		<td><form:label path="promotion.idPromotion">Promotion</form:label></td>
+					<td>
+					<form:select path="promotion.idPromotion" class="form-control">
+            			<form:option value="" label="--Sélectionner la promotion"/>
+           				<form:options items="${attribut_promotions}" itemValue="idPromotion" itemLabel="libelle"/>
+         			</form:select>
+         			</td>  				
+         			<td><form:errors path="promotion.idPromotion" cssStyle="color:red; font-style:italic;"/><td>
+				</tr>
 
 				<tr>
 					<td><input type="submit" value="Ajouter" /></td>
 				</tr>
+
 				<tr>
 					<c:if test="${idPersonne} != 0"></c:if>
-					<td><input type="submit" value="Modifier"/></td>
+					<td><input type="submit" value="Modifier" /></td>
 				</tr>
 			</table>
 

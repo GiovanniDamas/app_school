@@ -85,14 +85,59 @@ public class EtudiantCoursServiceImpl implements IEtudiantCoursService{
 		return etudiantCoursDAO.afficherEtudiantCoursByEtudiant(pIdEtudiant);
 	}//end afficherEtudiantCoursByEtudiant
 
-	/*________________________________________________________________________________________________________________________*/
-	
 	/**
-	 * permet de récup la liste des absences de la bdd liées à un enseignant
+	 * permet de récupérer l'ensemble des absences d'un etudiant dans la bdd
+	 */
+	public List<EtudiantCours> afficherAbsencesByEtudiant(Long pIdEtudiant){
+		return etudiantCoursDAO.afficherAbsencesByEtudiant(pIdEtudiant);
+	}
+	
+	/*________________________________________________________________________________________________________________________*/
+
+	/**
+	 * permet de récup la liste de présence de la bdd en fonction de la personne connectée
 	 */
 	@Override
-	public List<EtudiantCours> findAbsenceEnseignant(Long pIdEnseignant) {
-		return etudiantCoursDAO.afficherAbsenceEnseignant(pIdEnseignant);
-	}//end afficherAbsenceEnseignant
+	public List<EtudiantCours> findEtudiantCoursPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return etudiantCoursDAO.getAll();
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return etudiantCoursDAO.afficherEtudiantCoursByEnseignant(pIdPersonne);
+
+		} else if (pRole.contains("ROLE_ETUDIANT")) {
+			//cas d'un role = ROLE_ETUDIANT
+			return etudiantCoursDAO.afficherEtudiantCoursByEtudiant(pIdPersonne);
+			
+		}//end else
+		
+		return null;
+	}//end findEtudiantCoursPersonne
+	
+	/**
+	 * permet de récup la liste des absences de la bdd en fonction de la personne connectée
+	 */
+	@Override
+	public List<EtudiantCours> findAbsencesPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return etudiantCoursDAO.getAllAbsences();
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return etudiantCoursDAO.afficherAbsencesByEnseignant(pIdPersonne);
+
+		} else if (pRole.contains("ROLE_ETUDIANT")) {
+			//cas d'un role = ROLE_ETUDIANT
+			return etudiantCoursDAO.afficherAbsencesByEtudiant(pIdPersonne);
+			
+		}//end else
+		
+		return null;
+	}//end findEtudiantCoursPersonne
 
 }//end class

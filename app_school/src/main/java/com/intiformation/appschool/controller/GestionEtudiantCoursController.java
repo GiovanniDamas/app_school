@@ -3,6 +3,7 @@ package com.intiformation.appschool.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Personnes;
+import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.ICoursService;
+import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.validator.CoursValidator;
@@ -29,7 +33,7 @@ import com.intiformation.appschool.validator.EtudiantCoursValidator;
 @Controller
 public class GestionEtudiantCoursController {
 
-	//déclaration de la couche service etudiantCoursService
+	//___ déclaration de la couche service etudiantCoursService
 	@Autowired
 	private IEtudiantCoursService etudiantCoursService;
 
@@ -41,31 +45,39 @@ public class GestionEtudiantCoursController {
 		this.etudiantCoursService = etudiantCoursService;
 	}
 	
-	//déclaration du service coursService
+	//___ déclaration du service coursService avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private ICoursService coursService;
 
-	/** 
-	 * setter pour injection spring du service
-	 * @param coursService
-	 */
 	public void setCoursService(ICoursService coursService) {
 		this.coursService = coursService;
 	}
 	
-	//déclaration du service etudiantsService
+	//___ déclaration du service etudiantsService avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private IEtudiantsService etudiantsService;
 
-	/** 
-	 * setter pour injection spring du service
-	 * @param etudiantsService
-	 */
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
 	}
+	
+	//___ déclaration du service de enseignant avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEnseignantsService enseignantsService;
+
+	public void setEnseignantsService(IEnseignantsService enseignantsService) {
+		this.enseignantsService = enseignantsService;
+	}
+
+	//____ déclaration du service de administrateur avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IAdministrateursService administrateursService;
+
+	public void setAdministrateursService(IAdministrateursService administrateursService) {
+		this.administrateursService = administrateursService;
+	}
 		
-	//déclaration du validateur
+	//___ déclaration du validateur
 	@Autowired //injection par modificateur
 	private EtudiantCoursValidator etudiantCoursValidator;
 	
@@ -77,13 +89,44 @@ public class GestionEtudiantCoursController {
 		this.etudiantCoursValidator = etudiantCoursValidator;
 	}
 	
-	/*__________________________ méthodes gestionnaires _______________*/
+	/**
+	 * méthode qui permet de récupérer les informations de la personne connectée
+	 * @param authentication
+	 * @return
+	 */
+	public Personnes getInfosPersonneConnecte(Authentication authentication) {
+		
+		Personnes personneConnecte = null;
+		
+		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
+			
+			//1. cas d'un admin : récupération de l'administrateur connecté
+			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+	
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
+			
+			//1. cas d'un enseignant : récupération de l'enseignant connecté
+			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
+			
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
+			
+			//1. cas d'un etudiant : récupération de l'etudiant connecté
+			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
+		}
+		
+		return personneConnecte;
+		
+	}//end getInfosPersonneConnecte
+
+	/*=================================================================*/
+	/*======================= méthodes gestionnaires ==================*/
+	/*=================================================================*/
 	/**
 	 * permet d'afficher la liste de présence de la bdd
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/liste", method=RequestMethod.GET)
+/*	@RequestMapping(value="/etudiants-cours/liste", method=RequestMethod.GET)
 	public String afficherListeEtudiantsCoursBdd(ModelMap model) {
 		
 		//1. récup de la liste des étudiants des cours de la bdd via le service
@@ -100,13 +143,14 @@ public class GestionEtudiantCoursController {
 		return "etudiants-cours/liste-presence";
 		
 	}//end afficherListeEtudiantsCoursBdd
+*/
 	
 	/**
 	 * permet de supprimer ligne présence d' un étudiant à un cours de la bdd
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/supprimer", method=RequestMethod.GET)
+/*	@RequestMapping(value="/etudiants-cours/supprimer", method=RequestMethod.GET)
 	public String supprimerEtudiantCoursBdd(@RequestParam("etudiantCoursId") Long pIdEtudiantCours, ModelMap model) {
 		
 		//1. suppression dans la bdd
@@ -116,13 +160,13 @@ public class GestionEtudiantCoursController {
 		return "redirect:/etudiants-cours/liste";
 		
 	}//end supprimerEtudiantCoursBdd
-	
+*/	
 	/**
 	 * permet d'afficher le formulaire pour ajouter la présnece d'un étudaint à un cours dans la bdd
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/formulaire-ajout-presence", method=RequestMethod.GET)
+/*	@RequestMapping(value="/etudiants-cours/formulaire-ajout-presence", method=RequestMethod.GET)
 	public String chargerEtudiantCoursBdd(ModelMap model) {
 		
 		//1. création objet EtudiantCours
@@ -139,13 +183,14 @@ public class GestionEtudiantCoursController {
 		return "etudiants-cours/formulaire-ajout-presence";
 		
 	}//end chargerEtudiantCoursBdd
+*/
 	
 	/**
 	 * permet d'ajouter la présence d'un étudiant à un cours dans la bdd
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/ajouter", method=RequestMethod.POST)
+/*	@RequestMapping(value="/etudiants-cours/ajouter", method=RequestMethod.POST)
 	public String ajouterEtudiantCoursBdd(@ModelAttribute("attribut_etudiant_cours") EtudiantCours pEtudiantCours, BindingResult result) {
 		
 		//1. application du validateur sur l'objet pEtudiantCours
@@ -167,6 +212,7 @@ public class GestionEtudiantCoursController {
 		}//end else		
 		
 	}//end ajouterEtudiantCoursBdd
+*/
 	
 	/**
 	 * permet d'afficher le formulaire pour modifier la présence d'un étudiant à un cours dans la bdd
@@ -174,7 +220,7 @@ public class GestionEtudiantCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/etudiants-cours/formulaire-modif-presence", method=RequestMethod.GET)
-	public String chargerModifEtudiantCoursBdd(@RequestParam("etudiantCoursId") Long pIdEtudiantCours, ModelMap model) {
+	public String chargerModifEtudiantCoursBdd(@RequestParam("etudiantCoursId") Long pIdEtudiantCours, ModelMap model, Authentication authentication) {
 		
 		//1. récupération de l'etudiant cours à modifier
 		EtudiantCours etudiantCoursToUpdate = etudiantCoursService.findEtudiantCoursById(pIdEtudiantCours);
@@ -182,9 +228,14 @@ public class GestionEtudiantCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_etudiant_cours", etudiantCoursToUpdate);
 		
-		// renvoi de la liste des cours et des étudiants vers la vue 
-		model.addAttribute("attribut_cours", coursService.findAllCours());
-		model.addAttribute("attribut_etudiants", etudiantsService.findAllEtudiant());
+		//3. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		//4. renvoi de la liste des cours et des étudiants et de la personne connectée vers la vue 
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_liste_presence", etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
 		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/formulaire-modif-presence";
@@ -218,13 +269,13 @@ public class GestionEtudiantCoursController {
 		}//end else			
 		
 	}//end modifierEtudiantCoursBdd
-	
+
 	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une matière
+	 * permet d'afficher la liste des présneces d'un étudiants 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/recherche-etudiant", method=RequestMethod.GET)
+/*	@RequestMapping(value="/etudiants-cours/recherche-etudiant", method=RequestMethod.GET)
 	public String afficherListeEtudiantCoursByEtudiant(@RequestParam("id-etudiant") Long pIdEtudiant, ModelMap model) {
 		
 		if(pIdEtudiant==0) {
@@ -248,14 +299,15 @@ public class GestionEtudiantCoursController {
 		
 		}//end else
 		
-	}//end afficherListeCoursByMatiere
+	}//end afficherListeEtudiantCoursByEtudiant
+*/
 	
 	/**
 	 * permet d'afficher la liste de l'ensemble des étudiants absents d'un cours de la bdd 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/etudiants-cours/recherche-cours", method=RequestMethod.GET)
+/*	@RequestMapping(value="/etudiants-cours/recherche-cours", method=RequestMethod.GET)
 	public String afficherListeEtudiantCoursByCours(@RequestParam("id-cours") Long pIdCours, ModelMap model) {
 		
 		if(pIdCours==0) {
@@ -279,6 +331,110 @@ public class GestionEtudiantCoursController {
 			
 		}//end else
 		
-	}//end afficherListeEtudiantCoursByCours	
+	}//end afficherListeEtudiantCoursByCours
+*/	
+	/**
+	 * permet d'afficher la liste des absences d'un étudiant 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/etudiants-cours/recherche-absence-etudiant", method=RequestMethod.GET)
+	public String afficherListeAbsencesByEtudiant(@RequestParam("etudiant-id") Long pIdEtudiant, ModelMap model, Authentication authentication) {
+		
+		// récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		if(pIdEtudiant==0) {
+			
+			return "redirect:/etudiants-cours/liste";
+			
+		}else {
+			
+			//1. récup de la liste des étudiants cours de la bdd via le service
+			List<EtudiantCours> listeAbsencesByEtudiantBdd = etudiantCoursService.afficherAbsencesByEtudiant(pIdEtudiant);
+			
+			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_absence", listeAbsencesByEtudiantBdd);
+				
+			// renvoi de la liste des cours et des étudiants et de la personne connectée vers la vue 
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+			model.addAttribute("attribut_liste_presence", etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+			model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+			model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
+			
+			//3. renvoi du nom logique de la vue
+			return "etudiants-cours/liste-presence";			
+		
+		}//end else
+		
+	}//end afficherListeAbsencesByEtudiant
+	
+	/**
+	 * permet d'afficher la liste de présence en lien avec la personne connectée 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/etudiants-cours/liste", method=RequestMethod.GET)
+	public String afficherListeAbsencesPersonne(ModelMap model, Authentication authentication) {
+		
+		//1. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			
+		//2. récup de la liste des étudiants cours de la bdd via le service
+		List<EtudiantCours> listeAbsenceByPersonneBdd = etudiantCoursService.findAbsencesPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
+			
+		//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+		model.addAttribute("attribut_liste_absence", listeAbsenceByPersonneBdd);
+				
+		//4. renvoi de la liste des cours et des étudiants et de la personne connectée vers la vue
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_liste_presence", etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
+			
+		//5. renvoi du nom logique de la vue
+		return "etudiants-cours/liste-presence";			
+				
+	}//end afficherListeEtudiantCoursByEtudiant
+	
+	/**
+	 * permet d'afficher la liste de présence d'un cours de la bdd 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/etudiants-cours/recherche-cours", method=RequestMethod.GET)
+	public String afficherListeEtudiantCoursByCours(@RequestParam("id-cours") Long pIdCours, ModelMap model, Authentication authentication) {
+		
+		//1. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		if(pIdCours==0) {
+			
+			//2. récup de la liste des étudiants cours de la bdd via le service
+			List<EtudiantCours> listeEtudiantCoursByPersonneBdd = etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
+				
+			//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByPersonneBdd);
+		
+		}else {
+					
+			//2. récup de la liste de présence du cours de la bdd via le service
+			List<EtudiantCours> listeEtudiantCoursByCoursBdd = etudiantCoursService.afficherEtudiantCoursByCours(pIdCours);
+			
+			//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_liste_presence", listeEtudiantCoursByCoursBdd);
+			
+		}//end else
+		
+		//4. renvoi de la liste des cours et des étudiants et de la personne connectée vers la vue
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_liste_absence", etudiantCoursService.findAbsencesPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
+		
+		//5. renvoi du nom logique de la vue
+		return "etudiants-cours/liste-presence";
+		
+	}//end afficherListeEtudiantCoursByCours
 	
 }//end class

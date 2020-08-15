@@ -13,14 +13,15 @@
 
 
 		<sec:intercept-url pattern="/index*"
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />	
 		<sec:intercept-url pattern="/Personnels/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/etudiants-cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
-
+		<sec:intercept-url pattern="/liste-aide.jsp"
+			access="hasAnyRole('ROLE_ENSEIGNANT','ROLE_ADMIN')" />
 
 		<!-- ================== Formulaire personnalisé ======================== -->
 
@@ -48,7 +49,9 @@
 
 	</sec:http>
 
+
 	<sec:authentication-manager>
+	
 		<sec:authentication-provider>
 			<sec:password-encoder hash="bcrypt" />
 			<sec:jdbc-user-service
@@ -56,9 +59,7 @@
 				users-by-username-query="SELECT a.identifiant, a.mot_de_passe, a.id_personne FROM administrateurs a WHERE a.identifiant=?"
 				authorities-by-username-query="SELECT a.identifiant, a.role FROM administrateurs a WHERE a.identifiant=?" />
 		</sec:authentication-provider>
-	</sec:authentication-manager>
-
-	<sec:authentication-manager>
+ 
 		<sec:authentication-provider>
 			<sec:password-encoder hash="bcrypt" />
 			<sec:jdbc-user-service
@@ -66,9 +67,7 @@
 				users-by-username-query="SELECT ens.identifiant, ens.mot_de_passe, ens.id_personne FROM enseignants ens WHERE ens.identifiant=?"
 				authorities-by-username-query="SELECT ens.identifiant, ens.role FROM enseignants ens WHERE ens.identifiant=?" />
 		</sec:authentication-provider>
-	</sec:authentication-manager>
 
-	<sec:authentication-manager>
 		<sec:authentication-provider>
 			<sec:password-encoder hash="bcrypt" />
 			<sec:jdbc-user-service
@@ -76,9 +75,7 @@
 				users-by-username-query="SELECT e.identifiant, e.mot_de_passe, e.id_personne FROM etudiants e WHERE e.identifiant=?"
 				authorities-by-username-query="SELECT e.identifiant, e.role FROM etudiants e WHERE e.identifiant=?" />
 		</sec:authentication-provider>
+	
 	</sec:authentication-manager>
-
-
-
 
 </beans>

@@ -64,4 +64,24 @@ public class PromotionServiceImpl implements IPromotionService {
 		return promotionDAO.getAll();
 	}//end trouverAllPromotions
 
+	@Override
+	public List<Promotion> findPromotionByPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return promotionDAO.getAll();
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return promotionDAO.afficherPromotionByEnseignant(pIdPersonne);
+			
+		} else if (pRole.contains("ROLE_ETUDIANT")){
+			//cas d'un role = ROLE_ETUDIANT
+			return promotionDAO.afficherPromotionByEtudiant(pIdPersonne);
+			
+		}//end else
+		
+		return null;		
+	}
+
 }// end classe

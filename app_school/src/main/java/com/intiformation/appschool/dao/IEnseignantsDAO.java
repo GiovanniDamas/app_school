@@ -42,6 +42,8 @@ public interface IEnseignantsDAO {
 	 * @return
 	 */
 	public List<Enseignants> getAllEnseignant();
+
+	public Enseignants getEnseignantByIdentifiant(String pIdentifiant);
 	
 
 }//END INTERFACE

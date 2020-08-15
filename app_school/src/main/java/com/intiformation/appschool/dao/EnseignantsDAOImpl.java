@@ -123,5 +123,26 @@ public class EnseignantsDAOImpl implements IEnseignantsDAO {
 		return null;
 
 	}// END GET ALL
+	
+	/*_________________________________________________________________________________________________________________*/
+	@Override
+	public Enseignants getEnseignantByIdentifiant(String pIdentifiant) {
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+
+			Query<Enseignants> queryGetEnseignantByIdentifiant = session.createQuery("From Enseignants WHERE identifiant = :pIdentifiant");
+
+			queryGetEnseignantByIdentifiant.setParameter("pIdentifiant", pIdentifiant);
+			
+			return queryGetEnseignantByIdentifiant.getSingleResult();
+
+		} catch (Exception e) {
+			System.out.println("... Erreur lors de la récupération de la liste de l'enseignant par son identifiant dans la DAO ...");
+		}
+		return null;
+
+	}// END getEnseignantByIdentifiant
 
 }// END CLASS

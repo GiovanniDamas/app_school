@@ -45,5 +45,11 @@ public interface IPromotionService {
 	 */
 	public List<Promotion> trouverAllPromotions();
 	
+	/**
+	 * méthode pour afficher la liste des promotions associées à une personne 
+	 * @param pIdPersonne
+	 * @return
+	 */
+	public List<Promotion> findPromotionByPersonne(Long pIdPersonne, String pRole);
 
 }//end interface

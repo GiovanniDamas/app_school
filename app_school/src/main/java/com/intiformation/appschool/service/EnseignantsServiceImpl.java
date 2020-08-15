@@ -55,4 +55,10 @@ public class EnseignantsServiceImpl implements IEnseignantsService{
 		return enseignantsDAO.getAllEnseignant();
 	}
 
+
+	@Override
+	public Enseignants findEnseignantByIdentifiant(String pIdentifiant) {
+		return enseignantsDAO.getEnseignantByIdentifiant(pIdentifiant);
+	}
+
 }//END CLASS

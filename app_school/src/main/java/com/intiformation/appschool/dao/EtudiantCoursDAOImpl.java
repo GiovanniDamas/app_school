@@ -220,6 +220,36 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 	
 	}//end afficherEtudiantCoursByEtudiant
 	
+	/**
+	 * permet de récupérer l'ensemble des absences d'un etudiant dans la bdd
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EtudiantCours> afficherAbsencesByEtudiant(Long pIdEtudiant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<EtudiantCours> getAbsenceByEtudiantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec WHERE ec.absence = true AND ec.etudiant.idPersonne = :pIdEtudiant");
+			
+			//passage de paramètre
+			getAbsenceByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
+			
+			//envoi, execution et récup résultat
+			return getAbsenceByEtudiantQuery.getResultList();			
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (EtudiantCoursDAOImpl) Erreur lors de la méthode afficherAbsencesByEtudiant ...");
+			throw e;
+		
+		}//end catch
+	
+	}//end afficherAbsencesByEtudiant
+	
 	/*________________________________________________________________________________________________________________________*/
 	
 	/**
@@ -227,7 +257,44 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 	 */
 	@Transactional(readOnly = true)
 	@Override
-	public List<EtudiantCours> afficherAbsenceEnseignant(Long pIdEnseignant) {
+	public List<EtudiantCours> afficherAbsencesByEnseignant(Long pIdEnseignant) {
+		
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec, "
+																			+ "Cours c, "
+																			+ "EnseignantMatierePromotionLink link, "
+																			+ "Matiere m "
+																			+ "WHERE ec.cours.idCours = c.idCours "
+																			+ "AND c.matieres.idMatiere = m.idMatiere "
+																			+ "AND link.matiere.idMatiere = m.idMatiere "
+																			+ "AND link.enseignant.idPersonne = :pIdEnseignant "
+																			+ "AND ec.absence = true");
+			
+			//passage de paramètre
+			getAbsenceByEnseignantQuery.setParameter("pIdEnseignant", pIdEnseignant);
+			
+			//envoi, execution et récup résultat
+			return getAbsenceByEnseignantQuery.getResultList();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherAbsenceEnseignant ...");
+			throw e;
+		
+		}//end catch
+	}//end afficherAbsencesByEnseignant
+	
+	/**
+	 * permet de récup la liste des absences de la bdd liées à un enseignant
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EtudiantCours> afficherEtudiantCoursByEnseignant(Long pIdEnseignant) {
 		
 		//récup de la session d'hibernate
 		Session session = this.sessionFactory.getCurrentSession();
@@ -252,10 +319,37 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 			
 		} catch (HibernateException e) {
 			
-			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherAbsenceEnseignant ...");
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherEtudiantCoursByEnseignant ...");
 			throw e;
 		
 		}//end catch
-	}//end afficherAbsenceEnseignant
+	}//end afficherEtudiantCoursByEnseignant
+	
+	/**
+	 * permet de récupérer l'ensemble des absences de la bdd
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EtudiantCours> getAllAbsences() {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query getAllAbsencesQuery = session.createQuery("FROM EtudiantCours ec WHERE ec.absence = true");
+			
+			//envoi, execution et récup résultat
+			return getAllAbsencesQuery.list();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (EtudiantCoursDAOImpl) Erreur lors de la méthode getAllAbsences ...");
+			throw e;
+		
+		}//end catch
+	
+	}//end getAllAbsences
 
 }//end class

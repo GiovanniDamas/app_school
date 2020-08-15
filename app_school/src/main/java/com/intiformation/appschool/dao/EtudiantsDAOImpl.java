@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.intiformation.appschool.modeles.Administrateurs;
 import com.intiformation.appschool.modeles.Etudiants;
 
 /**
@@ -135,5 +136,54 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 		return null;
 
 	}// END GET ALL
+	
+	/*_________________________________________________________________________________________________________________*/
+	@Override
+	@Transactional(readOnly = true)
+	public Etudiants getEtudiantByIdentifiant(String pIdentifiant) {
+
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+
+			Query<Etudiants> queryGetEtuByIdentifiant = session.createQuery("From Etudiants WHERE identifiant = :pIdentifiant");
+
+			queryGetEtuByIdentifiant.setParameter("pIdentifiant", pIdentifiant);
+			
+			return queryGetEtuByIdentifiant.getSingleResult();
+
+		} catch (Exception e) {
+			System.out.println("... Erreur lors de la récupération de l'étudiant par son identifiant dans la DAO ...");
+		}
+		return null;
+
+	}// END getEtudiantByIdentifiant
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Etudiants> getEtudiantsByEnseignant(Long pIdEnseignant) {
+		
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+
+			Query<Etudiants> queryGetEtuByEns = session.createQuery("SELECT etu From Etudiants etu, Enseignants ens, Promotion p, EnseignantMatierePromotionLink link "
+																				+ "WHERE etu.promotion.idPromotion = p.idPromotion "
+																				+ "AND p.idPromotion = link.promotion.idPromotion "
+																				+ "AND ens.idPersonne = link.enseignant.idPersonne "
+																				+ "AND ens.idPersonne = :pIdEnseignant");
+
+			queryGetEtuByEns.setParameter("pIdEnseignant", pIdEnseignant);
+			
+			return queryGetEtuByEns.list();
+
+		} catch (Exception e) {
+			System.out.println("... Erreur lors de la récupération des étudiants liés à un enseignant dans la DAO ...");
+		}
+		return null;
+		
+	}//end getEtudiantsByEnseignant
 
 }// END CLASS

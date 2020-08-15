@@ -43,4 +43,7 @@ public interface IAdministrateursDAO {
 	 */
 	public List<Administrateurs> getAllAdministrateur();
 
+	/*____________________________________________________________________________________________________________*/
+	public Administrateurs getAdministrateurByIdentifiant(String pIdentifiant);
+
 }//END INTERFACE

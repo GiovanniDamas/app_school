@@ -129,5 +129,26 @@ public class AdministrateursDAOImpl implements IAdministrateursDAO {
 		} // END CATCH
 
 	}// END GET ALL;
+	
+	/*_________________________________________________________________________________________________________________*/
+	@Override
+	public Administrateurs getAdministrateurByIdentifiant(String pIdentifiant) {
+		// recup de la session hibernate via la factory
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+
+			Query<Administrateurs> queryGetAdminByIdentifiant = session.createQuery("From Administrateurs WHERE identifiant = :pIdentifiant");
+
+			queryGetAdminByIdentifiant.setParameter("pIdentifiant", pIdentifiant);
+			
+			return queryGetAdminByIdentifiant.getSingleResult();
+
+		} catch (Exception e) {
+			System.out.println("... Erreur lors de la récupération de l'administrateur par son identifiant dans la DAO ...");
+		}
+		return null;
+
+	}// END getAdministrateurByIdentifiant
 
 }// END CLASS

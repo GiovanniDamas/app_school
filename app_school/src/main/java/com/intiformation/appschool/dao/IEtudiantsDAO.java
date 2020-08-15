@@ -2,6 +2,7 @@ package com.intiformation.appschool.dao;
 
 import java.util.List;
 
+import com.intiformation.appschool.modeles.Administrateurs;
 import com.intiformation.appschool.modeles.Etudiants;
 
 /**
@@ -42,5 +43,9 @@ public interface IEtudiantsDAO {
 	 */
 	public List<Etudiants> getAllEtudiant();
 	
+	/*____________________________________________________________________________________________________________*/
+	public Etudiants getEtudiantByIdentifiant(String pIdentifiant);
+	
+	public List<Etudiants> getEtudiantsByEnseignant(Long pIdEnseignant);
 
 }//END INTERFACE

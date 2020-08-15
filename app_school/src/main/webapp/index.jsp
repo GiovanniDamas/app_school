@@ -110,8 +110,8 @@
 			<li><a
 				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
 			</li>
-			<li><a href="#">Promotion</a></li>
-			<li><a href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
 			</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
 			</li>

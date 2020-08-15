@@ -146,9 +146,9 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 	}// end getById()
 
 	/**
-	 * Méthode pour récupérer la liste de toutes les liens dans la database 
+	 * Méthode pour récupérer la liste de toutes les liens dans la database
 	 * 
-	 * @return listeMatieresDB: la liste des matières
+	 * @return listeLinksDB: la liste des matières
 	 */
 	@Transactional(readOnly = true)
 	@Override
@@ -168,9 +168,41 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 		} catch (HibernateException e) {
 
 			// En cas d'erreur:
-			System.out.println(" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des matières ...");
+			System.out.println(
+					" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des links ...");
 			throw e;
 		} // end catch
-	}//end getAll()
+	}// end getAll()
+
+	/**
+	 * Méthode pour récupérer la liste des liens contenant l'id de l'enseignant
+	 * 
+	 * @return listeMatieresDB: la liste des matières
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdEnseignant) {
+		try {
+			// 1. Récupération de la session
+			Session session = sessionFactory.getCurrentSession();
+
+			// 2. Définition de la requete HQL à envoyer
+			Query<EnseignantMatierePromotionLink> query = session
+					.createQuery("SELECT l FROM EnseignantMatierePromotionLink l "
+							+ "WHERE l.enseignant.idPersonne = :pIdEnseignant ");
+
+			// 3. Passage de paramètres
+			query.setParameter("pIdEnseignant", pIdEnseignant);
+
+			// 4. Envoi, exécution, résultat
+			return query.getResultList();
+		} catch (HibernateException e) {
+
+			// En cas d'erreur:
+			System.out.println(
+					" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des links par Id des professeurs ...");
+			throw e;
+		} // end catch
+	}// end getByIdEnseignant
 
 }// end classe

@@ -98,7 +98,12 @@
      </button>
 
 	<div style="padding: 30px;">
-	 <h3>Liste de l'ensemble des cours</h3>
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
+	 		<h3>Liste de l'ensemble des cours</h3>
+	 	</s:authorize>
+	 	<s:authorize access="hasRole('ROLE_ETUDIANT')">    			
+	 		<h3>Mes cours</h3>
+	 	</s:authorize>
 	 
 	 <br/>
 	 
@@ -182,6 +187,7 @@
   	
   	<br/>
   	
+  	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
   	<div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-promotion">
 	 	 <label for="recherche-promotion">Rechercher par promotion : </label>	 	
@@ -204,6 +210,8 @@
     	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
   	</form>
   	</div>
+  	</s:authorize>
+  	
   	
   	<br/><br/>
 	 
@@ -211,15 +219,18 @@
 	 	
  	  <thead style="text-align: center;">
     		<tr>
-      			<th scope="col">Id Cours</th>
       			<th scope="col">Libellé</th>
     			<th scope="col">Date</th>
       			<th scope="col">Durée</th>
       			<th scope="col">Description</th>
       			<th scope="col">Matière</th>
      			<th scope="col">Promotion</th>
+     			  	
+     			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
       			<th scope="col">Modifier</th>
       			<th scope="col">Supprimer</th>
+      			</s:authorize>
+      			
     		</tr>
   	  </thead>
 	 
@@ -228,7 +239,6 @@
 	 	  <tbody style="text-align: center;">
 	 	  
 	 	  	<tr>
-	 			<td>${cours.idCours}</td>
 
 	 			<td>${cours.libelle}</td>
 
@@ -238,10 +248,11 @@
 
 	 			<td>${cours.description}</td>
 
-	 			<td>${cours.matieres.idMatiere}</td>
+	 			<td>${cours.matieres.libelle}</td>
 
-	 			<td>${cours.promotions.idPromotion}</td>
+	 			<td>${cours.promotions.libelle}</td>
 	 		
+	    	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
 	 		
 	 		<%-- lien pour modifier un cours --%> 		
 	 			<td>
@@ -258,7 +269,9 @@
 	 					<i class="fas fa-trash-alt"></i>
 					</a>
 	 			</td>
+	 		</s:authorize>
 	 		</tr>	
+	 		
 	 	  </tbody>
 	 	  
 	  </c:forEach>	  	
@@ -268,11 +281,13 @@
 	<br/>
 	
 	<%-- lien pour ajouter un cours dans la bdd : au click on appelle le controller GestionCoursController et sa méthode chargerCoursBdd --%>
+	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
 	<a 	href="${pageContext.request.contextPath}/cours/formulaire-ajout"
 		class="btn btn-primary btn-md active" role="button"
 		aria-pressed="true" style="align-content: left;margin-left:5%" > 	
 		Ajouter un cours
 	</a>
+	</s:authorize>
 	
 	<br/><br/>
 	</div>

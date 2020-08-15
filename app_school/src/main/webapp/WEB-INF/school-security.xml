@@ -13,6 +13,8 @@
 
 
 		<sec:intercept-url pattern="/index*"
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />
+		<sec:intercept-url pattern="/accueil*"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />	
 		<sec:intercept-url pattern="/Personnels/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
@@ -20,7 +22,7 @@
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
-		<sec:intercept-url pattern="/liste-aide.jsp"
+		<sec:intercept-url pattern="/*aide*"
 			access="hasAnyRole('ROLE_ENSEIGNANT','ROLE_ADMIN')" />
 
 		<!-- ================== Formulaire personnalisé ======================== -->

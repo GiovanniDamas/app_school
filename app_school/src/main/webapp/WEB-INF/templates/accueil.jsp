@@ -28,13 +28,11 @@
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    
+   	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 
 
 </head>
 <body>
-
-
-	<%-- 
-	
 	
 <%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
 	
@@ -104,7 +102,7 @@
 			<li><a
 				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
 			</li>
-			<li><a href="#">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
 			<li><a href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
 			</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>

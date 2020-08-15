@@ -32,7 +32,7 @@ public class PromotionValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lubelle", "required.libelle", "Le libellé de la promotion est obligatoire");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "libelle", "required.libelle", "Le libellé de la promotion est obligatoire");
 
 	}//end validate()
 

@@ -181,18 +181,18 @@ public class GestionPromotionController {
 
 			// Ajout de la promotion via la couche service
 			promotionService.ajouterPromotion(pLink.getPromotion());
-			
+
 			// Ajout des liens entre Promotion et chaque Enseignant selectionné
 			for (Long IdEnseignant : listeIDEnsSelect) {
-				
-				System.out.println("Id Enseignant" + IdEnseignant);
-				
-				pLink.getEnseignant().setIdPersonne(IdEnseignant);
-				
-				enseignantMatierePromotionLinkService.ajouterLink(pLink);
-			}	
 
-			// Récupération de la nouvelle lsite des promotions 
+				System.out.println("Id Enseignant" + IdEnseignant);
+
+				pLink.getEnseignant().setIdPersonne(IdEnseignant);
+
+				enseignantMatierePromotionLinkService.ajouterLink(pLink);
+			}
+
+			// Récupération de la nouvelle lsite des promotions
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 			// model.addAttribute("attribut_link", pLink);
 
@@ -207,13 +207,26 @@ public class GestionPromotionController {
 
 			promotionService.modifierPromotion(pLink.getPromotion());
 
-			for (Long IdEnseignant : listeIDEnsSelect) {
+			List<EnseignantMatierePromotionLink> listeLinkLiésAPromotion = enseignantMatierePromotionLinkService
+					.trouverlinkViaIdPromo(pLink.getPromotion().getIdPromotion());
 
-				pLink.getEnseignant().setIdPersonne(IdEnseignant);
+			// int compteur = 0;
 
-				enseignantMatierePromotionLinkService.modifierLink(pLink);
+			for (EnseignantMatierePromotionLink link : listeLinkLiésAPromotion) {
 
-			}
+				link.getEnseignant().setIdPersonne(null);
+
+				for (Long IdEnseignant : listeIDEnsSelect) {
+					// do {
+					
+					link.getEnseignant().setIdPersonne(IdEnseignant);
+					enseignantMatierePromotionLinkService.modifierLink(link);
+					
+					// compteur++;
+
+					// } while (compteur <= listeLinkLiésAPromotion.size());
+				} // end for
+			} // end for
 
 			// Recup nouvelle liste d'etudiant après ajout
 

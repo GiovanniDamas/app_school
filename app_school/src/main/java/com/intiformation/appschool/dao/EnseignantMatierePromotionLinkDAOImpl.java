@@ -181,7 +181,7 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 	 */
 	@Transactional(readOnly = true)
 	@Override
-	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdEnseignant) {
+	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdPromotion) {
 		try {
 			// 1. Récupération de la session
 			Session session = sessionFactory.getCurrentSession();
@@ -189,10 +189,12 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 			// 2. Définition de la requete HQL à envoyer
 			Query<EnseignantMatierePromotionLink> query = session
 					.createQuery("SELECT l FROM EnseignantMatierePromotionLink l "
-							+ "WHERE l.enseignant.idPersonne = :pIdEnseignant ");
+							+ "WHERE l.promotion.idPromotion = :pIdPromotion");
 
 			// 3. Passage de paramètres
-			query.setParameter("pIdEnseignant", pIdEnseignant);
+			
+			query.setParameter("pIdPromotion", pIdPromotion);
+
 
 			// 4. Envoi, exécution, résultat
 			return query.getResultList();

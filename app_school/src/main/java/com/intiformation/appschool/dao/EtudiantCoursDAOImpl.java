@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Etudiants;
 
 /**
  * implémentation concrète de la DAO pour les étudiants cours
@@ -351,5 +352,36 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		}//end catch
 	
 	}//end getAllAbsences
+	
+	/**
+	 * permet de récupérer l'id d'un EtudiantCours à partir de l'étudiant et du cours
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public Long getIdEtudiantCours(Long pIdEtudiant, Long pIdCours) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		try {
+			
+			//construction requête HQL
+			Query<Long> getIdEtudiantCoursQuery = session.createQuery("SELECT ec.idEtudiantCours FROM EtudiantCours ec WHERE ec.etudiant.idPersonne = :pIdEtudiant AND ec.cours.idCours = :pIdCours");
+			
+			//passage de paramètre
+			getIdEtudiantCoursQuery.setParameter("pIdEtudiant", pIdEtudiant);
+			getIdEtudiantCoursQuery.setParameter("pIdCours", pIdCours);
+			
+			//envoi, execution et récup résultat
+			return getIdEtudiantCoursQuery.getSingleResult();
+			
+		} catch (HibernateException e) {
+			
+			System.out.println("... (EtudiantCoursDAOImpl) Erreur lors de la méthode getIdEtudiantCours ...");
+			throw e;
+		
+		}//end catch
+	
+	}//end getIdEtudiantCours
 
 }//end class

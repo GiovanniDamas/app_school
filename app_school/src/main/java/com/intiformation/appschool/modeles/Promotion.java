@@ -43,7 +43,7 @@ public class Promotion implements Serializable {
 	 * ManyToMany	 	 
 	 */
 	
-	@ManyToMany (cascade=CascadeType.ALL)
+	@ManyToMany 
 	@JoinTable(name="promotion_assos_etudiants",
 			   joinColumns=@JoinColumn(name="promotion_id"),
 			   inverseJoinColumns=@JoinColumn(name="etudiant_id"))	
@@ -67,7 +67,7 @@ public class Promotion implements Serializable {
 	 * Mais je ne suis pas trop d'accord : en parler avec les autre
 	 * 	 	 
 	 */
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="promotions")
+	@OneToMany(mappedBy="promotions")
 	private List<Cours> coursPromotion; 
 	
 	// _________________ CONSTRUCTEUR ___________________ //

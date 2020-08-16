@@ -359,6 +359,7 @@ public class CoursDAOImpl implements ICoursDAO{
 	 * @param pIdMatiere : l'id de la matière
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	@Override
 	public List<Cours> afficherCoursEnseignantMatiere(Long pIdEnseignant, Long pIdMatiere) {
 
@@ -397,6 +398,7 @@ public class CoursDAOImpl implements ICoursDAO{
 	 * @param pIdMatiere : l'id de la matière
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	@Override
 	public List<Cours> afficherCoursEtudiantMatiere(Long pIdEtudiant, Long pIdMatiere) {
 
@@ -434,6 +436,7 @@ public class CoursDAOImpl implements ICoursDAO{
 	 * @param pIdPromotion : l'id de la promotion
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	@Override
 	public List<Cours> afficherCoursEnseignantByPromotion(Long pIdEnseignant, Long pIdPromotion) {
 

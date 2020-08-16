@@ -30,7 +30,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.intiformation.appschool.modeles.Cours;
+import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.ICoursService;
+import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IPromotionService;
 
@@ -69,6 +74,31 @@ public class GestionEtudiantsController {
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
+	
+	//déclaration couche service de etudiantcours 
+	@Autowired 
+	private IEtudiantCoursService etudiantCoursService;
+
+	/**
+	 * setter de etudiantCoursService pour injection par modificateur
+	 * @param etudiantCoursService
+	 */
+	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
+		this.etudiantCoursService = etudiantCoursService;
+	}
+	
+	// déclaration du service coursService
+	@Autowired 
+	private ICoursService coursService;
+
+	/** 
+	 * setter de coursService pour injection spring par modificateur
+	 * @param coursService
+	 */
+	public void setCoursService(ICoursService coursService) {
+		this.coursService = coursService;
+	}
+	
 
 	/**
 	 * Méthode permettant de récupérer la liste des etudiants via le service,
@@ -184,6 +214,23 @@ public class GestionEtudiantsController {
 			// Ajout etudiant via couche service
 
 			etudiantsService.ajouterEtudiant(pEtudiant);
+			
+			// ajout de l'étudiants dans la liste de présence des cours de sa promo
+			Long idPromo = pEtudiant.getPromotion().getIdPromotion();
+			List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idPromo);
+				
+			if (listeCoursPromo != null ) {
+				
+				for (Cours cours : listeCoursPromo) {
+					
+					EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+					etudiantCoursToAdd.setCours(cours);
+					etudiantCoursToAdd.setEtudiant(pEtudiant);
+					etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+					
+				}//end for each
+				
+			}//end if
 
 			// Recup nouvelle liste d'etudiant après ajout
 
@@ -198,6 +245,43 @@ public class GestionEtudiantsController {
 			if (file.isEmpty()) {
 
 				pEtudiant.getPhoto();
+				
+				//vérification si modif de la promotion
+				Etudiants etudiantUpdate = etudiantsService.findEtudiantById(pEtudiant.getIdPersonne());
+				
+				if (etudiantUpdate.getPromotion().equals(pEtudiant.getPromotion())){
+					//pas de modif dans etudiantcours
+				
+				} else {
+					
+					// suppression des cours de l'ancienne promo de l'étudiant dans etudiantcours
+					Long idAnciennePromo = etudiantUpdate.getPromotion().getIdPromotion();
+					List<Cours> anciensCours = coursService.findCoursParPromotion(idAnciennePromo);
+										
+					if (anciensCours != null ) {
+						for (Cours cours : anciensCours) {
+							etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(pEtudiant.getIdPersonne(), cours.getIdCours()));
+						}//end for each
+						
+					}//end if
+								
+					// ajout des cours de la nouvelle promo de l'étudiant dans etudiantcours
+					Long idNouvellePromo = pEtudiant.getPromotion().getIdPromotion();
+					List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idNouvellePromo); 
+					
+					if (listeCoursPromo != null ) {
+						
+						for (Cours cours : listeCoursPromo) {
+							
+							EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+							etudiantCoursToAdd.setCours(cours);
+							etudiantCoursToAdd.setEtudiant(pEtudiant);
+							etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+
+						}//end for each
+					}//end if
+					
+				}// end else			
 
 				// Modif etudiant via couche service
 

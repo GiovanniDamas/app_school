@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 	
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,14 +39,31 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
-    <div id="divhaute" class="container-fluid col-lg-12">
-        <h1 id="titre"> SchoolApp </h1>
-        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
-            <span class="fa fa-user-circle"></span>
-            Connexion
-        </a>
-    </div>
+	<div id="divhaute" class="container-fluid col-lg-12">
+		<h1 id="titre">SchoolApp</h1>
+		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+		</s:authorize>
 
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
+		</div>
+
+	</div>
 
 <div class="wrapper">
 

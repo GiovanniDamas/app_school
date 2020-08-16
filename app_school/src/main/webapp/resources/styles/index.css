@@ -31,7 +31,8 @@ jaune moutarde de marlene : #d6cc10
 
 #divhaute{
 	height: 120px;
-	background-color: #60acff;
+	background-color: #60acff; 
+	/*background: linear-gradient(#c0c0c0, #6887bf); */
 	border-bottom: 1px solid #c0c0c0;
 }
 

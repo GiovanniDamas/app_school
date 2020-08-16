@@ -91,89 +91,92 @@
 				<u>Formulaire d'ajout/édition d'une promotion :</u>
 			</h2>
 
+			<div class="form-group">
+				<form:form modelAttribute="linkCommand" method="POST"
+					action="${pageContext.request.contextPath}/promotion/add">
 
-			<form:form modelAttribute="linkCommand" method="POST"
-				action="${pageContext.request.contextPath}/promotion/add">
-
-				<%-- affichage de tous les messages d'erreurs --%>
-				<form:errors path="*" cssClass="erreur_validation" element="div" />
-
-
-				<table width="60%">
-					<tr>
-
-						<td><form:hidden path="promotion.idPromotion" /></td>
-
-					</tr>
+					<%-- affichage de tous les messages d'erreurs --%>
+					<form:errors path="*" cssClass="erreur_validation" element="div" />
 
 
-					<tr>
-						<td><form:label class="col-form-label"
-								path="promotion.libelle"> Libellé : </form:label></td>
-						<td><form:input class="form-control" path="promotion.libelle" /></td>
-						<td><form:errors path="promotion.libelle"
-								cssStyle="color:red; font-style:italic;" /></td>
-					</tr>
-
-
-					<tr>
-						<td><form:label class="col-form-label"
-								path="enseignant.idPersonne"> Enseignants: </form:label></td>
-						<td><form:select class="form-control" multiple="true"
-								path="enseignant.idPersonne">
-								<c:forEach items="${attribut_liste_enseignants}" var="ens">
-									<form:option value="${ens.idPersonne}">
-										<c:out value="${ens.nom} ${ens.prenom}" />
-									</form:option>
-								</c:forEach>
-							</form:select></td>
-						<td></td>
-					</tr>
-
-
-					<c:if test="${promotion.idPromotion == null}">
+					<table width="60%">
 						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Ajouter" /></td>
-						</tr>
-					</c:if>
 
-					<c:if test="${not empty promotion.idPromotion}">
+							<td><form:hidden path="promotion.idPromotion" /></td>
+
+						</tr>
+
+
 						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Modifier" /></td>
+							<td><form:label class="col-form-label"
+									path="promotion.libelle"> Libellé : </form:label></td>
+							<td><form:input class="form-control"
+									path="promotion.libelle" /></td>
+							<td><form:errors path="promotion.libelle"
+									cssStyle="color:red; font-style:italic;" /></td>
 						</tr>
-					</c:if>
 
 
-				</table>
+						<tr>
+							<td><form:label class="col-form-label"
+									path="enseignant.idPersonne"> Enseignants: </form:label></td>
+							<td><form:select class="form-control" multiple="true"
+									path="enseignant.idPersonne">
+									<c:forEach items="${attribut_liste_enseignants}" var="ens">
+										<form:option value="${ens.idPersonne}">
+											<c:out value="${ens.nom} ${ens.prenom}" />
+										</form:option>
+									</c:forEach>
+								</form:select></td>
+							<td></td>
+						</tr>
 
-			</form:form>
+
+						<c:if test="${promotion.idPromotion == null}">
+							<tr>
+								<td><input class="btn btn-primary" type="submit"
+									value="Ajouter" /></td>
+							</tr>
+						</c:if>
+
+						<c:if test="${not empty promotion.idPromotion}">
+							<tr>
+								<td><input class="btn btn-primary" type="submit"
+									value="Modifier" /></td>
+							</tr>
+						</c:if>
+
+
+					</table>
+
+				</form:form>
+			</div>
 		</div>
-	</div>
-	<!-- ===================================================== -->
-	<!-- =============== FOOTER ============================== -->
-	<!-- ===================================================== -->
-	<div class="clear" style="clear: both"></div>
+		</div>
+		
+		<!-- ===================================================== -->
+		<!-- =============== FOOTER ============================== -->
+		<!-- ===================================================== -->
+		<div class="clear" style="clear: both"></div>
 
-	<footer class="footer">
+		<footer class="footer">
 
-	<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
+		<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
 
-	</footer>
+		</footer>
 
 
-	<!-- ===================================================================== -->
-	<!-- ==================  SCRIPTS  ======================================== -->
-	<!-- ===================================================================== -->
+		<!-- ===================================================================== -->
+		<!-- ==================  SCRIPTS  ======================================== -->
+		<!-- ===================================================================== -->
 
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
 
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
 
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
 </body>
 </html>

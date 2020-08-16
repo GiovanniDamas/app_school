@@ -263,4 +263,30 @@ public class MatiereDAOImpl implements IMatiereDAO {
 	
 	}//end afficherMatiereByEnseignant
 
+	@Transactional
+	@Override
+	public Matiere addMatiere(Matiere pMatiere) {
+		
+		// 1. Récupération de la session
+				Session session = sessionFactory.getCurrentSession();
+
+				try {
+					// 2. Ajout dans la database via méthode save()
+					
+				
+					//session.save(pMatiere);
+					
+					Matiere matiereNew = session.get(Matiere.class, session.save(pMatiere));
+					
+					return matiereNew;
+				//	return nouvelleMatiere;
+
+				} catch (HibernateException e) {
+					// En cas d'erreur:
+					System.out.println("... (MatiereDAOImpl) Erreur lors de l'ajout ...");
+					throw e;
+					
+				} // end catch
+	}//end addMatiere
+
 }// end class

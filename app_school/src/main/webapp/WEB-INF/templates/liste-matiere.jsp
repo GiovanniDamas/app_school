@@ -66,8 +66,8 @@
     <ul class="sidebar-links">
       <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
       <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
       <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
@@ -135,6 +135,11 @@
 					<td><a
 						href="${pageContext.request.contextPath}/matiere/delete?idMatiere=${mat.idMatiere}">
 							Supprimer</a></td>
+							
+							
+					<td><a
+						href="${pageContext.request.contextPath}/matiere/liaison-matiere-form?idMatiere=${mat.idMatiere}">
+							Lier</a></td>
 
 				</tr>
 

@@ -65,10 +65,12 @@
 					<td><a
 						href="${pageContext.request.contextPath}/promotion/delete?idPromotion=${prom.idPromotion}">
 							Supprimer</a></td>
-
+					<!-- 
 					<td><a
 						href="${pageContext.request.contextPath}/promotion/lier-enseignants?idPromotion=${prom.idPromotion}">
 							Ajouter des enseignants</a></td>
+							
+					 -->
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -111,7 +111,7 @@
 						<td><form:errors path="matiere.libelle"
 								cssStyle="color:red; font-style:italic;" /></td>
 					</tr>
-
+<!--  
 					<tr>
 						<td><form:label class="col-form-label"
 								path="promotion.idPromotion"> Promotions: </form:label></td>
@@ -125,7 +125,7 @@
 							</form:select></td>
 						<td></td>
 					</tr>
-
+-->
 
 
 

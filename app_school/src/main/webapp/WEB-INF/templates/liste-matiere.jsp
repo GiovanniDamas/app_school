@@ -79,13 +79,7 @@
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
 	<!-- ===================================================== -->
-  <div id="content" style="width:100%">
-     <button type="button" id="sidebarCollapse" class="navbar-btn">
-         <span></span>
-         <span></span>
-         <span></span>
-     </button>
-
+ 
 	
 	
      <!--Put some content here	
@@ -96,7 +90,7 @@
 		<u>Liste des matières:</u>
 	</h1>
 
-	<table border="1"  style="width:90%;margin-left:5%">
+	<table class="table table-hover" style="width: 70%;" >
 
 		<tr>
 
@@ -149,7 +143,7 @@
 	
 
 	</div>
-</div>
+
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->

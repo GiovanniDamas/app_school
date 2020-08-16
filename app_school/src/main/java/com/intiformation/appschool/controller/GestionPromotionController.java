@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,8 @@ import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IPromotionService;
+import com.intiformation.appschool.validator.LinkValidator;
+import com.intiformation.appschool.validator.PromotionValidator;
 
 /**
  * Implémentation d'un controleur spring mvc pour la gestion des promotions
@@ -28,6 +31,7 @@ import com.intiformation.appschool.service.IPromotionService;
  * @author hannahlevardon
  *
  */
+
 @Controller // déclaration de la classe comme bean Spring de type contrôleur Spring MVC
 public class GestionPromotionController {
 
@@ -61,8 +65,16 @@ public class GestionPromotionController {
 	}
 
 	// Declaration du validator:
+	@Autowired
+	private LinkValidator linkValidator;
+	
+	public void setLinkValidator(LinkValidator linkValidator) {
+		this.linkValidator = linkValidator;
+	}
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
+
+	
 
 	/**
 	 * <pre>
@@ -97,7 +109,7 @@ public class GestionPromotionController {
 	 * 
 	 * @return le nom logique de la vue
 	 */
-	@RequestMapping(value = "promotion/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/promotion/delete", method = RequestMethod.GET)
 	public String supprimerPromotionDB(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
 		// 1. Suppresion de la matière de la database via le service
@@ -174,8 +186,22 @@ public class GestionPromotionController {
 	 */
 	@RequestMapping(value = "/promotion/add", method = RequestMethod.POST)
 	public String ajouterPromotionDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink,
-			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model) {
+			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model, BindingResult result  ) {
 
+		
+		linkValidator.validate(pLink.getPromotion(), result);
+		if (result.hasErrors()) {
+			
+			Long idPromotion = pLink.getPromotion().getIdPromotion();
+			
+			model.addAttribute("idPromotion", idPromotion);
+			
+			return "redirect:/promotion/edit-promotion-form";
+			
+		}else {
+			
+		
+		
 		// Cas d'un ajout de promotion:
 		if (pLink.getPromotion().getIdPromotion() == null) {
 
@@ -235,6 +261,8 @@ public class GestionPromotionController {
 			return "Promotions/liste-promotion";
 
 		} // END IF
+		
+		}//end else
 
 		return "Promotions/liste-promotion";
 

@@ -27,6 +27,7 @@ com/intiformation/appschool/modeles/Cours.class
 com/intiformation/appschool/dao/IEtudiantsDAO.class
 com/intiformation/appschool/modeles/Enseignants.class
 com/intiformation/appschool/service/IAdresseService.class
+com/intiformation/appschool/validator/LinkValidator.class
 com/intiformation/appschool/dao/AideDAOImpl.class
 com/intiformation/appschool/dao/IEnseignantMatierePromotionLinkDAO.class
 com/intiformation/appschool/dao/PromotionDAOImpl.class

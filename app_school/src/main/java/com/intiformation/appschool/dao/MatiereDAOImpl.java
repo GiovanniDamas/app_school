@@ -10,7 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.Matiere;
+import com.intiformation.appschool.modeles.Promotion;
 
 /**
  * <pre>
@@ -184,5 +186,107 @@ public class MatiereDAOImpl implements IMatiereDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// _________________ METHODES EN COURS D'IMPLEMENTATION (MARLENE) ___________________ //
+
+	/**
+	 * permet de récup la liste des matieres de la bdd associés à une personne (etudiant)
+	 * @param pIdEtudiant : l'id de l'étudiant
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Matiere> afficherMatiereByEtudiant(Long pIdEtudiant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Matiere> getMatiereByEtudiantQuery = session.createQuery("SELECT m FROM Matiere m, "
+																						+ "EnseignantMatierePromotionLink link, "
+																						+ "Promotion p ,"
+																						+ "Etudiants e "
+																						+ "WHERE m.idMatiere = link.matiere.idMatiere "
+																						+ "AND link.promotion.idPromotion = p.idPromotion "
+																						+ "AND p.idPromotion = e.promotion.idPromotion "
+																						+ "AND e.idPersonne = :pIdEtudiant");
+			//passage de paramètre
+			getMatiereByEtudiantQuery.setParameter("pIdEtudiant", pIdEtudiant);
+					
+			//envoi, execution et récup résultat
+			return getMatiereByEtudiantQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherMatiereByEtudiant ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherMatiereByEtudiant
+	
+	/**
+	 * permet de récup la liste des matieres de la bdd associés à une personne (enseignant)
+	 * @param pIdEnseignant : l'id de enseignant
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Matiere> afficherMatiereByEnseignant(Long pIdEnseignant) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Matiere> getMatiereByEnseignantQuery = session.createQuery("SELECT m FROM Matiere m, "
+																						+ "EnseignantMatierePromotionLink link, "
+																						+ "Enseignants e "
+																						+ "WHERE m.idMatiere = link.matiere.idMatiere "
+																						+ "AND link.enseignant.idPersonne = e.idPersonne "
+																						+ "AND e.idPersonne = :pIdEnseignant");
+			//passage de paramètre
+			getMatiereByEnseignantQuery.setParameter("pIdEnseignant", pIdEnseignant);
+					
+			//envoi, execution et récup résultat
+			return getMatiereByEnseignantQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherMatiereByEnseignant ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherMatiereByEnseignant
+
+	@Transactional
+	@Override
+	public Matiere addMatiere(Matiere pMatiere) {
+		
+		// 1. Récupération de la session
+				Session session = sessionFactory.getCurrentSession();
+
+				try {
+					// 2. Ajout dans la database via méthode save()
+					
+				
+					//session.save(pMatiere);
+					
+					Matiere matiereNew = session.get(Matiere.class, session.save(pMatiere));
+					
+					return matiereNew;
+				//	return nouvelleMatiere;
+
+				} catch (HibernateException e) {
+					// En cas d'erreur:
+					System.out.println("... (MatiereDAOImpl) Erreur lors de l'ajout ...");
+					throw e;
+					
+				} // end catch
+	}//end addMatiere
 
 }// end class

@@ -41,5 +41,8 @@ public interface IAdministrateursService {
 	 * @return
 	 */
 	public List<Administrateurs> findAllAdministrateur();
+	
+	/*____________________________________________________________________________________________________________*/
+	public Administrateurs findAdministrateurByIdentifiant(String pIdentifiant);
 
 }//END INTERFACE

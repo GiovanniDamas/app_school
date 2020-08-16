@@ -28,6 +28,7 @@ com/intiformation/appschool/modeles/Cours.class
 com/intiformation/appschool/dao/IEtudiantsDAO.class
 com/intiformation/appschool/modeles/Enseignants.class
 com/intiformation/appschool/service/IAdresseService.class
+com/intiformation/appschool/validator/LinkValidator.class
 com/intiformation/appschool/dao/AideDAOImpl.class
 com/intiformation/appschool/dao/IEnseignantMatierePromotionLinkDAO.class
 com/intiformation/appschool/dao/PromotionDAOImpl.class
@@ -41,6 +42,8 @@ com/intiformation/appschool/validator/EtudiantValidator.class
 com/intiformation/appschool/modeles/EnseignantMatierePromotionLink.class
 com/intiformation/appschool/modeles/Etudiants.class
 com/intiformation/appschool/controller/GestionMatiereController.class
+com/intiformation/appschool/validator/PromotionValidator.class
+com/intiformation/appschool/controller/GestionPromotionController.class
 com/intiformation/appschool/service/ICoursService.class
 com/intiformation/appschool/service/MatiereServiceImpl.class
 com/intiformation/appschool/modeles/Administrateurs.class
@@ -61,4 +64,5 @@ com/intiformation/appschool/controller/GestionAdministrateursController.class
 com/intiformation/appschool/dao/IPromotionDAO.class
 com/intiformation/appschool/validator/EtudiantCoursValidator.class
 com/intiformation/appschool/service/IEtudiantCoursService.class
+com/intiformation/appschool/controller/WelcomeController.class
 com/intiformation/appschool/controller/GestionAideService.class

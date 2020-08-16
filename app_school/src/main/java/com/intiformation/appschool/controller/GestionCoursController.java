@@ -2,30 +2,32 @@ package com.intiformation.appschool.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.taglibs.standard.tag.el.fmt.ParseDateTag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Cours;
+import com.intiformation.appschool.modeles.EtudiantCours;
+import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Personnes;
+import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IEtudiantCoursService;
+import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
 import com.intiformation.appschool.validator.CoursValidator;
@@ -38,7 +40,7 @@ import com.intiformation.appschool.validator.CoursValidator;
 @Controller 
 public class GestionCoursController {
 
-	//déclaration du service coursService
+	//___ déclaration du service coursService
 	@Autowired //injection par modificateur
 	private ICoursService coursService;
 
@@ -50,45 +52,55 @@ public class GestionCoursController {
 		this.coursService = coursService;
 	}
 	
-	//déclaration du service de matière
+	//___ déclaration du service de matière avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private IMatiereService matiereService;
 
-	/** 
-	 * setter pour injection spring 
-	 * @param matiereService
-	 */
 	public void setMatiereService(IMatiereService matiereService) {
 		this.matiereService = matiereService;
 	}
 
-	//déclaration du service de promotion
+	//___ déclaration du service de promotion avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private IPromotionService promotionService;
 
-	/** 
-	 * setter pour injection spring 
-	 * @param promotionService
-	 */
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
 	
-	/*____________________________________________________________________________________________________________*/
-	//déclaration du service de enseignant
+	//___ déclaration du service de enseignant avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private IEnseignantsService enseignantsService;
 
-	/** 
-	 * setter pour injection spring 
-	 * @param promotionService
-	 */
 	public void setEnseignantsService(IEnseignantsService enseignantsService) {
 		this.enseignantsService = enseignantsService;
 	}
-	/*____________________________________________________________________________________________________________*/
 
-	//déclaration du validateur
+	//____ déclaration du service de administrateur avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IAdministrateursService administrateursService;
+
+	public void setAdministrateursService(IAdministrateursService administrateursService) {
+		this.administrateursService = administrateursService;
+	}
+
+	//___ déclaration du service de etudiant avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEtudiantsService etudiantsService;
+
+	public void setEtudiantsService(IEtudiantsService etudiantsService) {
+		this.etudiantsService = etudiantsService;
+	}
+	
+	//___ déclaration du service de etudiantcours avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEtudiantCoursService etudiantCoursService;
+
+	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
+		this.etudiantCoursService = etudiantCoursService;
+	}
+
+	//___ déclaration du validateur
 	@Autowired //injection par modificateur
 	private CoursValidator coursValidator;
 
@@ -100,31 +112,39 @@ public class GestionCoursController {
 		this.coursValidator = coursValidator;
 	}
 	
-	/*__________________________ méthodes gestionnaires _______________*/
 	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd
-	 * @param model
+	 * méthode qui permet de récupérer les informations de la personne connectée
+	 * @param authentication
 	 * @return
 	 */
-	@RequestMapping(value="/cours/liste", method=RequestMethod.GET)
-	public String afficherListeCoursBdd(ModelMap model) {
+	public Personnes getInfosPersonneConnecte(Authentication authentication) {
 		
-		//1. récup de la liste des cours de la bdd via le service
-		List<Cours> listeCoursBdd = coursService.findAllCours();
+		Personnes personneConnecte = null;
 		
-		//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
-		model.addAttribute("attribut_liste_cours", listeCoursBdd);
-		
-		// renvoi de la liste des matières et des promotions vers la vue 
-		model.addAttribute("attribut_enseignant", enseignantsService.findAllEnseignant());
-		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-		
-		//3. renvoi du nom logique de la vue
-		return "cours/liste-cours";
-		
-	}//end afficherListeCoursBdd
+		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
+			
+			//1. cas d'un admin : récupération de l'administrateur connecté
+			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
 	
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
+			
+			//1. cas d'un enseignant : récupération de l'enseignant connecté
+			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
+			
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
+			
+			//1. cas d'un etudiant : récupération de l'eutidnat connecté
+			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
+		}
+		
+		return personneConnecte;
+		
+	}//end getInfosPersonneConnecte
+	
+	/*=================================================================*/
+	/*======================= méthodes gestionnaires ==================*/
+	/*=================================================================*/
+
 	/**
 	 * permet de supprimer un cours de la bdd
 	 * @param model
@@ -147,7 +167,7 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/formulaire-ajout", method=RequestMethod.GET)
-	public String chargerCoursBdd(ModelMap model) {
+	public String chargerCoursBdd(ModelMap model, Authentication authentication) {
 		
 		//1. création objet cours
 		Cours cours = new Cours();
@@ -155,11 +175,14 @@ public class GestionCoursController {
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", cours);
 		
-		// renvoi de la liste des matières et des promotions vers la vue 
-		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+		//3. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 		
-		//3. renvoi du nom logique de la vue
+		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+		//5. renvoi du nom logique de la vue
 		return "cours/formulaire-ajout";
 		
 	}//end chargerCoursBdd
@@ -184,7 +207,35 @@ public class GestionCoursController {
 				
 				//2.b ajout du cours dans la bdd
 				coursService.ajouterCours(pCours);
-				
+
+				// ajout des étudiants de la promo liés au cours dans la liste de présence
+				Long idPromo = pCours.getPromotions().getIdPromotion(); 
+				List<Etudiants> listeEtudiants = etudiantsService.findAllEtudiant();
+				List<Etudiants> listeEtudiantsPromo = new ArrayList<>();
+
+				if (listeEtudiants != null) {
+
+					for (Etudiants etudiants : listeEtudiants) {
+						
+						if (etudiants.getPromotion().getIdPromotion() == idPromo) {
+							listeEtudiantsPromo.add(etudiants);
+						}//end if
+						
+					}//end for each
+					
+					if (listeEtudiantsPromo != null) {
+
+						for (Etudiants etudiants : listeEtudiantsPromo) {
+							EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+							etudiantCoursToAdd.setCours(pCours);
+							etudiantCoursToAdd.setEtudiant(etudiants);
+							etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+						}//end for each
+						
+					}//end if
+					
+				}//end if
+							
 				//3. renvoi du nom logique de la vue
 				return "redirect:/cours/liste";	
 				
@@ -198,19 +249,23 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/formulaire-modif", method=RequestMethod.GET)
-	public String chargerModifCoursBdd(@RequestParam("coursId") Long pIdCours, ModelMap model) {
+	public String chargerModifCoursBdd(@RequestParam("coursId") Long pIdCours, ModelMap model, Authentication authentication) {
 		
 		//1. récupération du cours à modifier
 		Cours coursToUpdate = coursService.findCoursById(pIdCours);
 		
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", coursToUpdate);
+				
+		//3. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 		
-		// renvoi de la liste des matières et des promotions vers la vue 
-		model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-		model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		
-		//3. renvoi du nom logique de la vue
+		//5. renvoi du nom logique de la vue
 		return "cours/formulaire-modif";
 		
 	}//end chargerModifCoursBdd
@@ -223,51 +278,144 @@ public class GestionCoursController {
 	@RequestMapping(value="/cours/modifier", method=RequestMethod.POST)
 	public String modifierCoursBdd(@ModelAttribute("attribut_cours") @Validated Cours pCours, BindingResult result) {
 		
-			//1. application du validateur sur l'objet pCours
-			coursValidator.validate(pCours, result);
+		//1. application du validateur sur l'objet pCours
+		coursValidator.validate(pCours, result);
 			
-			if (result.hasErrors()) {
+		if (result.hasErrors()) {
 				
 				//2.a renvoi vers le formulaire
 				return "cours/formulaire-modif";
 			
-			}else {
+		}else {
 				
+				//vérification si modif de la promotion
+				Cours coursUpdate = coursService.findCoursById(pCours.getIdCours());
+				
+				if (coursUpdate.getPromotions().equals(pCours.getPromotions())){
+					//pas de modif dans etudiantcours
+	
+				} else {
+					
+					// suppression des étudiants de l'ancienne promo liée au cours dans etudiantcours
+					Long idAnciennePromo = coursUpdate.getPromotions().getIdPromotion(); 
+					List<Etudiants> listeEtudiants = etudiantsService.findAllEtudiant();
+					List<Etudiants> listeEtudiantsAnciennePromo = new ArrayList<>();
+
+					if (listeEtudiants != null) {
+
+						for (Etudiants etudiants : listeEtudiants) {
+							
+							if (etudiants.getPromotion().getIdPromotion() == idAnciennePromo) {
+								listeEtudiantsAnciennePromo.add(etudiants);
+							}//end if
+							
+						}//end for each
+						
+						if (listeEtudiantsAnciennePromo != null) {
+
+							for (Etudiants etu : listeEtudiantsAnciennePromo) {
+								etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(etu.getIdPersonne(), pCours.getIdCours()));
+							}//end for each
+							
+						}//end if
+						
+					}//end if
+												
+					// ajout des étudiants de la nouvelle promo liés au cours dans etudiantcours
+					Long idPromo = pCours.getPromotions().getIdPromotion(); 
+					List<Etudiants> listeEtudiantsPromo = new ArrayList<>();
+
+					if (listeEtudiants != null) {
+
+						for (Etudiants etudiants : listeEtudiants) {
+							
+							if (etudiants.getPromotion().getIdPromotion() == idPromo) {
+								listeEtudiantsPromo.add(etudiants);
+							}//end if
+							
+						}//end for each
+						
+						if (listeEtudiantsPromo != null) {
+
+							for (Etudiants etudiants : listeEtudiantsPromo) {
+								EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+								etudiantCoursToAdd.setCours(pCours);
+								etudiantCoursToAdd.setEtudiant(etudiants);
+								etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+							}//end for each
+							
+						}//end if
+						
+					}//end if
+					
+				}//end else
+									
 				//2.b modif du cours dans la bdd
 				coursService.modifierCours(pCours);
 				
 				//3. renvoi du nom logique de la vue
 				return "redirect:/cours/liste";	
 				
-			}		
+		}//end else		
 		
 	}//end modifierCoursBdd
 	
 	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une matière
+	 * permet d'afficher la liste de l'ensemble des cours de la bdd associé à une personne
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/cours/liste", method=RequestMethod.GET)
+	public String afficherListeCoursByPersonne(ModelMap model, Authentication authentication) {
+		
+		//1. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		//2. récup de la liste des cours de la bdd via le service
+		List<Cours> listeCoursByPersonneBdd = coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
+		
+		//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+		model.addAttribute("attribut_liste_cours", listeCoursByPersonneBdd);
+				
+		//4. renvoi de la liste des enseignants, des matières et des promotions vers la vue 
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		
+		//5. renvoi du nom logique de la vue
+		return "cours/liste-cours";
+				
+	}//end afficherListeCoursByPersonne
+	
+	/**
+	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une matière associé à une personne
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="/cours/recherche-matiere", method=RequestMethod.GET)
-	public String afficherListeCoursByMatiere(@RequestParam("id-matiere") Long pIdMatiere, ModelMap model) {
+	public String afficherListeCoursByMatiere(@RequestParam("id-matiere") Long pIdMatiere, ModelMap model, Authentication authentication) {
 		
 		if (pIdMatiere == 0) {
 			
 			return "redirect:/cours/liste";
 		
 		} else {
-
-			//1. récup de la liste des cours de la bdd via le service
-			List<Cours> listeCoursByMatiereBdd = coursService.findCoursParMatiere(pIdMatiere);
 			
-			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			//1. récup de la personne connectée
+			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+
+			//2. récup de la liste des cours de la bdd via le service
+			List<Cours> listeCoursByMatiereBdd = coursService.findCoursPersonneMatiere(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pIdMatiere);
+			
+			//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_cours", listeCoursByMatiereBdd);
 			
-			// renvoi de la liste des matières et des promotions vers la vue 
-			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+			//4. renvoi de la liste des matières et des promotions vers la vue 
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 			
-			//3. renvoi du nom logique de la vue
+			//5. renvoi du nom logique de la vue
 			return "cours/liste-cours";
 			
 		}
@@ -280,7 +428,7 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/recherche-promotion", method=RequestMethod.GET)
-	public String afficherListeCoursByPromo(@RequestParam("id-promo") Long pIdPromotion, ModelMap model) {
+	public String afficherListeCoursByPromo(@RequestParam("id-promo") Long pIdPromotion, ModelMap model, Authentication authentication) {
 		
 		if (pIdPromotion == 0) {
 			
@@ -288,60 +436,65 @@ public class GestionCoursController {
 		
 		} else {
 			
-			//1. récup de la liste des cours de la bdd via le service
-			List<Cours> listeCoursByPromoBdd = coursService.findCoursParPromotion(pIdPromotion);
+			//1. récup de la personne connectée
+			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 			
-			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			//2. récup de la liste des cours de la bdd via le service
+			List<Cours> listeCoursByPromoBdd = coursService.findCoursPersonneByPromotion(personneConnecte.getIdPersonne(), pIdPromotion, personneConnecte.getRole());
+			
+			//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
 			model.addAttribute("attribut_liste_cours", listeCoursByPromoBdd);
 			
-			// renvoi de la liste des matières et des promotions vers la vue 
-			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+			//4. renvoi de la liste des matières et des promotions vers la vue 
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 			
-			//3. renvoi du nom logique de la vue
+			//5. renvoi du nom logique de la vue
 			return "cours/liste-cours";
 			
-		}
+		}//end else
 		
 	}//end afficherListeCoursByPromo
-	
+
 	/**
 	 * permet d'afficher la liste de l'ensemble des cours de la bdd d'une date
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="/cours/recherche-date", method=RequestMethod.GET)
-	public String afficherListeCoursByDate(@RequestParam("date") String pDateString, ModelMap model) {
-		
-		System.out.println("date string = " + pDateString + " class: " + pDateString.getClass());
-		
+	public String afficherListeCoursByDate(@RequestParam("date") String pDateString, ModelMap model, Authentication authentication) {
+				
 		try {
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 			Date pDate;
 			pDate = formatter.parse(pDateString);
-			System.out.println("date = " + pDate + " class: " + pDate.getClass());
 	
 			if (pDate == null) {
 			
 				return "redirect:/cours/liste";
 		
 			} else {
+				
+				//1. récup de la personne connectée
+				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 			
-			//1. récup de la liste des cours de la bdd via le service
-			List<Cours> listeCoursByDateBdd = coursService.findCoursParDate(pDate);
+				//2. récup de la liste des cours de la bdd via le service
+				List<Cours> listeCoursByDateBdd = coursService.findCoursPersonneByDate(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pDate);
 			
-			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
-			model.addAttribute("attribut_liste_cours", listeCoursByDateBdd);
+				//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+				model.addAttribute("attribut_liste_cours", listeCoursByDateBdd);
 			
-			// renvoi de la liste des matières et des promotions vers la vue 
-			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
+				// renvoi de la liste des matières et des promotions vers la vue 
+				model.addAttribute("attribut_personne_connecte", personneConnecte);
+				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+				model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+				
+				//3. renvoi du nom logique de la vue
+				return "cours/liste-cours";
 			
-			//3. renvoi du nom logique de la vue
-			return "cours/liste-cours";
-			
-		}//end else
+			}//end else
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -350,38 +503,5 @@ public class GestionCoursController {
 		return "cours/liste-cours";
 	
 	}//end afficherListeCoursByDate
-	
-	/*_____________________________________________________________________________________________________*/
-	/**
-	 * permet d'afficher la liste de l'ensemble des cours de la bdd donné par un enseignant
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/cours/recherche-enseignant", method=RequestMethod.GET)
-	public String afficherListeCoursByEns(@RequestParam("id-enseignant") Long pIdEnseignant, ModelMap model) {
-		
-		if (pIdEnseignant == 0) {
-			
-			return "redirect:/cours/liste";
-		
-		} else {
-			
-			//1. récup de la liste des cours de la bdd via le service
-			List<Cours> listeCoursByEnsBdd = coursService.findCoursEnseignant(pIdEnseignant);
-			
-			//2. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
-			model.addAttribute("attribut_liste_cours", listeCoursByEnsBdd);
-			
-			// renvoi de la liste des matières et des promotions vers la vue 
-			model.addAttribute("attribut_enseignant", enseignantsService.findAllEnseignant());
-			model.addAttribute("attribut_matieres", matiereService.trouverAllMatieres());
-			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());		
-			
-			//3. renvoi du nom logique de la vue
-			return "cours/liste-cours";
-			
-		}
-		
-	}//end afficherListeCoursByPromo
 	
 }//end class

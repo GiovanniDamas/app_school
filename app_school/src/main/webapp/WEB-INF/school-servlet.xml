@@ -48,7 +48,7 @@
 		<property name="defaultEncoding" value="UTF-8" />
 		<property name="basenames">
 			<list>
-				<value>/WEB-INF/bundle/validation.properties</value>
+				<value>/WEB-INF/bundle/validation</value>
 			</list>
 		</property>
 	</bean>

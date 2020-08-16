@@ -6,6 +6,10 @@ bleu foncé sidebar : #0051f1
 bleu clair sidebar : #60acff
 blanc sidebar : #f0f0f0
 
+bleu de gab : background-color:#60acff ;
+
+dégradé rouge : background: linear-gradient(#f9b0b0, #c71010); 
+
 jaune moutarde de marlene : #d6cc10
 */
 
@@ -14,17 +18,21 @@ jaune moutarde de marlene : #d6cc10
 	font-weight: bold;
 	color: white;
 	float: left;
+	font-family:'Fredericka the Great', cursive;
 }
 
 #connexion{
-	margin-top: 35px;
+	margin-top: 10px;
 	float: right;
 	color: white;
+	text-align: right;
+	font-size:12pt;
 }
 
 #divhaute{
 	height: 120px;
-	background-color:#60acff ;
+	background-color: #60acff; 
+	/*background: linear-gradient(#c0c0c0, #6887bf); */
 	border-bottom: 1px solid #c0c0c0;
 }
 

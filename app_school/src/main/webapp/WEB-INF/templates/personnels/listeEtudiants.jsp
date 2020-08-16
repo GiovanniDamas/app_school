@@ -4,7 +4,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,6 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>Page gestion des Etudiants</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
@@ -26,7 +28,9 @@
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
+    
+    <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 	<style>
 	
@@ -40,13 +44,31 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
-    <div id="divhaute" class="container-fluid col-lg-12">
-        <h1 id="titre"> SchoolApp </h1>
-        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
-            <span class="fa fa-user-circle"></span>
-            Connexion
-        </a>
-    </div>
+	<div id="divhaute" class="container-fluid col-lg-12">
+		<h1 id="titre">SchoolApp</h1>
+		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+		</s:authorize>
+
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
+		</div>
+
+	</div>
 
 
 <div class="wrapper">
@@ -106,6 +128,7 @@
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
 					<th scope="col">Photo</th>
+					<th scope="col">Promotion</th>				
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
 				</tr>
@@ -117,12 +140,13 @@
 						<th scope="row">${etu.idPersonne}</th>
 						<th>${etu.nom}</th>
 						<th>${etu.prenom}</th>
-						<td>${etu.dateDeNaissance}</td>
+						<td><fmt:formatDate value="${etu.dateDeNaissance}" pattern="dd/MM/yyyy"/></td>
 						<td>${etu.email}</td>
 						<td>${etu.identifiant}</td>
 						<td>
 						<img src="${pageContext.request.contextPath}/resources/Images/${etu.photo}" height="20%" width="100%">
 						</td>
+						<td>${etu.promotion.libelle}</td>
 						
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"

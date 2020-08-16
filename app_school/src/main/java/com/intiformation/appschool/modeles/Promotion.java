@@ -43,7 +43,7 @@ public class Promotion implements Serializable {
 	 * ManyToMany	 	 
 	 */
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany 
 	@JoinTable(name="promotion_assos_etudiants",
 			   joinColumns=@JoinColumn(name="promotion_id"),
 			   inverseJoinColumns=@JoinColumn(name="etudiant_id"))	
@@ -55,8 +55,11 @@ public class Promotion implements Serializable {
 	 * 	 	 
 	 */
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="promotion")
+	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="promotion")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
+
+	
+	
 	
 	/**
 	 * Relation entre Promotion et Cours: OneToMany
@@ -64,7 +67,7 @@ public class Promotion implements Serializable {
 	 * Mais je ne suis pas trop d'accord : en parler avec les autre
 	 * 	 	 
 	 */
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="promotions")
+	@OneToMany(mappedBy="promotions")
 	private List<Cours> coursPromotion; 
 	
 	// _________________ CONSTRUCTEUR ___________________ //
@@ -73,6 +76,7 @@ public class Promotion implements Serializable {
 	 */
 	public Promotion() {
 	}
+	
 	
 	
 	// _________________ GETTER / SETTER ___________________ //

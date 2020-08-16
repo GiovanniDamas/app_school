@@ -5,7 +5,95 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2020-08-14T06:10:08Z</updated>
+  <updated>2020-08-14T19:07:45Z</updated>
+  <entry>
+    <title>Creating Efficient Docker Images with Spring Boot 2.3</title>
+    <link rel="alternate" href="https://spring.io/blog/2020/08/14/creating-efficient-docker-images-with-spring-boot-2-3" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Madhura Bhave</name>
+    </author>
+    <id>tag:spring.io,2020-08-07:4154</id>
+    <updated>2020-08-14T19:07:45Z</updated>
+    <content type="html">&lt;p&gt;This is an update to the original blog post about &lt;a href="https://spring.io/blog/2020/01/27/creating-docker-images-with-spring-boot-2-3-0-m1"&gt;creating docker images with Spring Boot 2.3&lt;/a&gt;.&lt;br/&gt;There were a few things related to image creation that changed between the first milestone of Spring Boot 2.3 and the GA release.&lt;/p&gt;
+&lt;p&gt;The two new features introduced in Spring Boot 2.3 to help improve image creation techniques were: layered jars and buildpack support. &lt;/p&gt;&lt;h2&gt;&lt;a href="#layered-jars" class="anchor" name="layered-jars"&gt;&lt;/a&gt;Layered Jars&lt;/h2&gt;
+&lt;p&gt;The layered jar feature evolved quite a bit as we started adding support for custom layers. While the need to express layers that the jar should be split into for image creation was evident, changing the format of the jar to do so no longer seemed necessary.&lt;br/&gt;Spring Boot 2.3 includes support for layering a jar using a &lt;code&gt;layers.idx&lt;/code&gt; file. The layers index file provides a list of layers and the parts of the jar that should be contained within them. Layers are written in the order that they should be added to the Docker/OCI image.&lt;/p&gt;
+&lt;p&gt;By default, the following layers are defined:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;dependencies&lt;/code&gt; for any dependency whose version does not contain &lt;code&gt;SNAPSHOT&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;spring-boot-loader&lt;/code&gt; for the jar loader classes.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;snapshot-dependencies&lt;/code&gt; for any dependency whose version contains &lt;code&gt;SNAPSHOT&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;application&lt;/code&gt; for application classes and resources.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The corresponding &lt;code&gt;layers.idx&lt;/code&gt; file looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;  - &amp;quot;dependencies&amp;quot;:&#xD;
+    - &amp;quot;BOOT-INF/lib/dependency1.jar&amp;quot;&#xD;
+    - &amp;quot;BOOT-INF/lib/dependency2.jar&amp;quot;&#xD;
+  - &amp;quot;spring-boot-loader&amp;quot;:&#xD;
+    - &amp;quot;org/&amp;quot;&#xD;
+  - &amp;quot;snapshot-dependencies&amp;quot;:&#xD;
+    - &amp;quot;BOOT-INF/lib/dependency3-SNAPSHOT.jar&amp;quot;&#xD;
+    - &amp;quot;BOOT-INF/lib/dependency4-SNAPSHOT.jar&amp;quot;    &#xD;
+  - &amp;quot;application&amp;quot;:&#xD;
+    - &amp;quot;BOOT-INF/classes/&amp;quot;&#xD;
+    - &amp;quot;META-INF/&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The layers order is important as it determines how likely previous layers are to be cached when part of the application changes.&lt;br/&gt;The default order is &lt;code&gt;dependencies&lt;/code&gt;, &lt;code&gt;spring-boot-loader&lt;/code&gt;, &lt;code&gt;snapshot-dependencies&lt;/code&gt;, &lt;code&gt;application&lt;/code&gt;.&lt;br/&gt;Content that is least likely to change should be added first, followed by layers that are more likely to change.&lt;/p&gt;
+&lt;p&gt;To use this feature with Spring Boot 2.3, the layering feature must be explicitly enabled. The following example shows how to enable layering with the Maven plugin:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;  &amp;lt;project&amp;gt;&#xD;
+    &amp;lt;build&amp;gt;&#xD;
+      &amp;lt;plugins&amp;gt;&#xD;
+        &amp;lt;plugin&amp;gt;&#xD;
+          &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;&#xD;
+          &amp;lt;artifactId&amp;gt;spring-boot-maven-plugin&amp;lt;/artifactId&amp;gt;&#xD;
+          &amp;lt;version&amp;gt;{gradle-project-version}&amp;lt;/version&amp;gt;&#xD;
+          &amp;lt;configuration&amp;gt;&#xD;
+            &amp;lt;layers&amp;gt;&#xD;
+              &amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&#xD;
+            &amp;lt;/layers&amp;gt;&#xD;
+          &amp;lt;/configuration&amp;gt;&#xD;
+        &amp;lt;/plugin&amp;gt;&#xD;
+      &amp;lt;/plugins&amp;gt;&#xD;
+    &amp;lt;/build&amp;gt;&#xD;
+  &amp;lt;/project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;NOTE: In the latest Spring Boot 2.4 snapshots, layering is &lt;a href="https://github.com/spring-projects/spring-boot/issues/20983"&gt;enabled by default&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Once a jar containing the &lt;code&gt;layers.idx&lt;/code&gt; file has been created, the &lt;code&gt;layertools&lt;/code&gt; jarmode can be used to craft a Dockerfile using those layers. Details on how to use the jarmode with a Dockerfile can be found in the &lt;a href="https://spring.io/blog/2020/01/27/creating-docker-images-with-spring-boot-2-3-0-m1"&gt;previous blog post&lt;/a&gt;. &lt;/p&gt;&lt;h2&gt;&lt;a href="#cloud-native-buildpacks-support" class="anchor" name="cloud-native-buildpacks-support"&gt;&lt;/a&gt;Cloud Native Buildpacks Support&lt;/h2&gt;
+&lt;p&gt;Support for Cloud Native Buildpacks via the Spring Boot Maven and Gradle plugin has not changed since the last blog post and the details on that can be found &lt;a href="https://spring.io/blog/2020/01/27/creating-docker-images-with-spring-boot-2-3-0-m1"&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#custom-layers" class="anchor" name="custom-layers"&gt;&lt;/a&gt;Custom Layers&lt;/h2&gt;
+&lt;p&gt;While we think that the layers that we provide out-of-the-box will work for most Spring Boot applications, there might be a need to tune them based on your application&amp;rsquo;s needs. For example, you might have some organization-wide dependencies that change at a different cadence than regular dependencies. This might warrant splitting those dependencies out into a separate layer. The &lt;code&gt;layers.idx&lt;/code&gt; file can be customized using the Maven and Gradle plugins. The following example shows how to do so using a separate &lt;code&gt;layers.xml&lt;/code&gt; file with the Maven plugin:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;&amp;lt;layers xmlns=&amp;quot;http://www.springframework.org/schema/boot/layers&amp;quot;&#xD;
+              xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&#xD;
+              xsi:schemaLocation=&amp;quot;http://www.springframework.org/schema/boot/layers&#xD;
+              https://www.springframework.org/schema/boot/layers/layers-{spring-boot-xsd-version}.xsd&amp;quot;&amp;gt;&#xD;
+    &amp;lt;application&amp;gt;&#xD;
+      &amp;lt;into layer=&amp;quot;spring-boot-loader&amp;quot;&amp;gt;&#xD;
+        &amp;lt;include&amp;gt;org/springframework/boot/loader/**&amp;lt;/include&amp;gt;&#xD;
+      &amp;lt;/into&amp;gt;&#xD;
+      &amp;lt;into layer=&amp;quot;application&amp;quot; /&amp;gt;&#xD;
+    &amp;lt;/application&amp;gt;&#xD;
+    &amp;lt;dependencies&amp;gt;&#xD;
+      &amp;lt;into layer=&amp;quot;snapshot-dependencies&amp;quot;&amp;gt;&#xD;
+        &amp;lt;include&amp;gt;*:*:*SNAPSHOT&amp;lt;/include&amp;gt;&#xD;
+      &amp;lt;/into&amp;gt;&#xD;
+      &amp;lt;into layer=&amp;quot;company-dependencies&amp;quot;&amp;gt;&#xD;
+        &amp;lt;include&amp;gt;com.acme:*&amp;lt;/include&amp;gt;&#xD;
+      &amp;lt;/into&amp;gt;&#xD;
+      &amp;lt;into layer=&amp;quot;dependencies&amp;quot;/&amp;gt;&#xD;
+    &amp;lt;/dependencies&amp;gt;&#xD;
+    &amp;lt;layerOrder&amp;gt;&#xD;
+      &amp;lt;layer&amp;gt;dependencies&amp;lt;/layer&amp;gt;&#xD;
+      &amp;lt;layer&amp;gt;spring-boot-loader&amp;lt;/layer&amp;gt;&#xD;
+      &amp;lt;layer&amp;gt;snapshot-dependencies&amp;lt;/layer&amp;gt;&#xD;
+      &amp;lt;layer&amp;gt;company-dependencies&amp;lt;/layer&amp;gt;&#xD;
+      &amp;lt;layer&amp;gt;application&amp;lt;/layer&amp;gt;&#xD;
+    &amp;lt;/layerOrder&amp;gt;&#xD;
+&amp;lt;/layers&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The configuration above creates an additional &lt;code&gt;company-dependencies&lt;/code&gt; layer with all libraries with the &lt;code&gt;com.acme&lt;/code&gt; groupId.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="https://github.com/paketo-buildpacks/spring-boot"&gt;Paketo Spring Boot buildpack&lt;/a&gt; has also been updated to support the &lt;code&gt;layers.idx&lt;/code&gt; file so any customization that is applied to it will be reflected in the image created by the buildpack.&lt;/p&gt;
+&lt;p&gt;For more details on how to use layering and the buildpack integration to create optimized docker images, you can take a look at the reference documentation for the &lt;a href="https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/html/"&gt;Maven&lt;/a&gt; and &lt;a href="https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/"&gt;Gradle&lt;/a&gt; plugins.&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: RSocket everywhere and Maciej Walkowiak on Spring Cloud AWS</title>
     <link rel="alternate" href="https://spring.io/blog/2020/08/14/a-bootiful-podcast-rsocket-everywhere-and-maciej-walkowiak-on-spring-cloud-aws" />
@@ -22,7 +110,7 @@
   &lt;li&gt;Maciej&amp;rsquo;s recent video on getting started with &lt;a href="https://www.youtube.com/watch?v=Ts2a-YdN6vI"&gt;Spring Cloud AWS&lt;/a&gt; on his excellent YouTube channel Spring Academy&lt;/li&gt;
   &lt;li&gt;Josh&amp;rsquo;s book &lt;a href="http://ReactiveSpring.io"&gt;&lt;em&gt;Reactive Spring&lt;/em&gt;&lt;/a&gt; has been updated with a new whopping 70+ page chapter on RSocket&lt;/li&gt;
   &lt;li&gt;Josh&amp;rsquo;s &lt;a href="https://www.youtube.com/watch?v=ipVfRdl5SP0&amp;t=1s"&gt;&lt;em&gt;The RSocket Revolution&lt;/em&gt;&lt;/a&gt; talk&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://github.com/spring-projects-experimental"&gt;Spring Retrosocket&lt;/a&gt; - a declarative client for RSocket √† la Feign or Retrofit&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://github.com/spring-projects-experimental"&gt;Spring Retrosocket&lt;/a&gt; - a declarative client for RSocket ‡ la Feign or Retrofit&lt;/li&gt;
 &lt;/ul&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
@@ -155,7 +243,7 @@ test: "overridden-value"&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="sect1"&gt;
-&lt;h2 id="mutli-document-properties-files"&gt;&lt;a class="anchor" href="#mutli-document-properties-files"&gt;&lt;/a&gt;Mutli-document Properties Files&lt;/h2&gt;
+&lt;h2 id="multi-document-properties-files"&gt;&lt;a class="anchor" href="#multi-document-properties-files"&gt;&lt;/a&gt;Multi-document Properties Files&lt;/h2&gt;
 &lt;div class="sectionbody"&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;With Spring Boot 2.4, we&amp;#8217;ve decided to bring YAML-like multi-document support to Java properties files.
@@ -406,7 +494,7 @@ If you want to read more about them, you can checkout the updated &lt;a href="ht
   &lt;li&gt;&lt;a href="https://spring.io/blog/2020/08/12/spring-data-2020-0-0-m2-released"&gt;Spring Data 2020.0.0.M2&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;An update to the way that &lt;code&gt;application.properties&lt;/code&gt; and &lt;code&gt;application.yml&lt;/code&gt; files are processed, including import support and support for volume mounted config trees.&lt;/li&gt;
   &lt;li&gt;A a significant overhaul of the Neo4j support.&lt;/li&gt;
-  &lt;li&gt;Numerous other &lt;a href="https://github.com/spring-projects/spring-boot/issues?utf8=‚úì&amp;q=label%3A%22type%3A+dependency-upgrade%22+milestone%3A2.4.0-M2"&gt;dependency upgrades&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Numerous other &lt;a href="https://github.com/spring-projects/spring-boot/issues?utf8=?&amp;q=label%3A%22type%3A+dependency-upgrade%22+milestone%3A2.4.0-M2"&gt;dependency upgrades&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;For a complete list of changes and upgrade instructions, please see the &lt;a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.4.0-M2-Release-Notes"&gt;Spring Boot 2.4 Release Notes&lt;/a&gt; on the wiki and the &lt;a href="http://docs.spring.io/spring-boot/docs/2.4.0-M2/reference/html/"&gt;updated reference documentation&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you&amp;rsquo;re interested in learning more about the changes to &lt;code&gt;application.properties&lt;/code&gt; and &lt;code&gt;application.yml&lt;/code&gt; processing, check out &lt;a href="https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4"&gt;this blog post&lt;/a&gt; on the subject.&lt;/p&gt;
@@ -424,7 +512,7 @@ If you want to read more about them, you can checkout the updated &lt;a href="ht
     <id>tag:spring.io,2020-08-11:4161</id>
     <updated>2020-08-14T00:28:52Z</updated>
     <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;On behalf of the community, I‚Äôm pleased to announce the release of
+&lt;p&gt;On behalf of the community, Iím pleased to announce the release of
 Spring Security 5.4.0-RC1! You can find the complete details in the &lt;a href="https://github.com/spring-projects/spring-security/releases/tag/5.4.0-RC1"&gt;release notes&lt;/a&gt; and the highlights below:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="sect1"&gt;
@@ -553,7 +641,7 @@ Spring Security 5.4.0-RC1! You can find the complete details in the &lt;a href="
     </author>
     <id>tag:spring.io,2020-08-13:4168</id>
     <updated>2020-08-13T16:16:27Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the Spring Batch team, I am pleased to announce that Spring Batch 4.3.0-M2 is now available from our &lt;a href="https://repo.spring.io/milestone/"&gt;milestone repository&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#what-s-new" class="anchor" name="what-s-new"&gt;&lt;/a&gt;What‚Äôs new?&lt;/h2&gt;
+    <content type="html">&lt;p&gt;On behalf of the Spring Batch team, I am pleased to announce that Spring Batch 4.3.0-M2 is now available from our &lt;a href="https://repo.spring.io/milestone/"&gt;milestone repository&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#what-s-new" class="anchor" name="what-s-new"&gt;&lt;/a&gt;Whatís new?&lt;/h2&gt;
 &lt;p&gt;This release comes with a number of new features and enhancements that you can find in the &lt;a href="https://github.com/spring-projects/spring-batch/releases/tag/4.3.0-M2"&gt;release notes&lt;/a&gt;, but here are the major highlights:&lt;/p&gt;&lt;h4&gt;&lt;a href="#1-kafka-support-enhancements" class="anchor" name="1-kafka-support-enhancements"&gt;&lt;/a&gt;1. Kafka support enhancements&lt;/h4&gt;
 &lt;p&gt;By default, the &lt;code&gt;KafkaItemReader&lt;/code&gt; reads a topic from the beginning. When we initially introduced this reader in v4.2, it was not possible to configure it to read records from a custom offset. In this release, we added this feature. As a result of this addition, it is now possible to configure the reader to start from the offset stored in Kafka.&lt;/p&gt;&lt;h4&gt;&lt;a href="#2-micrometer-support-enhancements" class="anchor" name="2-micrometer-support-enhancements"&gt;&lt;/a&gt;2. Micrometer support enhancements&lt;/h4&gt;
 &lt;p&gt;Micrometer support has been introduced in v4.2 last year, and we got a lot of feedback since then. One of the requested features is the ability to know the currently active jobs. Spring Batch provides a metric called &lt;code&gt;spring.batch.job.active&lt;/code&gt; that gives the number of currently active jobs. However, until now, this metric did not let you know which specific jobs are currently active. In this release, we enriched the metric tags to make this possible.&lt;/p&gt;&lt;h4&gt;&lt;a href="#3-add-a-new-code-jobparametersincrementer-code-implementation" class="anchor" name="3-add-a-new-code-jobparametersincrementer-code-implementation"&gt;&lt;/a&gt;3. Add a new &lt;code&gt;JobParametersIncrementer&lt;/code&gt; implementation&lt;/h4&gt;
@@ -686,7 +774,7 @@ Artem&lt;/p&gt;
     </author>
     <id>tag:spring.io,2020-08-12:4164</id>
     <updated>2020-08-12T11:48:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the Spring Data team, I‚Äôm pleased to announce the availability of the third service release of the Spring Data Neumann release train. &lt;code&gt;Neumann SR3&lt;/code&gt; ships with &lt;a href="https://jira.spring.io/issues/?filter=17036"&gt;34 tickets fixed&lt;/a&gt;.&lt;/p&gt;
+    <content type="html">&lt;p&gt;On behalf of the Spring Data team, Iím pleased to announce the availability of the third service release of the Spring Data Neumann release train. &lt;code&gt;Neumann SR3&lt;/code&gt; ships with &lt;a href="https://jira.spring.io/issues/?filter=17036"&gt;34 tickets fixed&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This release ships with mostly bug fixes and dependency upgrades and will be picked up by Spring Boot 2.3.3 in the coming days.&lt;/p&gt;
 &lt;p&gt;Here are the detailed links to each individual artifact and the reference documentation:&lt;/p&gt;
 &lt;ul&gt;
@@ -718,7 +806,7 @@ Artem&lt;/p&gt;
     </author>
     <id>tag:spring.io,2020-08-12:4163</id>
     <updated>2020-08-12T11:45:08Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the Spring Data team I‚Äôm delighted to announce the second milestone of the &lt;code&gt;2020.0.0&lt;/code&gt; release train (codename &amp;ldquo;Ockham&amp;rdquo;). This release ships almost 120 tickets fixed! The most important new features are:&lt;/p&gt;
+    <content type="html">&lt;p&gt;On behalf of the Spring Data team Iím delighted to announce the second milestone of the &lt;code&gt;2020.0.0&lt;/code&gt; release train (codename &amp;ldquo;Ockham&amp;rdquo;). This release ships almost 120 tickets fixed! The most important new features are:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Support for reactive SpEL context extensions.&lt;/li&gt;
   &lt;li&gt;Support for reactive auditing in Cassandra, Elasticsearch, MongoDB, and R2DBC.&lt;/li&gt;
@@ -768,7 +856,7 @@ Artem&lt;/p&gt;
   &lt;li&gt;&lt;a href="https://yusuke.blog/2020/08/05/2747"&gt;Delivering compressed SVG format(SVGZ) using Spring Boot | yusuke.blog&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://twitter.com/VMwareTanzu/status/1292985082249084930"&gt;Did you hear? Tanzu Application Service 2.0 is now GA!&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://twitter.com/SpringData/status/1291440704766521345"&gt;Introduction into Spring Data Elasticsearch - wrote a small app using Spring Data Elasticsearch, spent yesterday evening to write up my impression from the perspective of a heavy Elasticsearch user.&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://twitter.com/javinpaul/status/1293072333955936257?s=12"&gt;I‚Äôm honored to have books to which I contributed included not once, not twice, but three times in this list of interesting Java ecosystem books.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/javinpaul/status/1293072333955936257?s=12"&gt;Iím honored to have books to which I contributed included not once, not twice, but three times in this list of interesting Java ecosystem books.&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://inside.java/2020/08/07/loomperformance/"&gt;On the Performance of User-Mode Threads and Coroutines&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://blogs.vmware.com/vmworld/2020/08/registered-for-vmworld-2020-check-out-these-sessions-from-the-education-services-team.html"&gt;Registered for VMworld 2020? Check out these Sessions from the Education Services Team&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=3iugql6zc7u&amp;feature=share"&gt;Solace has a nice presentation up on YouTube: developing event-driven micro services using Spring Cloud Stream&lt;/a&gt;&lt;/li&gt;
@@ -786,7 +874,7 @@ Artem&lt;/p&gt;
     <link rel="alternate" href="https://spring.io/blog/2020/08/11/spring-framework-5-3-0-m2-available-now" />
     <category term="releases" label="Releases" />
     <author>
-      <name>St√©phane Nicoll</name>
+      <name>StÈphane Nicoll</name>
     </author>
     <id>tag:spring.io,2020-08-11:4159</id>
     <updated>2020-08-11T09:07:37Z</updated>
@@ -1009,7 +1097,7 @@ Artem&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;Let‚Äôs assume that we are starting from scratch and do not have Kafka or MySQL available in our development environment.  To run this example, we will have some fun with Docker.  So we need &lt;a href="https://www.docker.com/products/docker-desktop"&gt;Docker&lt;/a&gt; running on our local machine. Later we will be using Spring Cloud Data Flow, so we will take advantage of the Data Flow &lt;a href="https://dataflow.spring.io/docs/installation/local/docker/"&gt;docker-compose installation&lt;/a&gt;.  This is the easiest way to get started with Data Flow. It starts up several containers, including MySQL and Kafka.  In order to make these backend services available to the standalone applications, we need to tweak the standard installation to publish ports, and change Kafka‚Äôs advertised host name.&lt;/p&gt;
+&lt;p&gt;Letís assume that we are starting from scratch and do not have Kafka or MySQL available in our development environment.  To run this example, we will have some fun with Docker.  So we need &lt;a href="https://www.docker.com/products/docker-desktop"&gt;Docker&lt;/a&gt; running on our local machine. Later we will be using Spring Cloud Data Flow, so we will take advantage of the Data Flow &lt;a href="https://dataflow.spring.io/docs/installation/local/docker/"&gt;docker-compose installation&lt;/a&gt;.  This is the easiest way to get started with Data Flow. It starts up several containers, including MySQL and Kafka.  In order to make these backend services available to the standalone applications, we need to tweak the standard installation to publish ports, and change Kafkaís advertised host name.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="admonitionblock note"&gt;
 &lt;table&gt;
@@ -1024,7 +1112,7 @@ I have run with this setup on Mac OS, and expect that a similar setup will work 
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;First, let‚Äôs create a directory called &lt;code&gt;http-jdbc-demo&lt;/code&gt; and download &lt;code&gt;docker-compose.yml&lt;/code&gt; from github to there:&lt;/p&gt;
+&lt;p&gt;First, letís create a directory called &lt;code&gt;http-jdbc-demo&lt;/code&gt; and download &lt;code&gt;docker-compose.yml&lt;/code&gt; from github to there:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="listingblock"&gt;
 &lt;div class="content"&gt;
@@ -1120,7 +1208,7 @@ export SKIPPER_VERSION=2.5.0&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;You will be prompted for a password. The DB credentials are configured in &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-server/docker-compose.yml#L22"&gt;docker-compose.yml&lt;/a&gt;. If you don‚Äôt want to look there, the username is &lt;code&gt;root&lt;/code&gt; and the password is &lt;code&gt;rootpw&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You will be prompted for a password. The DB credentials are configured in &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-server/docker-compose.yml#L22"&gt;docker-compose.yml&lt;/a&gt;. If you donít want to look there, the username is &lt;code&gt;root&lt;/code&gt; and the password is &lt;code&gt;rootpw&lt;/code&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;Enter the following commands - you should be able to copy and paste the whole thing - to create a database and a table.&lt;/p&gt;
@@ -1149,7 +1237,7 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;div class="sect2"&gt;
 &lt;h3 id="run-the-applications"&gt;&lt;a class="anchor" href="#run-the-applications"&gt;&lt;/a&gt;Run the applications&lt;/h3&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;At this point we‚Äôre ready to run the HTTP source and JDBC sink.  The Spring Boot executable jars are published to the Spring Maven repository. We need ones which are built with the Kafka binder:&lt;/p&gt;
+&lt;p&gt;At this point weíre ready to run the HTTP source and JDBC sink.  The Spring Boot executable jars are published to the Spring Maven repository. We need ones which are built with the Kafka binder:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="listingblock"&gt;
 &lt;div class="content"&gt;
@@ -1162,15 +1250,15 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;We will run these in separate terminal sessions. We need to configure these apps to use the same Kafka topic, let‚Äôs call it &lt;code&gt;jdbc-demo-topic&lt;/code&gt;. The Spring Cloud Stream Kafka binder will create this topic automatically.  We also need to configure the JDBC sink to connect to our  database and to map the data to the table we created.  We will post JSON that looks like this:&lt;/p&gt;
+&lt;p&gt;We will run these in separate terminal sessions. We need to configure these apps to use the same Kafka topic, letís call it &lt;code&gt;jdbc-demo-topic&lt;/code&gt;. The Spring Cloud Stream Kafka binder will create this topic automatically.  We also need to configure the JDBC sink to connect to our  database and to map the data to the table we created.  We will post JSON that looks like this:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="listingblock"&gt;
 &lt;div class="content"&gt;
 &lt;pre class="prettyprint highlight"&gt;&lt;code&gt;{
- ‚Äúname‚Äù:‚ÄùMy Name‚Äù,
- ‚Äúaddress‚Äù: {
-      ‚Äústreet‚Äù:‚ÄùMy Street‚Äù,
-       ‚Äúcity‚Äù: ‚ÄúMy City‚Äù
+ ìnameî:îMy Nameî,
+ ìaddressî: {
+      ìstreetî:îMy Streetî,
+       ìcityî: ìMy Cityî
     }
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -1243,7 +1331,7 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;div class="sect2"&gt;
 &lt;h3 id="using-spring-cloud-data-flow"&gt;&lt;a class="anchor" href="#using-spring-cloud-data-flow"&gt;&lt;/a&gt;Using Spring Cloud Data Flow&lt;/h3&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;As we can see, there are a lot of manual steps required to run these applications on ‚Äúbare metal‚Äù, even though we didn‚Äôt have to write any code. These include:&lt;/p&gt;
+&lt;p&gt;As we can see, there are a lot of manual steps required to run these applications on ìbare metalî, even though we didnít have to write any code. These include:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="ulist"&gt;
 &lt;ul&gt;
@@ -1300,7 +1388,7 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;Just as before,  we need to provide the url, username, password, table, and columns.  Here, we need to change the JDBC URL to &lt;code&gt;jdbc:mariadb://mysql:3306/Demo&lt;/code&gt;,since the hostname &lt;code&gt;mysql&lt;/code&gt; corresponds to the name of the mysql service defined in &lt;code&gt;docker-compose.yml&lt;/code&gt;. Also we set the http port to &lt;code&gt;20000&lt;/code&gt;, since it‚Äôs in the configured range of published ports.  Refer to the &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-server/docker-compose.yml#L82"&gt;skipper-server configuration&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;p&gt;Just as before,  we need to provide the url, username, password, table, and columns.  Here, we need to change the JDBC URL to &lt;code&gt;jdbc:mariadb://mysql:3306/Demo&lt;/code&gt;,since the hostname &lt;code&gt;mysql&lt;/code&gt; corresponds to the name of the mysql service defined in &lt;code&gt;docker-compose.yml&lt;/code&gt;. Also we set the http port to &lt;code&gt;20000&lt;/code&gt;, since itís in the configured range of published ports.  Refer to the &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-server/docker-compose.yml#L82"&gt;skipper-server configuration&lt;/a&gt; for more details.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="imageblock"&gt;
 &lt;div class="content"&gt;
@@ -1308,7 +1396,7 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;Let‚Äôs take a look at the stream definition DSL that was generated automatically:&lt;/p&gt;
+&lt;p&gt;Letís take a look at the stream definition DSL that was generated automatically:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="listingblock"&gt;
 &lt;div class="content"&gt;
@@ -1316,7 +1404,7 @@ CREATE TABLE IF NOT EXISTS People (
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;This DSL can be used in a script or a Data Flow client application to automate stream creation.  Our configuration is complete, but where are the Spring Cloud Stream destination bindings? We don‚Äôt need them because Data Flow takes care of the wiring for us.&lt;/p&gt;
+&lt;p&gt;This DSL can be used in a script or a Data Flow client application to automate stream creation.  Our configuration is complete, but where are the Spring Cloud Stream destination bindings? We donít need them because Data Flow takes care of the wiring for us.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;Select the &lt;code&gt;Create Stream&lt;/code&gt; button and name the stream &lt;code&gt;http-jdbc&lt;/code&gt;.&lt;/p&gt;
@@ -1422,7 +1510,7 @@ The local Data Flow installation is fine for local development and exploration, 
 &lt;div class="sect2"&gt;
 &lt;h3 id="summary"&gt;&lt;a class="anchor" href="#summary"&gt;&lt;/a&gt;Summary&lt;/h3&gt;
 &lt;div class="paragraph"&gt;
-&lt;p&gt;We just took a close look at how to build a simple data streaming pipeline from pre-packaged Spring Cloud Stream applications to save JSON content posted via HTTP to a relational database.  We used Docker and docker-compose to install a local environment and then we deployed the source and sink applications, first on ‚Äúbare metal‚Äù, and then using Spring Cloud Data Flow.  Hopefully, we learned something interesting about working with Spring Cloud Stream, Data Flow, Docker containers, the HTTP source, and JDBC sink.&lt;/p&gt;
+&lt;p&gt;We just took a close look at how to build a simple data streaming pipeline from pre-packaged Spring Cloud Stream applications to save JSON content posted via HTTP to a relational database.  We used Docker and docker-compose to install a local environment and then we deployed the source and sink applications, first on ìbare metalî, and then using Spring Cloud Data Flow.  Hopefully, we learned something interesting about working with Spring Cloud Stream, Data Flow, Docker containers, the HTTP source, and JDBC sink.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="sect3"&gt;
 &lt;h4 id="stay-tuned"&gt;&lt;a class="anchor" href="#stay-tuned"&gt;&lt;/a&gt;Stay Tuned&amp;#8230;&amp;#8203;&lt;/h4&gt;
@@ -1466,11 +1554,11 @@ The local Data Flow installation is fine for local development and exploration, 
   &lt;li&gt;&lt;a href="https://twitter.com/odedia/status/1290347015600320515?s=12"&gt;Check out the latest release of the Cloud Native Petclinic. This Petclinic is ready-to-deploy on Cloud Foundry and Kubernetes and demonstrates a fully-featured decomposed microservices-based application.&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://www.youtube.com/watch?feature=youtu.be&amp;v=3iUGQL6Zc7U&amp;app=desktop"&gt;Check out this event &lt;em&gt;Developing Event-Driven Microservices using Spring Cloud Stream&lt;/em&gt; coming tomorrow!&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://spring.io/blog/2020/08/03/creating-a-function-for-consuming-data-and-generating-spring-cloud-stream-sink-applications"&gt;Creating a function for consuming data and generating Spring Cloud Stream Sink applications&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://blogs.vmware.com/vmworld/2020/08/destination-vmworld-app-modernization-channel.html"&gt;Destination VMworld ‚Äì App Modernization Channel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://blogs.vmware.com/vmworld/2020/08/destination-vmworld-app-modernization-channel.html"&gt;Destination VMworld ñ App Modernization Channel&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://www.linkedin.com/posts/tim-pepper-b0017a4_bootiful-podcast-tim-pepper-kubernetes-activity-6694370839107792896-upXP"&gt;Have you listened to this fun episode of a &lt;em&gt;Bootiful Podcast&lt;/em&gt; with Tim Pepper?&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://twitter.com/VMwareTanzu/status/1290406847707480064"&gt;I loved this: VMware CEO Pat Gelsinger shares on how VMware Tanzu will shape the future of software development on the newest episode of the &lt;em&gt;Looking Ahead&lt;/em&gt; podcast&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://www.mscharhag.com/spring/json-schema-validation-handlermethodargumentresolver"&gt;Integrating JSON Schema validation in Spring using a custom HandlerMethodArgumentResolver&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://medium.com/97-things/java-is-a-90s-kid-96ac5cbf7fed"&gt;Java Is a 90s Kid. ‚ÄúThere are only two kinds of languages‚Ä¶&amp;quot; by Ben Evans from the &lt;em&gt;97 Things&lt;/em&gt; book about Java. (NB: I also contributed an article to the book!)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://medium.com/97-things/java-is-a-90s-kid-96ac5cbf7fed"&gt;Java Is a 90s Kid. ìThere are only two kinds of languagesÖ&amp;quot; by Ben Evans from the &lt;em&gt;97 Things&lt;/em&gt; book about Java. (NB: I also contributed an article to the book!)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://twitter.com/devrelchap/status/1289828288261586944?s=12"&gt;My amazing first manager Adam Fitzgerald in my ten year anniversary on the Spring team&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://spring.io/blog/2020/08/04/spring-cloud-data-flow-2-6-0-released"&gt;Spring Cloud Data Flow 2.6.0 Released&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://spring.io/blog/2020/08/04/spring-cloud-hoxton-sr7-has-been-released"&gt;Spring Cloud Hoxton.SR7 has been released&lt;/a&gt;&lt;/li&gt;
@@ -1479,7 +1567,7 @@ The local Data Flow installation is fine for local development and exploration, 
   &lt;li&gt;&lt;a href="https://twitter.com/SpringData/status/1290314847121530881"&gt;The Lettuce 6 Redis driver goes RC1. Client-side caching, Push message listeners, and GraalVM Native config files, and more.&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://blogs.vmware.com/vmworld/2020/07/vmworld-2020-savings-on-certification-exam-vouchers-prep.html"&gt;VMworld 2020 Savings on Certification Exam Vouchers &amp;amp; Prep&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="https://twitter.com/springcentral/status/1290464826456760323"&gt;Want training on how to build Spring Boot-based applications? &lt;a href="https://tanzu.vmware.com/training/courses/spring-boot-developer-training"&gt;Check out the Spring Boot: Developer module&lt;/a&gt;&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;This post has nothing to do with Spring &lt;em&gt;per-se&lt;/em&gt; but it is well-worth your study if you&amp;rsquo;re using something like Axon to build a CQRS-centric system: &lt;a href="https://medium.com/@hugo.oliveira.rocha/what-they-dont-tell-you-about-event-sourcing-6afc23c69e9a"&gt;&lt;em&gt;What they don‚Äôt tell you about event sourcing&lt;/em&gt;, by Hugo Rocha&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This post has nothing to do with Spring &lt;em&gt;per-se&lt;/em&gt; but it is well-worth your study if you&amp;rsquo;re using something like Axon to build a CQRS-centric system: &lt;a href="https://medium.com/@hugo.oliveira.rocha/what-they-dont-tell-you-about-event-sourcing-6afc23c69e9a"&gt;&lt;em&gt;What they donít tell you about event sourcing&lt;/em&gt;, by Hugo Rocha&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
@@ -1690,253 +1778,6 @@ dependencies {&#xD;
   &lt;p&gt;&lt;strong&gt;Stream Applications&lt;/strong&gt;&lt;br/&gt; This is also a good reminder what&amp;rsquo;s happening on our application space by following blog series &lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;Creating a Supplier Function and generating Spring Cloud Stream Source&lt;br/&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;h2&gt;&lt;a href="#stay-in-touch-hellip" class="anchor" name="stay-in-touch-hellip"&gt;&lt;/a&gt;Stay in touch&amp;hellip;&lt;/h2&gt;
 &lt;p&gt;As always, we welcome feedback and contributions, so please reach out to us on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow"&gt;Stack Overflow&lt;/a&gt; or &lt;a href="https://github.com/spring-cloud/spring-cloud-dataflow/issues"&gt;GitHub&lt;/a&gt; or via &lt;a href="https://gitter.im/spring-cloud/spring-cloud-dataflow"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Creating a function for consuming data and generating Spring Cloud Stream Sink applications</title>
-    <link rel="alternate" href="https://spring.io/blog/2020/08/03/creating-a-function-for-consuming-data-and-generating-spring-cloud-stream-sink-applications" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Soby Chacko</name>
-    </author>
-    <id>tag:spring.io,2020-08-03:4149</id>
-    <updated>2020-08-03T16:09:24Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;This is part 4 of the blog series in which we are introducing java functions for Spring Cloud Stream applications.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Other parts in the series.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/13/introducing-java-functions-for-spring-cloud-stream-applications-part-0"&gt;Part 1 - General Introduction&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/20/introducing-java-functions-for-spring-cloud-stream-applications-part-1"&gt;Part 2 - Function Composition&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;Part 3 - Supplier function and Source application&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In the &lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;last blog&lt;/a&gt; in this series, we saw how we can use a &lt;code&gt;java.util.function.Supplier&lt;/code&gt; to generate a Spring Cloud Stream source. In this new edition, we will see how a consuming function can be developed and tested using &lt;code&gt;java.util.function.Consumer&lt;/code&gt; and &lt;code&gt;java.util.function.Function&lt;/code&gt;. Later on, we will briefly explain the generation of a Spring Cloud Stream sink application from this consumer.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="writing-a-consumer"&gt;&lt;a class="anchor" href="#writing-a-consumer"&gt;&lt;/a&gt;Writing a Consumer&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;The idea behind writing a consumer is relatively simple. We consume data from some external source and hand it over to the business logic in the consumer. As in the case of a &lt;code&gt;Supplier&lt;/code&gt;, as we saw in the &lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;previous blog&lt;/a&gt;, the action occurs inside the business logic implementation. If we use libraries to help us do all the heavy lifting such as Spring Integration, then it becomes a matter of simply delegating the data received to the library through an appropriate API. However, if there are no such libraries available, we need to write all that code by ourselves. Let‚Äôs take a concrete example to demonstrate this.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="writing-a-consumer-for-apache-pulsar"&gt;&lt;a class="anchor" href="#writing-a-consumer-for-apache-pulsar"&gt;&lt;/a&gt;Writing a Consumer for Apache Pulsar&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://pulsar.apache.org/"&gt;Apache Pulsar&lt;/a&gt; is a popular messaging middleware system. Let‚Äôs assume for a moment that we want to write a generic Java &lt;code&gt;Consumer&lt;/code&gt; that receives data from somewhere and then forwards it to Pulsar. Without getting too much into the details , here is a trivial &lt;code&gt;Consumer&lt;/code&gt; that accomplishes this. The basic implementation code is taken from &lt;a href="https://pulsar.apache.org/docs/en/client-libraries-java/#producer"&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;@Bean
-public org.apache.pulsar.client.api.Producer producer() {
-  String pulsarBrokerRootUrl = "pulsar://localhost:6650";
-  PulsarClient client = PulsarClient.create(pulsarBrokerRootUrl);
-  String topic = "persistent://sample/standalone/ns1/my-topic";
-  return client.createProducer(topic);
-}
-
-@Bean
-public Consumer&amp;lt;byte[]&amp;gt; pulsarConsumer(Producer producer) {
-  return payload -&amp;gt; {
-     producer.send(payload);
-  };
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Once again, this is shown for illustrative purposes and may not be a complete implementation of sending data to Apache Pulsar. Nevertheless, this demonstrates the concepts that we want to convey. Looking at the consumer, we can see that the code is trivial; all we are doing inside the lambda expression is calling the &lt;code&gt;send&lt;/code&gt; method on the Apache Pulsar &lt;code&gt;Producer&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We can inject the above consumer into an application and invoke it‚Äôs &lt;code&gt;accept&lt;/code&gt; method programmatically, providing the data. As we have seen in the previous blog, the diagram below expresses an idea of running the function standalone or as part of a data orchestration pipeline on platforms like &lt;a href="https://spring.io/projects/spring-cloud-dataflow"&gt;Spring Cloud Data Flow&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;span class="image"&gt;&lt;img src="https://github.com/spring-cloud/stream-applications/blob/gh-pages/img/stream-applications-dataflow-faas.png?raw=true" alt="Stream Applications Layered Architecture for Functions"&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Ok, that consumer was pretty straightforward, we might think to ourselves. What about if we would like to do something where things are a tad more involved? Below, we will do exactly that.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="writing-a-consuming-function-for-rsocket"&gt;&lt;a class="anchor" href="#writing-a-consuming-function-for-rsocket"&gt;&lt;/a&gt;Writing a consuming function for RSocket&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="https://rsocket.io/"&gt;RSocket&lt;/a&gt; is a bi-directional binary protocol for which Spring Framework provides excellent &lt;a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#rsocket"&gt;support&lt;/a&gt;. RSocket provides a fire and forget model, allowing  us to send messages to a RSocket server without receiving a  response. We want to write a consumer for this model using TCP where the consumer receives external data and then pushes it to the RSocket server. The &lt;a href="https://github.com/rsocket/rsocket-java"&gt;Java implementation&lt;/a&gt; for RSocket is based on &lt;a href="https://projectreactor.io/"&gt;Project Reactor&lt;/a&gt;.Therefore when we write a consumer we need to use  reactive types and patterns (similar to the  reactive feed supplier in the &lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;previous blog&lt;/a&gt;).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;When using the fire and forget strategy, RSocket returns a &lt;code&gt;Mono&amp;lt;Void&amp;gt;&lt;/code&gt;, which our consumer needs to return from the function. However, in the case of &lt;code&gt;java.util.function.Consumer&lt;/code&gt;, we cannot return anything. Therefore we have to write a function with the signature &lt;code&gt;Function&amp;lt;String, Mono&amp;lt;Void&amp;gt;&amp;gt; rsocketConsumer()&lt;/code&gt;. Since the function returns a &lt;code&gt;Mono&amp;lt;Void&amp;gt;&lt;/code&gt;, this is semantically equivalent to writing a consumer. The user  of the function needs to get a reference to the  &lt;code&gt;Mono&lt;/code&gt; and subscribe to it. Similar patterns are used in the out of the box consumers, we already provide for &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/functions/consumer/mongodb-consumer/src/main/java/org/springframework/cloud/fn/consumer/mongo/MongoDbConsumerConfiguration.java"&gt;MongoDB&lt;/a&gt; and &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/functions/consumer/cassandra-consumer/src/main/java/org/springframework/cloud/fn/consumer/cassandra/CassandraConsumerConfiguration.java"&gt;Cassandra&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;When setting up the project, include the following maven dependency.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
-  &amp;lt;artifactId&amp;gt;spring-boot-starter-rsocket&amp;lt;/artifactId&amp;gt;
-&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;This starter dependency from Spring Boot will transitively bring all the RSocket dependencies to our project.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Before we write the function code, let‚Äôs write a &lt;code&gt;ConfigurationProperties&lt;/code&gt; class to define some core properties that the function needs.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;@ConfigurationProperties("rsocket.consumer")
-public class RsocketConsumerProperties {
-
-  private String host = "localhost";
-
-  private int port = 7000;
-
-  private String route;
-‚Ä¶
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;As we can see, using  the prefix &lt;code&gt;rsocket.consumer&lt;/code&gt; , we define three properties - &lt;code&gt;host&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt; are for the RSocket server and &lt;code&gt;route&lt;/code&gt; is an endpoint on the server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Now that we have the configuration properties  , let‚Äôs create a &lt;code&gt;Configuration&lt;/code&gt; class to configure  our function bean.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;@Configuration
-@EnableConfigurationProperties(RsocketConsumerProperties.class)
-public class RsocketConsumerConfiguration {
-
-  @Bean
-  public Function&amp;lt;String, Mono&amp;lt;Void&amp;gt;&amp;gt; rsocketConsumer(RSocketRequester.Builder builder,
-                                            RsocketConsumerProperties rsocketConsumerProperties) {
-     final Mono&amp;lt;RSocketRequester&amp;gt; rSocketRequester = builder.connectTcp(rsocketConsumerProperties.getHost(),
-           rsocketConsumerProperties.getPort());
-
-     return input -&amp;gt; rSocketRequester
-                 .flatMap(requester -&amp;gt; requester.route(rsocketConsumerProperties.getRoute())
-                       .data(input)
-                       .send());
-  }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We are injecting a builder that comes from Spring Boot auto-configuration into the function that helps us with creating an &lt;code&gt;RSocketRequester&lt;/code&gt;. Using this builder we create a &lt;code&gt;Mono&amp;lt;RSocketRequester&amp;gt;&lt;/code&gt; with a TCP connection. The &lt;code&gt;connectTcp&lt;/code&gt; API method takes the RSocket host and port information. Once we get a handle onto &lt;code&gt;RSocketRequester&lt;/code&gt; then we use that inside the lambda provided in the function.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;We call &lt;code&gt;flatMap&lt;/code&gt; on &lt;code&gt;Mono&amp;lt;RSocketRequester&amp;gt;&lt;/code&gt; and for each incoming message, we specify the &lt;code&gt;route&lt;/code&gt; and the data that needs to be sent before calling the &lt;code&gt;send&lt;/code&gt; method that ultimately pushes the data to the RSocket server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;That‚Äôs all it takes to write a function that consumes data and then sends it to a RSocket server using the fire and forget interaction model. Keep in mind that this code looks very simple because of the various &lt;code&gt;RSocket&lt;/code&gt; support and abstractions that Spring Framework underneath provides us.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Let‚Äôs write a quick test to verify that the function works as expected.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;As we did with the reactive supplier in the previous blog, add this following dependency to the project. This helps us with testing reactive components.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-  &amp;lt;groupId&amp;gt;io.projectreactor&amp;lt;/groupId&amp;gt;
-  &amp;lt;artifactId&amp;gt;reactor-test&amp;lt;/artifactId&amp;gt;
-  &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;
-&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Following is the test with other necessary components.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code&gt;@SpringBootTest(properties = {"spring.rsocket.server.port=7000", "rsocket.consumer.route=test-route"})
-public class RsocketConsumerTests {
-
-  @Autowired
-  Function&amp;lt;Message&amp;lt;?&amp;gt;, Mono&amp;lt;Void&amp;gt;&amp;gt; rsocketConsumer;
-
-  @Autowired
-  TestController controller;
-
-  @Test
-  void testRsocketConsumer() {
-
-     rsocketConsumer.apply(new GenericMessage&amp;lt;&amp;gt;("Hello RSocket"))
-           .subscribe();
-
-     StepVerifier.create(this.controller.fireForgetPayloads)
-           .expectNext("Hello RSocket")
-           .thenCancel()
-           .verify();
-  }
-
-  @SpringBootApplication
-  @ComponentScan
-  static class RSocketConsumerTestApplication{}
-
-  @Controller
-  static class TestController {
-     final ReplayProcessor&amp;lt;String&amp;gt; fireForgetPayloads = ReplayProcessor.create();
-
-     @MessageMapping("test-route")
-     void someMethod(String payload) {
-        this.fireForgetPayloads.onNext(payload);
-     }
-  }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;A quick explanation of the testing components.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;We provide the property &lt;code&gt;spring.rsocket.server.port&lt;/code&gt; on &lt;code&gt;SpringBootApplication&lt;/code&gt;. This allows Spring Boot to auto-configure a default RSocket server for testing. Hard coding the port to &lt;code&gt;7000&lt;/code&gt; here since that is the default port used by Spring Boot when auto configuring the components. This is the same default we used in properties above.
-We also specify the &lt;code&gt;route&lt;/code&gt; that we want to use in our test.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;There is a &lt;code&gt;Controller&lt;/code&gt; provided with a method annotated with &lt;code&gt;MessageMapping&lt;/code&gt; where it intercepts messages arriving at the route that we specified in the test. Each incoming record on the Server at the route is passed into a &lt;code&gt;Flux&lt;/code&gt; where it can be replayed later in the test during assertion.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;In the test, we are calling the &lt;code&gt;apply&lt;/code&gt; method on the injected &lt;code&gt;RSocket&lt;/code&gt; consumer that we wrote earlier and providing it with a test message.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Finally, we use a &lt;code&gt;StepVerifier&lt;/code&gt; to verify that the message was sent successfully to the &lt;code&gt;RSocket&lt;/code&gt; server.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="generating-spring-cloud-stream-sink-application-from-the-rsocket-consumer"&gt;&lt;a class="anchor" href="#generating-spring-cloud-stream-sink-application-from-the-rsocket-consumer"&gt;&lt;/a&gt;Generating Spring Cloud Stream Sink application from the RSocket Consumer&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In the &lt;a href="https://spring.io/blog/2020/07/27/creating-a-supplier-function-and-generating-spring-cloud-stream-source"&gt;last blog&lt;/a&gt;, we covered how to generate a Spring Cloud Stream source application from a Supplier function in much detail. You can follow the same patterns that we used there for generating a sink application from the RSocket function that we wrote above. We are not rehashing all the  details involved   here. Use the many different sink applications provided &lt;a href="https://github.com/spring-cloud/stream-applications/tree/master/applications/sink"&gt;here&lt;/a&gt; as a template.  When we test the function with the test binder in Spring Cloud Stream, send the message to the &lt;code&gt;InputDestination&lt;/code&gt;. Spring Cloud Stream will send it downstream to the RSocket server. Then we can use the same verification strategies we used in the unit test above. See &lt;a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/current/reference/html/spring-cloud-stream.html#_testing"&gt;this&lt;/a&gt; for more information on testing Spring Cloud Stream components using the test binder.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect1"&gt;
-&lt;h2 id="conclusion"&gt;&lt;a class="anchor" href="#conclusion"&gt;&lt;/a&gt;Conclusion&lt;/h2&gt;
-&lt;div class="sectionbody"&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In this blog post, we saw how we can write a plain consumer that consumes data and acts upon it, using Apache Pulsar as an example. We then explored how to develop a reactive consumer in the form of &lt;code&gt;Function&amp;lt;String, Mono&amp;lt;Void&amp;gt;&amp;gt;&lt;/code&gt; with RSocket fire and forget strategy to guide us. We also demonstrated how this reactive consumer can be unit tested. Please follow the procedures laid out in this article for writing your own data consumers and if you do so, consider &lt;a href="https://github.com/spring-cloud/stream-applications/blob/master/docs/Contributing.adoc"&gt;contributing&lt;/a&gt; a pull request.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="stay-tuned"&gt;&lt;a class="anchor" href="#stay-tuned"&gt;&lt;/a&gt;Stay tuned‚Ä¶‚Äã&lt;/h3&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Look for more deep dives and focused topics in the coming weeks. With the next blog in this series, we are starting a set of case studies in which we explore the already existing functions and applications.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intiformation.appschool.dao.IEtudiantsDAO;
+import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.Etudiants;
 
 /**
@@ -53,5 +54,28 @@ public class EtudiantsServiceImpl implements IEtudiantsService {
 	public List<Etudiants> findAllEtudiant() {
 		return etudiantsDAO.getAllEtudiant();
 	}
+	
+	/*____________________________________________________________________________________________________________*/
+	@Override
+	public Etudiants findEtudiantByIdentifiant(String pIdentifiant) {
+		return etudiantsDAO.getEtudiantByIdentifiant(pIdentifiant);
+	}
+
+	@Override
+	public List<Etudiants> findEtudiantsByPersonne(Long pIdPersonne, String pRole) {
+		
+		if (pRole.contains("ROLE_ADMIN")) {
+			//cas d'un role = ROLE_ADMIN
+			return etudiantsDAO.getAllEtudiant();
+
+		} else if (pRole.contains("ROLE_ENSEIGNANT")){
+			//cas d'un role = ROLE_ENSEIGNANT
+			return etudiantsDAO.getEtudiantsByEnseignant(pIdPersonne);
+			
+		}//end else
+		
+		return null;
+		
+	}//end findEtudiantsByPersonne
 
 }//END CLASS

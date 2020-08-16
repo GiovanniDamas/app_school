@@ -2,13 +2,12 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Liste des cours</title>
-
-
    
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
@@ -23,13 +22,10 @@
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
     
-<link href="${pageContext.request.contextPath}/resources/styles/perso.css"
-    rel="stylesheet">
-    
-<script src="https://kit.fontawesome.com/9dde17f0e3.js" crossorigin="anonymous"></script>
-
+    <!--  lien font-awesome -->
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
 </head>
 
@@ -39,13 +35,30 @@
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
     <div id="divhaute" class="container-fluid col-lg-12">
-        <h1 id="titre"> SchoolApp </h1>
-        <a href="${pageContext.request.contextPath}/login.jsp" id="connexion" type="button" class="btn btn-secondary">
-            <span class="fa fa-user-circle"></span>
-            Connexion
-        </a>
-    </div>
+		<h1 id="titre">SchoolApp</h1>
+		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+		</s:authorize>
 
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
+		</div>
+
+	</div>
 
 <div class="wrapper">
 
@@ -58,8 +71,6 @@
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-	
-	
 		<div class="sidebar-header">
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
@@ -75,20 +86,24 @@
     </ul>
     
 	</nav>
-	
-	
+		
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
 	<!-- ===================================================== -->
-  <div id="content" style="width:100%">
+  <div id="content" style="width:100%" align="left">
      <button type="button" id="sidebarCollapse" class="navbar-btn">
          <span></span>
          <span></span>
          <span></span>
      </button>
 
-
-	 <h3>Liste de l'ensemble des cours</h3>
+	<div style="padding: 30px;">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
+	 		<h3>Liste de l'ensemble des cours</h3>
+	 	</s:authorize>
+	 	<s:authorize access="hasRole('ROLE_ETUDIANT')">    			
+	 		<h3>Mes cours</h3>
+	 	</s:authorize>
 	 
 	 <br/>
 	 
@@ -133,10 +148,14 @@
 	 --%>
 	 
 	 <%-- ================== TEST COURS D'UN ENSEIGNANT ======================================== --%>
+	 <%-- 
+	 <s:authentication property="authorities" var="authorites"/>
 	 
+	 <c:if test="${authorites.authority} == 'ROLE_ENSEIGNANT' "></c:if>
+
 	 	 <br/><br/><br/><br/>
 	 
-	 <div>
+	 <div class="content">
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-enseignant">
 	 	 <label for="recherche-enseignant">Rechercher cours d'un enseignant : </label>	 	
 	 	<select class="form-control ml-2" id="recherche-enseignant" name="id-enseignant">
@@ -150,10 +169,9 @@
   	</div>
 	 
 	 	 <br/><br/><br/><br/>
-	 
+	 --%>	 
 	 <%-- ================================================================================================== --%>
-	 
-	 
+	 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-matiere">
 	 	 <label for="recherche-matiere">Rechercher par matière : </label>	 	
@@ -169,6 +187,7 @@
   	
   	<br/>
   	
+  	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
   	<div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-promotion">
 	 	 <label for="recherche-promotion">Rechercher par promotion : </label>	 	
@@ -191,31 +210,35 @@
     	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
   	</form>
   	</div>
+  	</s:authorize>
+  	
   	
   	<br/><br/>
 	 
- 	<table class="table table-hover" style="width:90%;margin-left:5%";text-align: center">
+ 	<table class="table table-hover" style="width:90%; margin-left:5%";">
 	 	
- 	  <thead>
+ 	  <thead style="text-align: center;">
     		<tr>
-      			<th scope="col">Id Cours</th>
       			<th scope="col">Libellé</th>
     			<th scope="col">Date</th>
       			<th scope="col">Durée</th>
       			<th scope="col">Description</th>
       			<th scope="col">Matière</th>
      			<th scope="col">Promotion</th>
+     			  	
+     			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
       			<th scope="col">Modifier</th>
       			<th scope="col">Supprimer</th>
+      			</s:authorize>
+      			
     		</tr>
   	  </thead>
 	 
 	 <c:forEach items="${attribut_liste_cours}" var="cours">
 	 	
-	 	  <tbody>
+	 	  <tbody style="text-align: center;">
 	 	  
 	 	  	<tr>
-	 			<td>${cours.idCours}</td>
 
 	 			<td>${cours.libelle}</td>
 
@@ -225,10 +248,11 @@
 
 	 			<td>${cours.description}</td>
 
-	 			<td>${cours.matieres.idMatiere}</td>
+	 			<td>${cours.matieres.libelle}</td>
 
-	 			<td>${cours.promotions.idPromotion}</td>
+	 			<td>${cours.promotions.libelle}</td>
 	 		
+	    	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
 	 		
 	 		<%-- lien pour modifier un cours --%> 		
 	 			<td>
@@ -245,7 +269,9 @@
 	 					<i class="fas fa-trash-alt"></i>
 					</a>
 	 			</td>
+	 		</s:authorize>
 	 		</tr>	
+	 		
 	 	  </tbody>
 	 	  
 	  </c:forEach>	  	
@@ -255,14 +281,16 @@
 	<br/>
 	
 	<%-- lien pour ajouter un cours dans la bdd : au click on appelle le controller GestionCoursController et sa méthode chargerCoursBdd --%>
+	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
 	<a 	href="${pageContext.request.contextPath}/cours/formulaire-ajout"
 		class="btn btn-primary btn-md active" role="button"
 		aria-pressed="true" style="align-content: left;margin-left:5%" > 	
 		Ajouter un cours
 	</a>
+	</s:authorize>
 	
-	
-	
+	<br/><br/>
+	</div>
 	</div><!-- end content -->
 </div><!-- end wrapper -->
 
@@ -276,7 +304,6 @@
         <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          
   </footer>
-
 
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->

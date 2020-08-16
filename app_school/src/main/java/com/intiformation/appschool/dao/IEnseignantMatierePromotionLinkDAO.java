@@ -1,6 +1,7 @@
 package com.intiformation.appschool.dao;
 
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
+import java.util.List; 
 
 /**
  * Interface spécifique de la DAO pour la classe EnseignantMatierePromotionLink
@@ -13,6 +14,8 @@ public interface IEnseignantMatierePromotionLinkDAO extends IGenerique<Enseignan
 	
 	
 	// _________________ METHODES SPECIFIQUES ___________________ //
+	
+	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdPromotion);
 	
 	
 

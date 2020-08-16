@@ -54,4 +54,10 @@ public class AdministrateursServiceImpl implements IAdministrateursService{
 		return adminDAO.getAllAdministrateur();
 	}
 
+	/*____________________________________________________________________________________________________________*/
+	@Override
+	public Administrateurs findAdministrateurByIdentifiant(String pIdentifiant) {
+		return adminDAO.getAdministrateurByIdentifiant(pIdentifiant);
+	}
+
 }//END CLASS

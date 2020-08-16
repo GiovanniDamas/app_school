@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Matiere;
+import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IMatiereService;
+import com.intiformation.appschool.service.IPromotionService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,12 @@ public class GestionMatiereController {
 	@Autowired // injectiion du bean dans la propriété 'matiereService'
 	private IMatiereService matiereService;
 
+	@Autowired
+	private IPromotionService promoService;
+
+	@Autowired
+	private IEnseignantMatierePromotionLinkService linkService;
+
 	/**
 	 * Setter de la couche service pour injection pour modificateur de Spring
 	 * 
@@ -44,10 +54,17 @@ public class GestionMatiereController {
 		this.matiereService = matiereService;
 	}
 
+	public void setPromoService(IPromotionService promoService) {
+		this.promoService = promoService;
+	}
+
+	public void setLinkService(IEnseignantMatierePromotionLinkService linkService) {
+		this.linkService = linkService;
+	}
+
 	// Declaration du validator:
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
-	// //
 
 	/**
 	 * <pre>
@@ -60,7 +77,7 @@ public class GestionMatiereController {
 	 *            model de données à renvoyer à la vue
 	 * @return
 	 */
-	@RequestMapping(value = "/matiere/liste", method = RequestMethod.GET)
+	@RequestMapping(value = "/matiere/liste-matiere", method = RequestMethod.GET)
 	public String recupererListeMatieresDB(ModelMap model) {
 
 		// 1. Récupération de la liste des matières dans la databse via le service
@@ -80,8 +97,8 @@ public class GestionMatiereController {
 	 * 
 	 * @return le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/delete/{matiere-id}", method = RequestMethod.GET)
-	public String supprimerMatiereDB(@PathVariable("matiere-id") Long pIdMatiere, ModelMap model) {
+	@RequestMapping(value = "/matiere/delete", method = RequestMethod.GET)
+	public String supprimerMatiereDB(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		// 1. Suppresion de la matière de la database via le service
 		matiereService.supprimerMatiere(pIdMatiere);
@@ -92,45 +109,61 @@ public class GestionMatiereController {
 		// 3. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_matieres", listeMatieresDB);
 
-		
 		// 4 OU : rédirection vers l'url '/employe/liste' pour invoquer la méthode
 		// 'recupererListeEmployesDB' et rediriger vers liste-employes.jsp
-		return "redirect:/matiere/liste";
+		return "redirect:/matiere/liste-matiere";
 
 	}// end supprimerEmployeDB
-	
+
 	/**
 	 * <pre>
 	 * Permet d'afficher le formulaire d'ajout d'une matiere
 	 * Méthode invoquée suite au clic sur le lien '' de liste-matiere.jsp 
 	 * Invoquée avec une requete HTTP GET ayant url "/matiere/add-matiere-form"
 	 * </pre>
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/matiere/add-matiere-form", method = RequestMethod.GET)
+	@RequestMapping(value = "/matiere/edit-matiere-form", method = RequestMethod.GET)
 	// @GetMapping
-	public ModelAndView afficherFormulaireAjout() {
+	public ModelAndView afficherFormulaire(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
-		// 1. Définition d'un objet de commande pour lier les champs
+		if (pIdMatiere == 0) {
 
-		// 1.1 L'objet de commande: objet Matiere vide
-		Matiere matiere = new Matiere();
+			// Matiere matiere = new Matiere();
 
-		// 1.2 affectation d'un nom à l'objet de commande (par défaut : ... Command)
-		String nomObjetCommande = "matiereCommand";
+			EnseignantMatierePromotionLink enseignantMatierePromotionLink = new EnseignantMatierePromotionLink();
 
-		// 2. Envoi de l'objet de commande vers la vue (page du formulaire)
-		Map<String, Object> dataCommand = new HashMap<>();
-		dataCommand.put(nomObjetCommande, matiere);
+			List<Promotion> listePromotionsDB = promoService.trouverAllPromotions();
+			model.addAttribute("attribut_liste_promotions", listePromotionsDB);
 
-		// 3. Définition du nom logique de la vue
-		String viewName = "ajouter-matiere";
+			Map<String, Object> dataCommand = new HashMap<>();
+			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
-		// Renvoie de l'objet ModelAndView vers la dispatcherServle
-		return new ModelAndView(viewName, dataCommand);
+			String viewName = "matiere-formulaire";
 
-	}// end afficherFormulaireAjout
-	
+			return new ModelAndView(viewName, dataCommand);
+
+			// model.addAttribute("attribut_matiere", matiere);
+			// model.addAttribute("idMatiere", pIdMatiere);
+
+		} else {
+
+			EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
+
+			Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
+
+			linkToUpdate.setMatiere(matiereToUpdate);
+
+			List<Promotion> listePromotionsDB = promoService.trouverAllPromotions();
+			model.addAttribute("attribut_liste_promotions", listePromotionsDB);
+
+			return new ModelAndView("matiere-formulaire", "linkCommand", linkToUpdate);
+
+		} // end else
+
+	}// end afficherFormulaire
+
 	/**
 	 * <pre>
 	 * Méthode qui permet de rajouter una matiere dans la database 
@@ -138,48 +171,101 @@ public class GestionMatiereController {
 	 * Invoquée avec uen requete HTTP en POST et l'URL '/matiere/add' 
 	 * Cette méthode récupère l'objet de commande 'matiereCommand' lié au formulaire
 	 * </pre>
-	 * @param bindingResult: contient le resultat du processe dd la validation
+	 * 
+	 * @param bindingResult:
+	 *            contient le resultat du processe dd la validation
 	 * @return : le nom logique de la vue
 	 */
 	@RequestMapping(value = "/matiere/add", method = RequestMethod.POST)
 	// @PostMapping
-	public String ajouterMatiereDB(@ModelAttribute("matiereCommand") @Validated Matiere pMatiere, 
-									ModelMap model, BindingResult resultatValidation) {
+	public String ajouterMatiereDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink,
+			/*
+			 * @RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect,
+			 */ ModelMap model) {
 
-		
-		// Application du validateur de l'objet pEmploye
-		//employeValidator.validate(pEmploye, resultatValidation);
-		/*
-		// Validation de l'objet
-		if (resultatValidation.hasErrors()) {
-			
-			// CAS 1 : La validation retourne des erreurs : 
-			
-			// redirection vers la page du formulaire  ajouter-employe.jsp
-			
-			return "ajouter-employe"; // nom logique de la vue 
-			
-		}else {
-		*/	
-			// CAS 2 : La validation ne détecte pas d'erreur
-			
-			// 1. Ajout de l'employé à la database via couche service
-			matiereService.ajouterMatiere(pMatiere);
+		if (pLink.getMatiere().getIdMatiere() == null) {
 
-			// 2. Redirection vers la page 'liste-employes.jsp"
+			// Ajout etudiant via couche service
 
-			// 2.1 Récup de la nouvelle liste des employés dans la db
+			Matiere matiereAjoutee = matiereService.addMatiere(pLink.getMatiere());
+
+			Long IdMatiere = matiereAjoutee.getIdMatiere();
+
+			System.out.println("Id Matiere ajoutée = " + IdMatiere);
+			/*
+			 * // Ajout des liens en matière et chaque promotion selectionnée for (Long
+			 * IdPromotion : listeIDPromSelect) {
+			 * 
+			 * List<EnseignantMatierePromotionLink> listLinkPromo =
+			 * linkService.trouverlinkViaIdPromo(IdPromotion);
+			 * 
+			 * for (EnseignantMatierePromotionLink link : listLinkPromo) {
+			 * 
+			 * link.getMatiere().setIdMatiere(IdMatiere);
+			 * 
+			 * linkService.modifierLink(link);
+			 * 
+			 * } // end for
+			 * 
+			 * } // end for
+			 */
+			// Recup nouvelle liste d'etudiant après ajout
 			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-			// 2.2 Redirection
+			return "liste-matiere";
 
-			return "redirect:/matiere/liste";
-					
-		//}//end else
-				
+		} // end if
+
+		if (pLink.getMatiere().getIdMatiere() != 0) {
+
+			// Modif etudiant via couche service
+
+			matiereService.modifierMatiere(pLink.getMatiere());
+
+			// A FINIR
+
+			// Recup nouvelle liste d'etudiant après ajout
+
+			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
+
+			return "liste-matiere";
+
+		} // END IF
+
+		return "liste-matiere";
+
+		// Application du validateur de l'objet pEmploye
+		// employeValidator.validate(pEmploye, resultatValidation);
+		/*
+		 * // Validation de l'objet if (resultatValidation.hasErrors()) {
+		 * 
+		 * // CAS 1 : La validation retourne des erreurs :
+		 * 
+		 * // redirection vers la page du formulaire ajouter-employe.jsp
+		 * 
+		 * return "ajouter-employe"; // nom logique de la vue
+		 * 
+		 * }else {
+		 * 
+		 * // CAS 2 : La validation ne détecte pas d'erreur
+		 * 
+		 * // 1. Ajout de l'employé à la database via couche service
+		 * matiereService.ajouterMatiere(pMatiere);
+		 * 
+		 * // 2. Redirection vers la page 'liste-employes.jsp"
+		 * 
+		 * // 2.1 Récup de la nouvelle liste des employés dans la db
+		 * model.addAttribute("attribut_liste_matieres",
+		 * matiereService.trouverAllMatieres());
+		 * 
+		 * // 2.2 Redirection
+		 * 
+		 * return "redirect:/matiere/liste";
+		 * 
+		 * // }//end else
+		 */
 	}// end ajouterMatiereDB
-	
-	
+
 	/**
 	 * Permet d'afficher le formulaire de modification d'un employé Méthode invoquée
 	 * suite au clic sur le lien 'Modifier' de liste-employes.jsp Invoquée avec une
@@ -188,28 +274,25 @@ public class GestionMatiereController {
 	 * @return
 	 */
 
-	@RequestMapping(value = "/matiere/update-matiere-form", method = RequestMethod.GET)
-	public ModelAndView AfficherFormulaireModification(@RequestParam("idMatiere") Long pIdMatiere) {
+	@RequestMapping(value = "/matiere/liaison-matiere-form", method = RequestMethod.GET)
+	public ModelAndView AfficherFormulaireAjoutPromotions(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
-		// 1. récup de la matiere à modifier via son id dans la database
-		Matiere matiereAModifier = matiereService.trouverMatiereId(pIdMatiere);
+		EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
 
-		// 2. Définition du modèle de données (objet de commande nommé
-	
-		/**
-		 * 'employeModifCommand" + définition du nom logique de la vue + Ajout du modèle
-		 * et du nom dans un objet ModelAndView 
-		 * modifer-employe :
-		 * /WEB-INF/views/mofidier-employe.jsp
-		 */
-		return new ModelAndView("modifier-matiere", "matiereModifCommand", matiereAModifier);
+		Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
+
+		linkToUpdate.setMatiere(matiereToUpdate);
+
+		List<Promotion> listePromotionsDB = promoService.trouverAllPromotions();
+		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
+		model.addAttribute("idMatiere", pIdMatiere);
+
+		return new ModelAndView("lier-matiere-enseignant", "linkCommand", linkToUpdate);
 
 	}// end AfficherFormulaireModification
-	
-	
+
 	/**
-	 * Méthode qui permet de modifier une matiere dans la database 
-	 * Invoquée au clic
+	 * Méthode qui permet de modifier une matiere dans la database Invoquée au clic
 	 * sur le lien 'modifier' de soumission du formulaire de la page
 	 * modifier-employe.jsp Invoquée avec uen requete HTTP en POST et l'URL
 	 * '/employe/update' Cette méthode récupère l'objet de commande
@@ -217,19 +300,41 @@ public class GestionMatiereController {
 	 * 
 	 * @return : le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/update", method = RequestMethod.POST)
-	public String modifierMatiereDB(@ModelAttribute("matiereModifCommand") Matiere pMatiereToUpdate, ModelMap model) {
+	@RequestMapping(value = "/matiere/lier", method = RequestMethod.POST)
+	public String modifierMatiereDB(@RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect, ModelMap model
+			,@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink
+			) throws Exception {
 
-		// 1. Modif de la matiere dans la database via la couche service
-		matiereService.modifierMatiere(pMatiereToUpdate);
+		/*,@RequestParam Map<String, List<Long>> requestParams*/
+		//List<Long> pIdMat = requestParams.get("matiere.idMatiere");
+		//List<Long> password = requestParams.get("promotion.idPromotion");
 
-		// 2. Récup de la nouvelle liste des employés dans la database
+		System.out.println("pIdMatiere" + pLink.getMatiere().getIdMatiere());
+		Matiere matiereAAjouter = matiereService.trouverMatiereId(pLink.getMatiere().getIdMatiere());
+
+		
+		// Ajout des liens en matière et chaque promotion selectionnée
+		for (Long IdPromotion : listeIDPromSelect) {
+			
+			System.out.println("IdPromotion= " + IdPromotion );
+
+			List<EnseignantMatierePromotionLink> listLinkPromo = linkService.trouverlinkViaIdPromo(IdPromotion);
+
+			for (EnseignantMatierePromotionLink link : listLinkPromo) {
+				
+				System.out.println("Id de la promotion du link"+link.getPromotion().getIdPromotion());
+
+				link.setMatiere(matiereAAjouter);
+				linkService.modifierLink(link);
+
+			} // end for
+
+		} // end for
+		
 		model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-		// 3. Renvoi du nom logique de la vue
 		return "liste-matiere";
 
 	}// end modifierEmployeDB()
-
 
 }// end class

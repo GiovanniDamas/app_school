@@ -44,5 +44,12 @@ public interface IEnseignantMatierePromotionLinkService {
 	 */
 	public List<EnseignantMatierePromotionLink> trouverAllLinks();
 	
+	
+	/**
+	 * Méthode pour afficher la liste des liens liés à l'id d'un enseignant de la database
+	 * @return Liste des un lien entre Enseignant, Matiere et Promotion
+	 */
+	public List<EnseignantMatierePromotionLink> trouverlinkViaIdPromo(Long pIdPromotion);
+	
 
 }//end interface

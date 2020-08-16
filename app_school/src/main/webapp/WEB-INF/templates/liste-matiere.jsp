@@ -106,9 +106,11 @@
 	<h2 style="text-align: center;"> Bienvenue dans l'aide ! </h2>
 	-->
 	<br/><br/>
+	  <div id="content" style="width:100%" align="left">
 	<h1 style="margin-left:20px">
 		<u>Liste des matières:</u>
 	</h1>
+	
 
 	<table class="table table-hover" style="width: 70%;" >
 
@@ -161,7 +163,7 @@
 		</tbody>
 	</table>
 	
-
+</div>
 	</div>
 
 	<!-- ===================================================== -->

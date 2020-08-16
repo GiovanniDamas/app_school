@@ -25,6 +25,7 @@
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -69,7 +70,7 @@
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -103,15 +104,17 @@
 				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
 			</li>
 			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
-			<li><a href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
 			</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
 			</li>
 			<li><a
 				href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
 			</li>
-			<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
-			</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
+				</li>
+			</s:authorize>
 		</ul>
 
 		</nav>

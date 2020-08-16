@@ -74,8 +74,7 @@
 				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
 				<value>com.intiformation.appschool.modeles.Cours</value>
 
-				<value>com.intiformation.appschool.modeles.Cours</value>
-				<value>com.intiformation.appschool.modeles.EtudiantCours</value>
+				
 
 			</list>
 		</property>

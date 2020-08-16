@@ -268,24 +268,16 @@ public class GestionPromotionController {
 
 	}// end ajouterMatiereDB
 
-	@RequestMapping(value = "promotion/lier-enseignants", method = RequestMethod.POST)
-	public ModelAndView lierPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
-		// Promotion promotion = new Promotion();
+	@RequestMapping(value = "promotion/enseignant-promotion", method = RequestMethod.GET)
+	public String afficherPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
-		EnseignantMatierePromotionLink enseignantMatierePromotionLink = new EnseignantMatierePromotionLink();
+	
+		model.addAttribute("attribut_liste_enseignants_promotion", enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
+		
+		return "Promotions/enseignants-promotion";
 
-		// ajout liste des enseignants
-		List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant();
-		model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
-
-		Map<String, Object> dataCommand = new HashMap<>();
-		// dataCommand.put("promotionCommand", promotion);
-		dataCommand.put("linkCommand", enseignantMatierePromotionLink);
-
-		String viewName = "Promotions/formulaire-liaison-enseignant";
-
-		return new ModelAndView(viewName, dataCommand);
-
-	}// end lierPromotionEnseignants
+	}// end afficherPromotionEnseignants
+	
+	
 
 }// end classe

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Listes des promotions</title>
+<title>Liste des enseignants pour la promotion</title>
 
 
 <!-- Lien vers feuille de style de Bootstrap -->
@@ -79,7 +79,6 @@
 
 	</div>
 
-
 	<div class="wrapper">
 
 		<!-- ===================================================== -->
@@ -135,39 +134,22 @@
 				<table class="table table-hover" style="width: 100%;">
 
 
-					<tr>
-
-						<td colspan="5" align="right"><a
-							href="${pageContext.request.contextPath}/promotion/edit-promotion-form?idPromotion=0">
-								Ajout d'une Promotion </a></td>
-					</tr>
+					
 					<thead>
 						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Libelle</th>
-							<th scope="col">Modifier</th>
-							<th scope="col">Supprimer</th>
+							<th scope="col">Nom</th>
+							<th scope="col">Prenom</th>
+							
 
 
 						</tr>
 					</thead>
 					<tbody>
 
-						<c:forEach items="${attribut_liste_promotions }" var="prom">
+						<c:forEach items="${attribut_liste_enseignants_promotion }" var="link">
 							<tr>
-								<td>${prom.idPromotion}</td>
-								<td>${prom.libelle}</td>
-								<td><a
-									href="${pageContext.request.contextPath}/promotion/edit-promotion-form?idPromotion=${prom.idPromotion}">
-										Modifier</a></td>
-								<td><a
-									href="${pageContext.request.contextPath}/promotion/delete?idPromotion=${prom.idPromotion}">
-										Supprimer</a></td>
-
-								<td><a
-									href="${pageContext.request.contextPath}/promotion/enseignant-promotion?idPromotion=${prom.idPromotion}">
-										Enseignants</a></td>
-
+								<td>${link.enseignant.nom}</td>
+								<td>${link.enseignant.prenom}</td>
 
 							</tr>
 						</c:forEach>

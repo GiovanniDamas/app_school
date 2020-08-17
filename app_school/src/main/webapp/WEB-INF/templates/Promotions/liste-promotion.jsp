@@ -49,83 +49,89 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
+
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
-
+		
 		<div id="connexion">
-			<s:authorize
-				access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
-				<h5>Bienvenue, ${attribut_personne_connecte.prenom}
-					${attribut_personne_connecte.nom}</h5>
-			</s:authorize>
-
-			<br />
-
-			<s:authorize
-				access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-					type="button" class="btn btn-dark" style="align-content: right">
-					<span class="fas fa-sign-out-alt"></span> Déconnexion
-				</a>
-			</s:authorize>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
+		</s:authorize>
 
-			<s:authorize access="hasRole('ROLE_ANONYMOUS')">
-				<a href="${pageContext.request.contextPath}/login.jsp"
-					id="connexion" type="button" class="btn btn-dark"> <span
-					class="fa fa-user-circle"></span> Se Connecter
-				</a>
-			</s:authorize>
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
 		</div>
 
 	</div>
 
 
-	<div class="wrapper">
+<div class="wrapper">
 
-		<!-- ===================================================== -->
-		<!-- =============== SIDEBAR ============================= -->
-		<!-- ===================================================== -->
-		<nav class="sidebar" id="sidebar"> <!--
+	<!-- ===================================================== -->
+	<!-- =============== SIDEBAR ============================= -->
+	<!-- ===================================================== -->
+    <nav class="sidebar" id="sidebar">
+    
+      <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-
-
+	
+	
 		<div class="sidebar-header">
-			<a href="${pageContext.request.contextPath}/index.jsp"><span
-				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
+		
+    <ul class="sidebar-links">
+      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
+      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
+      <li > <a  href="#">Promotion</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
+    </ul>
+    
+	</nav>
+	
+	
+	<!-- ===================================================== -->
+	<!-- =============== CONTENT ============================= -->
+	<!-- ===================================================== -->
+  <div id="content" style="width:100%">
+     <button type="button" id="sidebarCollapse" class="navbar-btn">
+         <span></span>
+         <span></span>
+         <span></span>
+     </button>
 
-		<ul class="sidebar-links">
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
-			</li>
-			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
-			</li>
-			<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
-			</li>
-		</ul>
 
-		</nav>
-
-		<!-- =========================================================== -->
-		<!-- ======== Content ========================================== -->
-		<!-- =========================================================== -->
-
-		<br /> <br />
-		<div id="content" style="width: 100%" align="left">
+     <!--Put some content here	-->
+	<br/><br/>
+	
 			<div style="padding: 30px;">
 				<h1 style="margin-left: 20px">
 					<u>Liste des Promotions:</u>
@@ -174,8 +180,8 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-	</div>
+		</div><!-- end content -->
+	</div><!-- end wrapper -->
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->

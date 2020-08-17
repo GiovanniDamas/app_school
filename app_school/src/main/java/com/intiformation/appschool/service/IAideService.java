@@ -22,5 +22,6 @@ public interface IAideService {
 	
 	public List<Aide> findAll();
 	
+	public Aide findAideByURL(String pURL);
 	
 }//end interface

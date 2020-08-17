@@ -6,5 +6,6 @@ public interface IAideDAO extends IGenerique<Aide> {
 	
 	/*_____________Methodes spécifiques________________*/
 
+	public Aide getByUrl(String pUrl);
 	
 }//end interface

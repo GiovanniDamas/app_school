@@ -54,8 +54,19 @@
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -99,12 +110,17 @@
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
 	<!-- ===================================================== -->
+  <div id="content" style="width:100%">
+     <button type="button" id="sidebarCollapse" class="navbar-btn">
+         <span></span>
+         <span></span>
+         <span></span>
+     </button>
+	
+	<!-- ===================================================== -->
+	<!-- =============== CONTENT ============================= -->
+	<!-- ===================================================== -->
  
-	
-	
-     <!--Put some content here	
-	<h2 style="text-align: center;"> Bienvenue dans l'aide ! </h2>
-	-->
 	<br/><br/>
 	  <div id="content" style="width:100%" align="left">
 	<h1 style="margin-left:20px">
@@ -163,8 +179,8 @@
 		</tbody>
 	</table>
 	
-</div>
 	</div>
+</div>
 
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->

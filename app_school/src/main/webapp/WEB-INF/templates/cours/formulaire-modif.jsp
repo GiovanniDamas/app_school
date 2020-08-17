@@ -81,10 +81,7 @@
 
 	<form:form modelAttribute="attribut_cours" 
 				method="POST" 
-				action="${pageContext.request.contextPath}/cours/modifier">
-
-	<%-- affichage de tous les messages d'erreurs --%>		
-	<form:errors path="*" element="div" class="alert alert-dismissible alert-danger"/>				
+				action="${pageContext.request.contextPath}/cours/modifier">			
 
 		<fieldset>
 			

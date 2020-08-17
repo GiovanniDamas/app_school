@@ -90,10 +90,7 @@
 	
 	<br/>
 	
-	<form:form modelAttribute="attribut_cours" method="POST" action="${pageContext.request.contextPath}/cours/ajouter">
-	
-	<%-- affichage de tous les messages d'erreurs --%>		
-	<form:errors path="*" element="div" class="alert alert-dismissible alert-danger"/>	
+	<form:form modelAttribute="attribut_cours" method="POST" action="${pageContext.request.contextPath}/cours/ajouter">	
 		
 		<fieldset>
 			

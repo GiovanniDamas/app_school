@@ -264,9 +264,9 @@ public class CoursDAOImpl implements ICoursDAO{
 			//construction requête HQL
 			Query<Cours> getCoursByEnseignantQuery = session.createQuery("SELECT c FROM Cours c, "
 																			+ "EnseignantMatierePromotionLink link, "
-																			+ "Matiere m "
-																			+ "WHERE c.matieres.idMatiere = m.idMatiere "
-																			+ "AND link.matiere.idMatiere = m.idMatiere "
+																			+ "Promotion p "
+																			+ "WHERE c.promotions.idPromotion = p.idPromotion "
+																			+ "AND link.promotion.idPromotion = p.idPromotion "
 																			+ "AND link.enseignant.idPersonne = :pIdEnseignant");
 			
 			//passage de paramètre

@@ -127,7 +127,7 @@
 
 
 					<td><a
-						href="${pageContext.request.contextPath}//matiere/edit-matiere-form?idMatiere=${mat.idMatiere}">
+						href="${pageContext.request.contextPath}/matiere/edit-matiere-form?idMatiere=${mat.idMatiere}">
 							Modifier</a></td>
 
 

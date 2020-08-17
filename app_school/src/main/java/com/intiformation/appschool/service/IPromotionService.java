@@ -51,5 +51,7 @@ public interface IPromotionService {
 	 * @return
 	 */
 	public List<Promotion> findPromotionByPersonne(Long pIdPersonne, String pRole);
+	
+	
 
 }//end interface

@@ -86,4 +86,10 @@ public class MatiereServiceImpl implements IMatiereService {
 		return null;		
 	}//end findMatiereByPersonne
 
+	@Override
+	public Matiere addMatiere(Matiere pMatiere) {
+		// TODO Auto-generated method stub
+		return matiereDAO.addMatiere(pMatiere);
+	}
+
 }// end classe

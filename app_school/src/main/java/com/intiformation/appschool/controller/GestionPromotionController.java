@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,8 @@ import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IPromotionService;
+import com.intiformation.appschool.validator.LinkValidator;
+import com.intiformation.appschool.validator.PromotionValidator;
 
 /**
  * Implémentation d'un controleur spring mvc pour la gestion des promotions
@@ -28,6 +31,7 @@ import com.intiformation.appschool.service.IPromotionService;
  * @author hannahlevardon
  *
  */
+
 @Controller // déclaration de la classe comme bean Spring de type contrôleur Spring MVC
 public class GestionPromotionController {
 
@@ -61,8 +65,16 @@ public class GestionPromotionController {
 	}
 
 	// Declaration du validator:
+	@Autowired
+	private LinkValidator linkValidator;
+	
+	public void setLinkValidator(LinkValidator linkValidator) {
+		this.linkValidator = linkValidator;
+	}
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
+
+	
 
 	/**
 	 * <pre>
@@ -97,7 +109,7 @@ public class GestionPromotionController {
 	 * 
 	 * @return le nom logique de la vue
 	 */
-	@RequestMapping(value = "promotion/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/promotion/delete", method = RequestMethod.GET)
 	public String supprimerPromotionDB(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
 		// 1. Suppresion de la matière de la database via le service
@@ -174,25 +186,39 @@ public class GestionPromotionController {
 	 */
 	@RequestMapping(value = "/promotion/add", method = RequestMethod.POST)
 	public String ajouterPromotionDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink,
-			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model) {
+			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model, BindingResult result  ) {
 
+		
+		linkValidator.validate(pLink.getPromotion(), result);
+		if (result.hasErrors()) {
+			
+			Long idPromotion = pLink.getPromotion().getIdPromotion();
+			
+			model.addAttribute("idPromotion", idPromotion);
+			
+			return "redirect:/promotion/edit-promotion-form";
+			
+		}else {
+			
+		
+		
 		// Cas d'un ajout de promotion:
 		if (pLink.getPromotion().getIdPromotion() == null) {
 
 			// Ajout de la promotion via la couche service
 			promotionService.ajouterPromotion(pLink.getPromotion());
-			
+
 			// Ajout des liens entre Promotion et chaque Enseignant selectionné
 			for (Long IdEnseignant : listeIDEnsSelect) {
-				
-				System.out.println("Id Enseignant" + IdEnseignant);
-				
-				pLink.getEnseignant().setIdPersonne(IdEnseignant);
-				
-				enseignantMatierePromotionLinkService.ajouterLink(pLink);
-			}	
 
-			// Récupération de la nouvelle lsite des promotions 
+				System.out.println("Id Enseignant" + IdEnseignant);
+
+				pLink.getEnseignant().setIdPersonne(IdEnseignant);
+
+				enseignantMatierePromotionLinkService.ajouterLink(pLink);
+			}
+
+			// Récupération de la nouvelle lsite des promotions
 			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 			// model.addAttribute("attribut_link", pLink);
 
@@ -207,13 +233,26 @@ public class GestionPromotionController {
 
 			promotionService.modifierPromotion(pLink.getPromotion());
 
-			for (Long IdEnseignant : listeIDEnsSelect) {
+			List<EnseignantMatierePromotionLink> listeLinkLiésAPromotion = enseignantMatierePromotionLinkService
+					.trouverlinkViaIdPromo(pLink.getPromotion().getIdPromotion());
 
-				pLink.getEnseignant().setIdPersonne(IdEnseignant);
+			// int compteur = 0;
 
-				enseignantMatierePromotionLinkService.modifierLink(pLink);
+			for (EnseignantMatierePromotionLink link : listeLinkLiésAPromotion) {
 
-			}
+				link.getEnseignant().setIdPersonne(null);
+
+				for (Long IdEnseignant : listeIDEnsSelect) {
+					// do {
+					
+					link.getEnseignant().setIdPersonne(IdEnseignant);
+					enseignantMatierePromotionLinkService.modifierLink(link);
+					
+					// compteur++;
+
+					// } while (compteur <= listeLinkLiésAPromotion.size());
+				} // end for
+			} // end for
 
 			// Recup nouvelle liste d'etudiant après ajout
 
@@ -222,29 +261,23 @@ public class GestionPromotionController {
 			return "Promotions/liste-promotion";
 
 		} // END IF
+		
+		}//end else
 
 		return "Promotions/liste-promotion";
 
 	}// end ajouterMatiereDB
 
-	@RequestMapping(value = "promotion/lier-enseignants", method = RequestMethod.POST)
-	public ModelAndView lierPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
-		// Promotion promotion = new Promotion();
+	@RequestMapping(value = "promotion/enseignant-promotion", method = RequestMethod.GET)
+	public String afficherPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
-		EnseignantMatierePromotionLink enseignantMatierePromotionLink = new EnseignantMatierePromotionLink();
+	
+		model.addAttribute("attribut_liste_enseignants_promotion", enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
+		
+		return "Promotions/enseignants-promotion";
 
-		// ajout liste des enseignants
-		List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant();
-		model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
-
-		Map<String, Object> dataCommand = new HashMap<>();
-		// dataCommand.put("promotionCommand", promotion);
-		dataCommand.put("linkCommand", enseignantMatierePromotionLink);
-
-		String viewName = "Promotions/formulaire-liaison-enseignant";
-
-		return new ModelAndView(viewName, dataCommand);
-
-	}// end lierPromotionEnseignants
+	}// end afficherPromotionEnseignants
+	
+	
 
 }// end classe

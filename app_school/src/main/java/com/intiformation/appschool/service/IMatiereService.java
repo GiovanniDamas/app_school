@@ -51,5 +51,6 @@ public interface IMatiereService {
 	 */
 	public List<Matiere> findMatiereByPersonne(Long pIdPersonne, String pRole);
 	
+	public Matiere addMatiere(Matiere pMatiere) ;
 
 }//end interface

@@ -16,6 +16,8 @@ public interface IMatiereDAO extends IGenerique<Matiere> {
 	
 	// _________________ METHODES SPECIFIQUES ___________________ //
 	
+	public Matiere addMatiere(Matiere pMatiere);	
+	
 	/**
 	 * Méthode pour retourner la liste des matières d'une promotion à partir de son Id
 	 * @return: liste des matières par promotion

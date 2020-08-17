@@ -1,15 +1,12 @@
 package com.intiformation.appschool.controller;
 
-
 import java.util.List;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Enseignants;
 import com.intiformation.appschool.service.IEnseignantsService;
-
+import com.intiformation.appschool.validator.EnseignantValidator;
 
 /**
  * @author giovanni
@@ -25,7 +22,7 @@ import com.intiformation.appschool.service.IEnseignantsService;
  */
 @Controller
 public class GestionEnseignantsController {
-	
+
 	// Déclaration de la couche service Enseignants
 	@Autowired
 	private IEnseignantsService enseignantsService;
@@ -38,6 +35,19 @@ public class GestionEnseignantsController {
 	 */
 	public void setEnseignantsService(IEnseignantsService enseignantsService) {
 		this.enseignantsService = enseignantsService;
+	}
+
+	// délcaration du validator de l'enseignant
+	@Autowired
+	private EnseignantValidator enseignantValidator;
+
+	/**
+	 * déclaration du setter du validator pour injection par modificateur
+	 * 
+	 * @param enseignantValidator
+	 */
+	public void setEnseignantValidator(EnseignantValidator enseignantValidator) {
+		this.enseignantValidator = enseignantValidator;
 	}
 
 	/**
@@ -61,7 +71,7 @@ public class GestionEnseignantsController {
 
 		// 3. renvoie du nom logique de la vue
 
-		return "Personnels/listeEnseignants";
+		return "personnels/listeEnseignants";
 
 	}// END RECUP LISTE
 
@@ -76,7 +86,7 @@ public class GestionEnseignantsController {
 	 */
 	@RequestMapping(value = "/gestionEnseignants/form-edit", method = RequestMethod.GET)
 	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEnseignant, ModelMap model) {
-		
+
 		System.out.println("methode form :" + pIdEnseignant);
 		if (pIdEnseignant == 0) {
 
@@ -102,7 +112,7 @@ public class GestionEnseignantsController {
 
 		} // END IF ELSE IF
 
-		return "Personnels/formulaireEditionEnseignants";
+		return "personnels/formulaireEditionEnseignants";
 
 	}// END METHODE
 
@@ -116,27 +126,35 @@ public class GestionEnseignantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEnseignants/edit", method = RequestMethod.POST)
-	public String ajoutEnseignantBdd(@ModelAttribute("attribut_enseignants") Enseignants pEnseignant, ModelMap model) {
+	public String ajoutEnseignantBdd(@ModelAttribute("attribut_enseignants") Enseignants pEnseignant, ModelMap model,
+			BindingResult result) {
 
-		System.out.println("methode ajout" + pEnseignant.getIdPersonne());
-		
-		if (pEnseignant.getIdPersonne() == null) {
+		// appel du validator
+		enseignantValidator.validate(pEnseignant, result);
 
-			//recup mdp 
+		if (result.hasErrors()) {
+
+			// renvoie du formulaire
+
+			return "personnels/formulaireEditionEnseignants";
+
+		} else if (pEnseignant.getIdPersonne() == null) {
+
+			// recup mdp
 			String MDP = pEnseignant.getMotDePasse();
-			
-			// objet pour le  cryptage
+
+			// objet pour le cryptage
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			
+
 			// cryptage du mot de passe avec la méthode encode()
 			String hashedMotDePasse = passwordEncoder.encode(MDP);
-			
+
 			// passage du mdp crypté
 			pEnseignant.setMotDePasse(hashedMotDePasse);
-			
-			// passage du role 
+
+			// passage du role
 			pEnseignant.setRole("ROLE_ENSEIGNANT");
-			
+
 			// Ajout enseignant via couche service
 
 			enseignantsService.ajouterEnseignant(pEnseignant);
@@ -145,26 +163,33 @@ public class GestionEnseignantsController {
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-			return "Personnels/listeEnseignants";
+			return "personnels/listeEnseignants";
 
-		}
-		if (pEnseignant.getIdPersonne() != 0) {
+		} // END IF id == null
 
-			//recup mdp 
+		if (result.hasErrors()) {
+
+			// renvoie du formulaire
+
+			return "personnels/formulaireEditionEnseignants";
+
+		} else if (pEnseignant.getIdPersonne() != 0) {
+
+			// recup mdp
 			String MDP = pEnseignant.getMotDePasse();
-			
-			// objet pour le  cryptage
+
+			// objet pour le cryptage
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			
+
 			// cryptage du mot de passe avec la méthode encode()
 			String hashedMotDePasse = passwordEncoder.encode(MDP);
-			
+
 			// passage du mdp crypté
 			pEnseignant.setMotDePasse(hashedMotDePasse);
-			
-			// passage du role 
+
+			// passage du role
 			pEnseignant.setRole("ROLE_ENSEIGNANT");
-			
+
 			// Modif enseignant via couche service
 
 			enseignantsService.modifierEnseignant(pEnseignant);
@@ -173,11 +198,11 @@ public class GestionEnseignantsController {
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-			return "Personnels/listeEnseignants";
+			return "personnels/listeEnseignants";
 
 		} // END IF
 
-		return "Personnels/listeEnseignants";
+		return "personnels/listeEnseignants";
 
 	}// END METHODE
 
@@ -200,7 +225,7 @@ public class GestionEnseignantsController {
 
 		model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-		return "Personnels/listeEnseignants";
+		return "personnels/listeEnseignants";
 
 	}// END SUPPRIMER
 

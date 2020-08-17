@@ -85,7 +85,7 @@ jaune moutarde de marlene : #d6cc10
 	margin-right: 10px;
     width: 40px;
     height: 40px;
-    background: #f5f5f5;
+    background: #f0f0f0;
     border-radius: 10px;
 }
 
@@ -95,7 +95,7 @@ jaune moutarde de marlene : #d6cc10
     height: 2px;
     margin: 0 auto;
     display: block;
-    background: #555;
+    background: #ea3939;
     transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
 }
 
@@ -119,8 +119,13 @@ jaune moutarde de marlene : #d6cc10
     /* all bars are visible */
     opacity: 1;
     margin: 5px auto;
+    background: #60acff;
 }
 
+
+#sidebarCollapse.active span:first-of-type {
+	background:#0051f1
+	}
 
 @media (max-width: 768px) {
     /* Reversing the behavior of the sidebar: 
@@ -222,7 +227,21 @@ jaune moutarde de marlene : #d6cc10
 
 
 
+/*====================content==========================*/
 
+.présentation{
+	padding-left: 20px;
+	padding-right:20px
+}
+
+.présentation p{
+	
+	padding-left: 30px;
+	padding-right:30px;	
+	text-align:justify;
+	font-size:18px;
+	line-height : 2em;
+}
 
 
 /*===================== FOOTER ==================================*/

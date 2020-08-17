@@ -32,6 +32,10 @@
     
    	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 
 
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
+
 </head>
 <body>
 	
@@ -69,8 +73,19 @@
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -128,9 +143,12 @@
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
-
+	
+		<img src="${pageContext.request.contextPath}/resources/media/ecole.jpeg"  style="width:220px;height:120px;position:absolute; top:15px;right:30px " />
+		
+		
 		<!-- Affichage d'un message lors de la déconnexion -->
-	    <div style="padding: 20px;"> 
+	    <div class="présentation" > 
 	
 		<c:if test="${not empty param.logout_message}">
 			<div class="alert alert-dismissible alert-success col-12" style="float: right;">
@@ -142,16 +160,23 @@
 			<br />
 
 			<!--Put some content here-->
-			<h1>Bienvenue sur le site de l'école Sainte Thérèse de Saint
-				Valaougue.</h1>
-			<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea,
-				ad voluptas temporibus, et iusto officia adipisci nisi dolorum
-				perspiciatis sed libero! Adipisci officiis, ea labore vel explicabo
-				magnam illo eius!</p>
-			<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea,
-				ad voluptas temporibus, et iusto officia adipisci nisi dolorum
-				perspiciatis sed libero! Adipisci officiis, ea labore vel explicabo
-				magnam illo eius!</p>
+	
+			<h3 >Bienvenue sur le site de l'école Sainte Thérèse de Saint-Vaast-la-Hougue. </h3>
+			
+			<br/><br/>
+			<p > 
+				Nous avons le plaisir d'accompagner vos enfant du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
+				ces conditions si spéciales.<br/>
+				Nous mettrons tout en oeuvre pour continuer notre enseignement tel que vous le connaissez tout en respectant les consignes pour le bien de la cause sanitaire.<br/>
+				Nous vous remercions pour votre soutient et votre compréhension. <br/>
+				Mme la directrice.
+			</p>
+			
+			<hr>
+			
+			<p >
+				Les inscriptions à l'école pour l'année scolaire 2020/2021 sont désormais ouvertes !!
+			</p>
 
 		</div>
 		</div>
@@ -175,9 +200,7 @@
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->	    
  
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
-	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
+
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     

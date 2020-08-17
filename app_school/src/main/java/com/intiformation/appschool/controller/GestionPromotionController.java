@@ -17,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Enseignants;
+import com.intiformation.appschool.modeles.Matiere;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
 import com.intiformation.appschool.validator.LinkValidator;
 import com.intiformation.appschool.validator.PromotionValidator;
@@ -44,6 +46,7 @@ public class GestionPromotionController {
 	private IEnseignantsService enseignantService;
 	@Autowired
 	private IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService;
+	
 
 	/**
 	 * 
@@ -54,6 +57,7 @@ public class GestionPromotionController {
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
+
 
 	public void setEnseignantService(IEnseignantsService enseignantService) {
 		this.enseignantService = enseignantService;
@@ -67,14 +71,12 @@ public class GestionPromotionController {
 	// Declaration du validator:
 	@Autowired
 	private LinkValidator linkValidator;
-	
+
 	public void setLinkValidator(LinkValidator linkValidator) {
 		this.linkValidator = linkValidator;
 	}
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
-
-	
 
 	/**
 	 * <pre>
@@ -92,11 +94,9 @@ public class GestionPromotionController {
 
 		// 1. Récupération de la liste des matières dans la databse via le service
 		List<Promotion> listePromotionsDB = promotionService.trouverAllPromotions();
-		List<EnseignantMatierePromotionLink> listeLinks = enseignantMatierePromotionLinkService.trouverAllLinks();
 
 		// 2. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
-		model.addAttribute("attribut_liste_links", listeLinks);
 
 		// 3. Renvoi de la liste vers la vue
 
@@ -116,7 +116,7 @@ public class GestionPromotionController {
 		promotionService.supprimerPromotion(pIdPromotion);
 
 		// 2. Renvoi de la liste vers la vue via l'objet model
-		model.addAttribute("attribut_liste_matieres", promotionService.trouverAllPromotions());
+		model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 
 		// 3 OU : rédirection vers l'url '/employe/liste' pour invoquer la méthode
 		// 'recupererListeEmployesDB' et rediriger vers liste-employes.jsp
@@ -186,83 +186,83 @@ public class GestionPromotionController {
 	 */
 	@RequestMapping(value = "/promotion/add", method = RequestMethod.POST)
 	public String ajouterPromotionDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink,
-			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model, BindingResult result  ) {
-
+			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model,
+			BindingResult result) {
 		
+			
 		linkValidator.validate(pLink.getPromotion(), result);
 		if (result.hasErrors()) {
-			
+
 			Long idPromotion = pLink.getPromotion().getIdPromotion();
-			
+
 			model.addAttribute("idPromotion", idPromotion);
-			
+
 			return "redirect:/promotion/edit-promotion-form";
-			
-		}else {
-			
-		
-		
-		// Cas d'un ajout de promotion:
-		if (pLink.getPromotion().getIdPromotion() == null) {
 
-			// Ajout de la promotion via la couche service
-			promotionService.ajouterPromotion(pLink.getPromotion());
+		} else {
 
-			// Ajout des liens entre Promotion et chaque Enseignant selectionné
-			for (Long IdEnseignant : listeIDEnsSelect) {
+			// Cas d'un ajout de promotion:
+			if (pLink.getPromotion().getIdPromotion() == null) {
 
-				System.out.println("Id Enseignant" + IdEnseignant);
+				// Ajout de la promotion via la couche service
+				promotionService.ajouterPromotion(pLink.getPromotion());
+				
+	
+				// Ajout des liens entre Promotion et chaque Enseignant selectionné
+				for (Long IdEnseignant : listeIDEnsSelect) {
 
-				pLink.getEnseignant().setIdPersonne(IdEnseignant);
+					System.out.println("Id Enseignant" + IdEnseignant);
 
-				enseignantMatierePromotionLinkService.ajouterLink(pLink);
-			}
+					// set de l'enseignant
+					pLink.getEnseignant().setIdPersonne(IdEnseignant);
+				
+					enseignantMatierePromotionLinkService.ajouterLink(pLink);
+				}
 
-			// Récupération de la nouvelle lsite des promotions
-			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
-			// model.addAttribute("attribut_link", pLink);
+				// Récupération de la nouvelle lsite des promotions
+				model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
+				// model.addAttribute("attribut_link", pLink);
 
-			// Renvoi vers la page liste-promotion.jsp
-			return "Promotions/liste-promotion";
+				// Renvoi vers la page liste-promotion.jsp
+				return "Promotions/liste-promotion";
 
-		} // end if
+			} // end if
 
-		if (pLink.getPromotion().getIdPromotion() != 0) {
+			if (pLink.getPromotion().getIdPromotion() != 0) {
 
-			// Modif etudiant via couche service
+				// Modif etudiant via couche service
 
-			promotionService.modifierPromotion(pLink.getPromotion());
+				promotionService.modifierPromotion(pLink.getPromotion());
 
-			List<EnseignantMatierePromotionLink> listeLinkLiésAPromotion = enseignantMatierePromotionLinkService
-					.trouverlinkViaIdPromo(pLink.getPromotion().getIdPromotion());
+				List<EnseignantMatierePromotionLink> listeLinkLiésAPromotion = enseignantMatierePromotionLinkService
+						.trouverlinkViaIdPromo(pLink.getPromotion().getIdPromotion());
 
-			// int compteur = 0;
+				for (EnseignantMatierePromotionLink link : listeLinkLiésAPromotion) {
 
-			for (EnseignantMatierePromotionLink link : listeLinkLiésAPromotion) {
+					// Surpprimer puis ajouter
 
-				link.getEnseignant().setIdPersonne(null);
+					enseignantMatierePromotionLinkService.supprimerLink(link.getId());
+
+				} // end for
 
 				for (Long IdEnseignant : listeIDEnsSelect) {
-					// do {
-					
-					link.getEnseignant().setIdPersonne(IdEnseignant);
-					enseignantMatierePromotionLinkService.modifierLink(link);
-					
-					// compteur++;
 
-					// } while (compteur <= listeLinkLiésAPromotion.size());
-				} // end for
-			} // end for
+					System.out.println("Id Enseignant" + IdEnseignant);
 
-			// Recup nouvelle liste d'etudiant après ajout
+					pLink.getEnseignant().setIdPersonne(IdEnseignant);
 
-			model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
+					enseignantMatierePromotionLinkService.ajouterLink(pLink);
+				}//end for
 
-			return "Promotions/liste-promotion";
+				// Recup nouvelle liste d'etudiant après ajout
 
-		} // END IF
-		
-		}//end else
+				model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
+
+				return "Promotions/liste-promotion";
+
+			} // END IF
+
+		} // end else
 
 		return "Promotions/liste-promotion";
 
@@ -271,13 +271,11 @@ public class GestionPromotionController {
 	@RequestMapping(value = "promotion/enseignant-promotion", method = RequestMethod.GET)
 	public String afficherPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
-	
-		model.addAttribute("attribut_liste_enseignants_promotion", enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
-		
+		model.addAttribute("attribut_liste_enseignants_promotion",
+				enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
+
 		return "Promotions/enseignants-promotion";
 
 	}// end afficherPromotionEnseignants
-	
-	
 
 }// end classe

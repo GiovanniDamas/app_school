@@ -67,7 +67,13 @@ public class EnseignantMatierePromotionLinkServiceImpl implements IEnseignantMat
 	@Override
 	public List<EnseignantMatierePromotionLink> trouverlinkViaIdPromo(Long pIdPromotion) {
 		// TODO Auto-generated method stub
-		return linkDAO.getByIdEnseignant(pIdPromotion);
+		return linkDAO.getByIdPromotion(pIdPromotion);
+	}
+
+	@Override
+	public List<EnseignantMatierePromotionLink> trouverlinkViaIdMatiere(Long pIdMatiere) {
+		// TODO Auto-generated method stub
+		return linkDAO.getByIdMatiere(pIdMatiere);
 	}
 
 	

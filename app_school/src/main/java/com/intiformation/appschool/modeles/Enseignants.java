@@ -26,7 +26,7 @@ public class Enseignants extends Personnes implements Serializable {
 	//@Column(name = "id_enseignant")
 	//Long idEnseignant;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "enseignant")
+	@OneToMany(/*cascade = CascadeType.ALL,*/ mappedBy = "enseignant")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
 	
 

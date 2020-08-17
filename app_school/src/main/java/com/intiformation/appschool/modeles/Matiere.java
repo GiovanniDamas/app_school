@@ -47,7 +47,7 @@ public class Matiere implements Serializable {
 	 * 	 	 
 	 */
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="matiere")
+	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="matiere")
 	private List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks;
 	
 
@@ -57,8 +57,16 @@ public class Matiere implements Serializable {
 	 */
 	public Matiere() {
 	}
+
 	
-	
+	public Matiere(Long idMatiere) {
+		super();
+		this.idMatiere = idMatiere;
+	}
+
+
+
+
 	// _________________ GETTER / SETTER ___________________ //
 	public Long getIdMatiere() {
 		return idMatiere;

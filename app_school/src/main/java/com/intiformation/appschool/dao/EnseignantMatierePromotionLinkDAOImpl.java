@@ -181,7 +181,7 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 	 */
 	@Transactional(readOnly = true)
 	@Override
-	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdPromotion) {
+	public List<EnseignantMatierePromotionLink> getByIdPromotion(Long pIdPromotion) {
 		try {
 			// 1. Récupération de la session
 			Session session = sessionFactory.getCurrentSession();
@@ -192,9 +192,8 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 							+ "WHERE l.promotion.idPromotion = :pIdPromotion");
 
 			// 3. Passage de paramètres
-			
-			query.setParameter("pIdPromotion", pIdPromotion);
 
+			query.setParameter("pIdPromotion", pIdPromotion);
 
 			// 4. Envoi, exécution, résultat
 			return query.getResultList();
@@ -202,9 +201,35 @@ public class EnseignantMatierePromotionLinkDAOImpl implements IEnseignantMatiere
 
 			// En cas d'erreur:
 			System.out.println(
-					" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des links par Id des professeurs ...");
+					" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des links par Id des promotions ...");
 			throw e;
 		} // end catch
 	}// end getByIdEnseignant
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<EnseignantMatierePromotionLink> getByIdMatiere(Long pIdMatiere) {
+		try {
+		// 1. Récupération de la session
+		Session session = sessionFactory.getCurrentSession();
+
+		// 2. Définition de la requete HQL à envoyer
+		Query<EnseignantMatierePromotionLink> query = session.createQuery(
+				"SELECT l FROM EnseignantMatierePromotionLink l " + "WHERE l.matiere.idMatiere = :pIdMatiere");
+		// 3. Passage de paramètres
+
+		query.setParameter("pIdMatiere", pIdMatiere);
+
+		// 4. Envoi, exécution, résultat
+		return query.getResultList();
+		} catch (HibernateException e) {
+
+			// En cas d'erreur:
+			System.out.println(
+					" ... (EnseignantMatierePromotionLinkDAOImpl) Erreur lors de la récupération de la liste des links par Id des promotions ...");
+			throw e;
+		} // end catch
+		
+	}//end getByIdMatiere
 
 }// end classe

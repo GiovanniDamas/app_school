@@ -43,10 +43,7 @@ public class Promotion implements Serializable {
 	 * ManyToMany	 	 
 	 */
 	
-	@ManyToMany 
-	@JoinTable(name="promotion_assos_etudiants",
-			   joinColumns=@JoinColumn(name="promotion_id"),
-			   inverseJoinColumns=@JoinColumn(name="etudiant_id"))	
+	@OneToMany(mappedBy="promotion", cascade=CascadeType.MERGE)
 	private List<Etudiants> etudiantsPromotions;
 	
 

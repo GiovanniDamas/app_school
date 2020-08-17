@@ -278,6 +278,8 @@ public class GestionMatiereController {
 	public ModelAndView AfficherFormulaireAjoutPromotions(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
+		
+		// List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService.trouverlinkViaIdMatiere(pIdMatiere);
 
 		Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
 
@@ -301,36 +303,100 @@ public class GestionMatiereController {
 	 * @return : le nom logique de la vue
 	 */
 	@RequestMapping(value = "/matiere/lier", method = RequestMethod.POST)
-	public String modifierMatiereDB(@RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect, ModelMap model
-			,@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink
-			) throws Exception {
+	public String lierMatierePromotionDB(@RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect,
+			ModelMap model, @ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink) throws Exception {
 
-		/*,@RequestParam Map<String, List<Long>> requestParams*/
-		//List<Long> pIdMat = requestParams.get("matiere.idMatiere");
-		//List<Long> password = requestParams.get("promotion.idPromotion");
-
+	
 		System.out.println("pIdMatiere" + pLink.getMatiere().getIdMatiere());
+
+		
 		Matiere matiereAAjouter = matiereService.trouverMatiereId(pLink.getMatiere().getIdMatiere());
 
-		
-		// Ajout des liens en matière et chaque promotion selectionnée
+		//List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService
+		//		.trouverlinkViaIdMatiere(pLink.getMatiere().getIdMatiere());
+		//List<EnseignantMatierePromotionLink> listeTousLesLinks = linkService.trouverAllLinks();
+
 		for (Long IdPromotion : listeIDPromSelect) {
 			
-			System.out.println("IdPromotion= " + IdPromotion );
-
+			System.out.println("PidPromotion=" + IdPromotion);
+			
 			List<EnseignantMatierePromotionLink> listLinkPromo = linkService.trouverlinkViaIdPromo(IdPromotion);
 
-			for (EnseignantMatierePromotionLink link : listLinkPromo) {
+			for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
 				
-				System.out.println("Id de la promotion du link"+link.getPromotion().getIdPromotion());
+					
+				System.out.println("Id de la promotion à changer = " + linkParPromo.getPromotion().getIdPromotion());
+				
+				if (linkParPromo.getMatiere() != null) {
+					
+					linkParPromo.setMatiere(matiereAAjouter);
+					linkService.ajouterLink(linkParPromo);
 
-				link.setMatiere(matiereAAjouter);
-				linkService.modifierLink(link);
-
+				}else {
+					
+					linkParPromo.setMatiere(matiereAAjouter);
+					linkService.modifierLink(linkParPromo);
+									
+				}
+	
 			} // end for
+		}
 
-		} // end for
-		
+		/*
+		 * for (EnseignantMatierePromotionLink link : listeTousLesLinks) {
+		 * 
+		 * if (listeLinksParMatière.size() == 0) {
+		 * 
+		 * 
+		 * for (Long IdPromotion : listeIDPromSelect) {
+		 * 
+		 * System.out.println("IdPromotion= " + IdPromotion);
+		 * 
+		 * List<EnseignantMatierePromotionLink> listLinkPromo =
+		 * linkService.trouverlinkViaIdPromo(IdPromotion);
+		 * 
+		 * for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
+		 * 
+		 * System.out.println("Id de la promotion du link" +
+		 * link.getPromotion().getIdPromotion());
+		 * 
+		 * linkParPromo.setMatiere(matiereAAjouter);
+		 * 
+		 * linkService.modifierLink(linkParPromo); } // end for } // end for } else {
+		 * 
+		 * for (EnseignantMatierePromotionLink linksParMatiere : listeLinksParMatière) {
+		 * 
+		 * linksParMatiere.setMatiere(matiereNull);
+		 * linkService.modifierLink(linksParMatiere); }
+		 * 
+		 * for (Long IdPromotion : listeIDPromSelect) {
+		 * System.out.println("IdPromotion= " + IdPromotion);
+		 * 
+		 * List<EnseignantMatierePromotionLink> listLinkPromo =
+		 * linkService.trouverlinkViaIdPromo(IdPromotion);
+		 * 
+		 * for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
+		 * 
+		 * System.out.println("Id de la promotion du link" +
+		 * linkParPromo.getPromotion().getIdPromotion());
+		 * 
+		 * linkParPromo.setMatiere(matiereAAjouter);
+		 * linkService.ajouterLink(linkParPromo);
+		 * 
+		 * } // end for
+		 * 
+		 * } // end for break;
+		 * 
+		 * 
+		 * } // end if(link.getMatiere().getIdMatiere()==null) } // end for
+		 * (EnseignantMatierePromotionLink link : listeTousLesLinks)
+		 * 
+		 * // int taille = listeLinksParMatière.size(); //
+		 * System.out.println("Taille de la liste de link pour la matiere avec id " + //
+		 * pLink.getMatiere().getIdMatiere() // + " = " + taille);
+		 * 
+		 * // if (listeLinksParMatière.size() == 0) {
+		 */
 		model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
 		return "liste-matiere";

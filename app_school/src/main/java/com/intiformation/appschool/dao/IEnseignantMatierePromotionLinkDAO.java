@@ -15,7 +15,10 @@ public interface IEnseignantMatierePromotionLinkDAO extends IGenerique<Enseignan
 	
 	// _________________ METHODES SPECIFIQUES ___________________ //
 	
-	public List<EnseignantMatierePromotionLink> getByIdEnseignant(Long pIdPromotion);
+	public List<EnseignantMatierePromotionLink> getByIdPromotion(Long pIdPromotion);
+	
+	public List<EnseignantMatierePromotionLink> getByIdMatiere(Long pIdMatiere);
+	
 	
 	
 

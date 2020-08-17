@@ -36,56 +36,88 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
+
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
-		<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
-			type="button" class="btn btn-secondary"> <span
-			class="fa fa-user-circle"></span> Connexion
-		</a>
+		
+		<div id="connexion">
+		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+			<h5>
+			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
+			</h5>
+		</s:authorize>
+		
+		<br/>
+		
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
+		</s:authorize>
+
+		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		</s:authorize>
+		</div>
+
 	</div>
 
-	<div class="wrapper">
-		<!-- ===================================================== -->
-		<!-- =============== SIDEBAR ============================= -->
-		<!-- ===================================================== -->
-		<nav class="sidebar" id="sidebar"> <!--
+
+<div class="wrapper">
+
+	<!-- ===================================================== -->
+	<!-- =============== SIDEBAR ============================= -->
+	<!-- ===================================================== -->
+    <nav class="sidebar" id="sidebar">
+    
+      <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-
+	
+	
 		<div class="sidebar-header">
-			<a href="#"><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
-
-		<ul class="sidebar-links">
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
-			</li>
-			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
-			</li>
-			<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
-			</li>
-		</ul>
-
-		</nav>
-
+		
+    <ul class="sidebar-links">
+      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
+      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
+      <li > <a  href="#">Promotion</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
+      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
+    </ul>
+    
+	</nav>
+	
+	
+	<!-- ===================================================== -->
+	<!-- =============== CONTENT ============================= -->
+	<!-- ===================================================== -->
+  <div id="content" style="width:100%">
+     <button type="button" id="sidebarCollapse" class="navbar-btn">
+         <span></span>
+         <span></span>
+         <span></span>
+     </button>
 
 
-		<!-- =========================================================== -->
-		<!-- ======== Content ========================================== -->
-		<!-- =========================================================== -->
+     <!--Put some content here	-->
+	<br/><br/>
 		<div>
 			<h2 style="margin-left: 20px">
 				<u>Formulaire d'ajout/édition d'une promotion :</u>
@@ -152,7 +184,8 @@
 				</form:form>
 			</div>
 		</div>
-		</div>
+	</div>
+</div>
 		
 		<!-- ===================================================== -->
 		<!-- =============== FOOTER ============================== -->

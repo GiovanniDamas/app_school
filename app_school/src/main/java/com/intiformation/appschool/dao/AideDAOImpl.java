@@ -145,5 +145,30 @@ public class AideDAOImpl  implements IAideDAO{
 		
 	}//end getAll()
 
+
+	@Override
+	public Aide getByUrl(String pUrl) {
+		
+		// 1. Récupération de la session
+		Session session = sessionFactory.getCurrentSession();
+
+		// 2. Définition de la requete HQL à envoyer
+		Query query = session.createQuery("SELECT a FROM Aide a WHERE a.url_page LIKE '%:pUrl %' ");		
+
+		query.setParameter("pUrl", pUrl);
+		
+		try {
+			// 3. Envoi, exécution, résultat
+			Aide aideURL = (Aide) query.getSingleResult();
+			return aideURL; 
+			
+		} catch (HibernateException e) {
+			// En cas d'erreur:
+			System.out.println("... (AideDAOImpl) Erreur lors de la récupération par Id ...");
+			throw e;
+		}//end catch
+				
+	}
+
 	
 }//end class

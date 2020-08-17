@@ -143,7 +143,7 @@
 				</div>
 				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
 					<form:label class="col-form-label" path="dateDeNaissance">Date de Naissance</form:label>
-					<form:input type="text" class="form-control" path="dateDeNaissance" />
+					<form:input type="date" class="form-control" path="dateDeNaissance" />
 					<form:errors path="dateDeNaissance"
 						cssStyle="color:red; font-style:italic;" />
 				</div>
@@ -167,7 +167,21 @@
 					<form:errors path="motDePasse"
 						cssStyle="color:red; font-style:italic;" />
 				</div>
-				<div class="form-group" >
+
+				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
+					<form:label path="promotion.idPromotion" >Promotion</form:label>
+					
+
+					<form:select path="promotion.idPromotion" class="form-control">
+						<form:option value="" label="--Sélectionner la promotion" />
+						<form:options items="${attribut_promotions}"
+							itemValue="idPromotion" itemLabel="libelle"  />
+					</form:select>
+
+					<form:errors path="promotion.idPromotion"
+						cssStyle="color:red; font-style:italic;" />
+				</div>
+				<div class="form-group">
 					<form:label path="photo">Photo</form:label>
 					<input type="file" name="file" />
 				</div>
@@ -176,11 +190,11 @@
 					<input type="submit" value="Ajouter" />
 
 					<c:if test="${idPersonne} != 0"></c:if>
-					<input type="submit" value="Modifier" />		
+					<input type="submit" value="Modifier" />
 				</div>
-				
+
 			</fieldset>
-			
+
 		</form:form>
 	</div>
 

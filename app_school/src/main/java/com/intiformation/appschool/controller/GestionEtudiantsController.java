@@ -213,7 +213,9 @@ public class GestionEtudiantsController {
 			File dest = new File(filePath);
 
 			try {
-				file.transferTo(dest);
+				if(file.isEmpty() == false) {
+					file.transferTo(dest);
+				}
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
 				return "File uploaded failed:" + nomPhoto;
@@ -233,15 +235,22 @@ public class GestionEtudiantsController {
 
 			// passage du role
 			pEtudiant.setRole("ROLE_ETUDIANT");
+			
+			//set de la promotion à null si idPromotion = null
+			if(pEtudiant.getPromotion().getIdPromotion() == null) {
+				pEtudiant.setPromotion(null);
+			}
 
 			// Ajout etudiant via couche service
 
 			etudiantsService.ajouterEtudiant(pEtudiant);
 			
 			// ajout de l'étudiants dans la liste de présence des cours de sa promo
-			Long idPromo = pEtudiant.getPromotion().getIdPromotion();
+			Promotion promo = pEtudiant.getPromotion();
 			
-			if(idPromo != null) {
+			if(promo != null) {
+				
+				Long idPromo = promo.getIdPromotion();
 				
 				List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idPromo);
 				
@@ -271,21 +280,115 @@ public class GestionEtudiantsController {
 		if (pEtudiant.getIdPersonne() != 0) {
 
 			if (file.isEmpty()) {
-
+				
 				pEtudiant.getPhoto();
 				
 				//vérification si modif de la promotion
 				Etudiants etudiantUpdate = etudiantsService.findEtudiantById(pEtudiant.getIdPersonne());
+									
+					if (etudiantUpdate.getPromotion() == pEtudiant.getPromotion()){
+						//pas de modif dans etudiantcours
+					
+					} else {
+						
+						// suppression des cours de l'ancienne promo de l'étudiant dans etudiantcours
+						Promotion anciennePromo = etudiantUpdate.getPromotion();
+						
+						if(anciennePromo != null) {
+							Long idAnciennePromo = anciennePromo.getIdPromotion();
+							
+							List<Cours> anciensCours = coursService.findCoursParPromotion(idAnciennePromo);
+							
+							if (anciensCours != null ) {
+								for (Cours cours : anciensCours) {
+									etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(pEtudiant.getIdPersonne(), cours.getIdCours()));
+								}//end for each
+								
+							}//end if
+						}//end if
+									
+						// ajout des cours de la nouvelle promo de l'étudiant dans etudiantcours
+						Long idNouvellePromo = pEtudiant.getPromotion().getIdPromotion();
+						
+						if(idNouvellePromo != null) {
+							List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idNouvellePromo); 
+							
+							if (listeCoursPromo != null ) {
+								
+								for (Cours cours : listeCoursPromo) {
+									
+									EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+									etudiantCoursToAdd.setCours(cours);
+									etudiantCoursToAdd.setEtudiant(pEtudiant);
+									etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+
+								}//end for each
+							}//end if
+						}//end if
+						
+					}// end else	
 				
-				if (etudiantUpdate.getPromotion().equals(pEtudiant.getPromotion())){
+				//set de la promotion à null si idPromotion = null
+				if(pEtudiant.getPromotion().getIdPromotion() == null) {
+					pEtudiant.setPromotion(null);
+				}
+
+				// Modif etudiant via couche service
+
+				etudiantsService.modifierEtudiant(pEtudiant);
+
+				// Recup nouvelle liste d'etudiant après ajout
+
+				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+
+			} else {
+				
+				String nomPhoto = file.getOriginalFilename();
+
+				pEtudiant.setPhoto(nomPhoto);
+
+				String filePath = UPLOAD_DIRECTORY + nomPhoto;
+
+				File dest = new File(filePath);
+
+				try {
+					if(file.isEmpty() == false) {
+						file.transferTo(dest);
+					}
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+					return "File uploaded failed:" + nomPhoto;
+				}
+
+				// recup mdp
+				String MDP = pEtudiant.getMotDePasse();
+
+				// objet pour le cryptage
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+				// cryptage du mot de passe avec la méthode encode()
+				String hashedMotDePasse = passwordEncoder.encode(MDP);
+
+				// passage du mdp crypté
+				pEtudiant.setMotDePasse(hashedMotDePasse);
+
+				// passage du role
+				pEtudiant.setRole("ROLE_ETUDIANT");
+				
+				//vérification si modif de la promotion
+				Etudiants etudiantUpdate = etudiantsService.findEtudiantById(pEtudiant.getIdPersonne());
+				
+				if (etudiantUpdate.getPromotion() == pEtudiant.getPromotion()){
 					//pas de modif dans etudiantcours
 				
 				} else {
 					
 					// suppression des cours de l'ancienne promo de l'étudiant dans etudiantcours
-					Long idAnciennePromo = etudiantUpdate.getPromotion().getIdPromotion();
+					Promotion anciennePromo = etudiantUpdate.getPromotion();
 					
-					if(idAnciennePromo != null) {
+					if(anciennePromo != null) {
+						Long idAnciennePromo = anciennePromo.getIdPromotion();
+						
 						List<Cours> anciensCours = coursService.findCoursParPromotion(idAnciennePromo);
 						
 						if (anciensCours != null ) {
@@ -317,45 +420,11 @@ public class GestionEtudiantsController {
 					
 				}// end else			
 
-				// Modif etudiant via couche service
-
-				etudiantsService.modifierEtudiant(pEtudiant);
-
-				// Recup nouvelle liste d'etudiant après ajout
-
-				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
-
-			} else {
-				String nomPhoto = file.getOriginalFilename();
-
-				pEtudiant.setPhoto(nomPhoto);
-
-				String filePath = UPLOAD_DIRECTORY + nomPhoto;
-
-				File dest = new File(filePath);
-
-				try {
-					file.transferTo(dest);
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
-					return "File uploaded failed:" + nomPhoto;
+				//set de la promotion à null si idPromotion = null
+				if(pEtudiant.getPromotion().getIdPromotion() == null) {
+					pEtudiant.setPromotion(null);
 				}
-
-				// recup mdp
-				String MDP = pEtudiant.getMotDePasse();
-
-				// objet pour le cryptage
-				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-				// cryptage du mot de passe avec la méthode encode()
-				String hashedMotDePasse = passwordEncoder.encode(MDP);
-
-				// passage du mdp crypté
-				pEtudiant.setMotDePasse(hashedMotDePasse);
-
-				// passage du role
-				pEtudiant.setRole("ROLE_ETUDIANT");
-
+				
 				// Modif etudiant via couche service
 
 				etudiantsService.modifierEtudiant(pEtudiant);

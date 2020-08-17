@@ -156,7 +156,7 @@
 			
 			<br/><br/>
 			<p > 
-				Nous avons le plaisir d'accompagner vos enfant du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
+				Nous avons le plaisir d'accompagner vos enfants du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
 				ces conditions si spéciales.<br/>
 				Nous mettrons tout en oeuvre pour continuer notre enseignement tel que vous le connaissez tout en respectant les consignes pour le bien de la cause sanitaire.<br/>
 				Nous vous remercions pour votre soutient et votre compréhension. <br/>

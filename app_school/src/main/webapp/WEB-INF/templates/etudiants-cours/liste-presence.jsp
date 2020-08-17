@@ -147,44 +147,12 @@
 	 	</table>	 	
 
 	<br/>
-<%-- 	 
-	 <div>
-	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-cours">
-	 	 <label for="recherche-cours">Afficher la liste de présence d'un cours : </label>	 	
-	 	<select class="form-control ml-2" id="recherche-cours" name="id-cours">
-	 		<option value="0" label="Afficher tous les cours">
-	 		<c:forEach items="${attribut_cours}" var="cours">
-	 			 <option value="${cours.idCours}" label="${cours.libelle}"/>
-	 		</c:forEach>
-       	</select>
-    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
-  	</form>
-  	</div>
-  	
-  	<br/>
---%>  
+
   	<br/><br/>		
 
 	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 	 	<h3>Listes des étudiants</h3>
 	 	<br/><br/>
-
-<%-- 
-  	<div>
-	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-etudiant">
-	 	 <label for="recherche-etudiant">Rechercher un étudiant : </label>	 	
-	 	<select class="form-control ml-2" id="recherche-etudiant" name="id-etudiant">
-	 		<option value="0" label="Afficher tous les étudiants">
-	 		<c:forEach items="${attribut_etudiants}" var="etudiant">
-	 			 <option value="${etudiant.idPersonne}"><c:out value="${etudiant.nom} ${etudiant.prenom}"/></option>
-	 		</c:forEach>
-       	</select>
-    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
-  	</form>
-  	</div>
-  	
-  	<br/>
---%>
 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/etudiants-cours/recherche-cours">
@@ -239,15 +207,6 @@
 	 				</a>
 	 			</td>
 	 		
-	 		<%-- lien pour supprimer une ligne --%> 		
-	 <%--		<td>		--%>
-	 				<%-- au click on appelle le controller 'GestionCEtudiantCoursController' et sa méthode supprimerEtudiantCoursBdd --%>
-	  <%--			<a href="${pageContext.request.contextPath}/etudiants-cours/supprimer?etudiantCoursId=${presence.idEtudiantCours}">
-	 					<i class="fas fa-trash-alt"></i>
-	 				</a>
-	 			</td>
-	 		</tr>
-	 --%>		
 	 		</tbody>
 	 	</c:forEach>
 	 		
@@ -255,14 +214,6 @@
 
 	<br/>
 	
-	<%-- lien pour ajouter une ligne dans la bdd : au click on appelle le controller GestionEtudiantCoursController et sa méthode chargerEtudiantCoursBdd --%>
-<%-- 
-	<a href="${pageContext.request.contextPath}/etudiants-cours/formulaire-ajout-presence"
-			class="btn btn-primary btn-md active" role="button"
-			aria-pressed="true" style="align-content: left;margin-left:5%" >
-		Ajouter absence étudiant
-	</a>
---%>	
 	</s:authorize>
 	
 	</div>

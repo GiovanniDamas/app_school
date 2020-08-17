@@ -17,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Enseignants;
+import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IPromotionService;
 import com.intiformation.appschool.validator.LinkValidator;
 import com.intiformation.appschool.validator.PromotionValidator;
@@ -44,6 +46,8 @@ public class GestionPromotionController {
 	private IEnseignantsService enseignantService;
 	@Autowired
 	private IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService;
+	@Autowired
+	private IEtudiantsService etudiantService;
 
 	/**
 	 * 
@@ -63,6 +67,12 @@ public class GestionPromotionController {
 			IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService) {
 		this.enseignantMatierePromotionLinkService = enseignantMatierePromotionLinkService;
 	}
+
+	public void setEtudiantService(IEtudiantsService etudiantService) {
+		this.etudiantService = etudiantService;
+	}
+
+
 
 	// Declaration du validator:
 	@Autowired
@@ -112,6 +122,15 @@ public class GestionPromotionController {
 	@RequestMapping(value = "/promotion/delete", method = RequestMethod.GET)
 	public String supprimerPromotionDB(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
+		//modification des etudiants liés à la promo supprimée
+		List<Etudiants> listeEtudiantsBdd = etudiantService.findAllEtudiant();
+		for (Etudiants etudiants : listeEtudiantsBdd) {
+			if(etudiants.getPromotion().getIdPromotion() == pIdPromotion) {
+				etudiants.setPromotion(null);
+				etudiantService.modifierEtudiant(etudiants);
+			}//end if
+		}//end for each
+		
 		// 1. Suppresion de la matière de la database via le service
 		promotionService.supprimerPromotion(pIdPromotion);
 

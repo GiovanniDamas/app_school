@@ -39,14 +39,11 @@ public class Promotion implements Serializable {
 	
 	// _________________ ASSOCIATIONS ___________________ //
 	/**
-	 * Relation entre Promotion et Etudiant: plusieurs promotion pour plusieurs etudiants
-	 * ManyToMany	 	 
+	 * Relation entre Promotion et Etudiant: une promotion pour plusieurs etudiants
+	 * OneToMany	 	 
 	 */
 	
-	@ManyToMany 
-	@JoinTable(name="promotion_assos_etudiants",
-			   joinColumns=@JoinColumn(name="promotion_id"),
-			   inverseJoinColumns=@JoinColumn(name="etudiant_id"))	
+	@OneToMany(mappedBy="promotion")
 	private List<Etudiants> etudiantsPromotions;
 	
 

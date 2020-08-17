@@ -224,8 +224,10 @@ public class GestionCoursController {
 
 					for (Etudiants etudiants : listeEtudiants) {
 						
-						if (etudiants.getPromotion().getIdPromotion() == idPromo) {
-							listeEtudiantsPromo.add(etudiants);
+						if(etudiants.getPromotion() != null) {
+							if (etudiants.getPromotion().getIdPromotion() == idPromo) {
+								listeEtudiantsPromo.add(etudiants);
+							}//end if
 						}//end if
 						
 					}//end for each
@@ -319,8 +321,10 @@ public class GestionCoursController {
 
 						for (Etudiants etudiants : listeEtudiants) {
 							
-							if (etudiants.getPromotion().getIdPromotion() == idAnciennePromo) {
-								listeEtudiantsAnciennePromo.add(etudiants);
+							if(etudiants.getPromotion() != null) {
+								if (etudiants.getPromotion().getIdPromotion() == idAnciennePromo) {
+									listeEtudiantsAnciennePromo.add(etudiants);
+								}//end if
 							}//end if
 							
 						}//end for each
@@ -343,10 +347,12 @@ public class GestionCoursController {
 
 						for (Etudiants etudiants : listeEtudiants) {
 							
-							if (etudiants.getPromotion().getIdPromotion() == idPromo) {
-								listeEtudiantsPromo.add(etudiants);
+							if(etudiants.getPromotion() != null) {
+								if (etudiants.getPromotion().getIdPromotion() == idPromo) {
+									listeEtudiantsPromo.add(etudiants);
+								}//end if
 							}//end if
-							
+									
 						}//end for each
 						
 						if (listeEtudiantsPromo != null) {

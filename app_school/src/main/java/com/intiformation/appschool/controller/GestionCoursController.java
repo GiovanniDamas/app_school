@@ -193,13 +193,20 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/ajouter", method=RequestMethod.POST)
-	public String ajouterCoursBdd(@ModelAttribute("attribut_cours") @Validated Cours pCours, BindingResult result) {
+	public String ajouterCoursBdd(@ModelAttribute("attribut_cours") @Validated Cours pCours, BindingResult result, Authentication authentication, ModelMap model) {
 		
 			//1. application du validateur sur l'objet pCours
 			coursValidator.validate(pCours, result);
 					
 			if (result.hasErrors()) {
 				
+				//récup de la personne connectée
+				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				
+				//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
+				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+				model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+
 				//2.a renvoi vers le formulaire
 				return "cours/formulaire-ajout";
 			
@@ -276,15 +283,22 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/modifier", method=RequestMethod.POST)
-	public String modifierCoursBdd(@ModelAttribute("attribut_cours") @Validated Cours pCours, BindingResult result) {
+	public String modifierCoursBdd(@ModelAttribute("attribut_cours") @Validated Cours pCours, BindingResult result, Authentication authentication, ModelMap model) {
 		
 		//1. application du validateur sur l'objet pCours
 		coursValidator.validate(pCours, result);
 			
 		if (result.hasErrors()) {
-				
-				//2.a renvoi vers le formulaire
-				return "cours/formulaire-modif";
+
+			//récup de la personne connectée
+			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			
+			//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
+			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+			
+			//2.a renvoi vers le formulaire
+			return "cours/formulaire-modif";
 			
 		}else {
 				

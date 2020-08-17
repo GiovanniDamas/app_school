@@ -4,6 +4,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,12 +14,23 @@
 
 <title>Formulaire pour l'édition de l'enseignant</title>
 
-<link
-	href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
-	rel="stylesheet">
-<link
-	href="${pageContext.request.contextPath}/resources/styles/perso.css"
-	rel="stylesheet">
+	<!-- Lien vers feuille de style de Bootstrap -->
+	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
+
+	<!-- Lien vers feuille de style perso de index -->
+	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
+	    rel="stylesheet">
+
+    <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
+
 
 </head>
 <body>
@@ -81,15 +94,17 @@
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-    <ul class="sidebar-links">
-      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
-      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
-    </ul>
+		<ul class="sidebar-links">
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
+			</s:authorize>
+		</ul>
     
 	</nav>
 	

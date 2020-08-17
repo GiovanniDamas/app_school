@@ -125,10 +125,12 @@ public class GestionPromotionController {
 		//modification des etudiants liés à la promo supprimée
 		List<Etudiants> listeEtudiantsBdd = etudiantService.findAllEtudiant();
 		for (Etudiants etudiants : listeEtudiantsBdd) {
-			if(etudiants.getPromotion().getIdPromotion() == pIdPromotion) {
-				etudiants.setPromotion(null);
-				etudiantService.modifierEtudiant(etudiants);
-			}//end if
+			if(etudiants.getPromotion() != null) {
+				if(etudiants.getPromotion().getIdPromotion() == pIdPromotion) {
+					etudiants.setPromotion(null);
+					etudiantService.modifierEtudiant(etudiants);
+				}//end if
+			}//end if		
 		}//end for each
 		
 		// 1. Suppresion de la matière de la database via le service

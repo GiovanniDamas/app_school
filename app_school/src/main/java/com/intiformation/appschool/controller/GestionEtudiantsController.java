@@ -48,7 +48,7 @@ import com.intiformation.appschool.service.IPromotionService;
 @Controller
 public class GestionEtudiantsController {
 
-	private static final String UPLOAD_DIRECTORY = "/Users/marle/Desktop/Marlene/Formation_INTI_JAVA/Projet_groupe_app_school/app_school/app_school/src/main/webapp/resources/Images/";
+	private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images";
 
 	private Etudiants etudiants;
 	// Déclaration de la couche service Etudiants

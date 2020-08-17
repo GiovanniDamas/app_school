@@ -11,6 +11,14 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Ajout/modif Aide</title>
 
+
+
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
+	
+	
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">	
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -18,6 +26,14 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>		
 	
+	
+	<!-- Lien vers feuille de style perso de index -->
+	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
+	    rel="stylesheet">
+
+    <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>	
 	
 </head>
 
@@ -82,15 +98,17 @@
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-    <ul class="sidebar-links">
-      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
-      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
-    </ul>
+		<ul class="sidebar-links">
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
+			</s:authorize>
+		</ul>
     
 	</nav>
 	
@@ -107,7 +125,7 @@
 
 
 
-	<div align="center" style="margin-top:0;background: rgb(192,192,192);background: linear-gradient(180deg, rgba(192,192,192,1) 0%, rgba(255,255,255,1) 56%);min-width:100%; ">
+	<div align="center" >
 		<h1>Edition de l'aide</h1>
 	</div>
 

@@ -20,12 +20,6 @@
 	href="${pageContext.request.contextPath}/resources/styles/index.css"
 	rel="stylesheet">
 
-
-<!-- Lien vers la font de la sidebar -->
-<link
-	href="${pageContext.request.contextPath}/resources/styles/index.css"
-	rel="stylesheet">
-
 <!-- Lien vers font awesome 4.7.0-->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
@@ -105,15 +99,17 @@
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-    <ul class="sidebar-links">
-      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
-      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
-    </ul>
+		<ul class="sidebar-links">
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
+			</s:authorize>
+		</ul>
     
 	</nav>
 	

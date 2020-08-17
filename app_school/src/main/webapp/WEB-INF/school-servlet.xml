@@ -52,7 +52,6 @@
 			</list>
 		</property>
 	</bean>
-
 	
 	<mvc:annotation-driven></mvc:annotation-driven>
 

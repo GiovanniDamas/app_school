@@ -18,6 +18,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -37,6 +38,7 @@ import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
+import com.intiformation.appschool.validator.EtudiantValidator;
 import com.intiformation.appschool.service.IPromotionService;
 
 /**
@@ -100,6 +102,19 @@ public class GestionEtudiantsController {
 	}
 	
 
+	// déclaration du validateur
+	@Autowired
+	private EtudiantValidator etudiantValidator;
+
+	/**
+	 * déclaration du setter du validator pour l'injection par modificateur
+	 * 
+	 * @param etudiantValidator
+	 */
+	public void setEtudiantValidator(EtudiantValidator etudiantValidator) {
+		this.etudiantValidator = etudiantValidator;
+	}
+
 	/**
 	 * Méthode permettant de récupérer la liste des etudiants via le service,
 	 * Méthode appellée lors d'une requête HTTP de type GET
@@ -120,7 +135,7 @@ public class GestionEtudiantsController {
 
 		// 3. renvoie du nom logique de la vue
 
-		return "Personnels/listeEtudiants";
+		return "personnels/listeEtudiants";
 
 	}// END RECUP LISTE
 
@@ -160,7 +175,7 @@ public class GestionEtudiantsController {
 
 		} // END IF ELSE IF
 
-		return "Personnels/formulaireEditionEtudiants";
+		return "personnels/formulaireEditionEtudiants";
 
 	}// END METHODE
 
@@ -177,9 +192,16 @@ public class GestionEtudiantsController {
 	@RequestMapping(value = "/gestionEtudiants/edit", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public String ajoutEtudiantBdd(@ModelAttribute("attribut_etudiants") Etudiants pEtudiant,
 			@RequestParam(name = "file", required = false) MultipartFile file, HttpServletResponse httpServletResponse,
-			ModelMap model) {
+			ModelMap model, BindingResult result) {
 
-		if (pEtudiant.getIdPersonne() == null) {
+		etudiantValidator.validate(pEtudiant, result);
+
+		if (result.hasErrors()) {
+			
+			// renvoie du formulaire
+			return "personnels/formulaireEditionEtudiants";
+
+		} else if (pEtudiant.getIdPersonne() == null) {
 
 			String nomPhoto = file.getOriginalFilename();
 
@@ -195,22 +217,22 @@ public class GestionEtudiantsController {
 				e.printStackTrace();
 				return "File uploaded failed:" + nomPhoto;
 			}
-			
-			//recup mdp 
+
+			// recup mdp
 			String MDP = pEtudiant.getMotDePasse();
-			
-			// objet pour le  cryptage
+
+			// objet pour le cryptage
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			
+
 			// cryptage du mot de passe avec la méthode encode()
 			String hashedMotDePasse = passwordEncoder.encode(MDP);
-			
+
 			// passage du mdp crypté
 			pEtudiant.setMotDePasse(hashedMotDePasse);
-			
-			// passage du role 
+
+			// passage du role
 			pEtudiant.setRole("ROLE_ETUDIANT");
-			
+
 			// Ajout etudiant via couche service
 
 			etudiantsService.ajouterEtudiant(pEtudiant);
@@ -236,7 +258,7 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-			return "Personnels/listeEtudiants";
+			return "personnels/listeEtudiants";
 
 		}
 
@@ -306,22 +328,22 @@ public class GestionEtudiantsController {
 					e.printStackTrace();
 					return "File uploaded failed:" + nomPhoto;
 				}
-				
-				//recup mdp 
+
+				// recup mdp
 				String MDP = pEtudiant.getMotDePasse();
-				
-				// objet pour le  cryptage
+
+				// objet pour le cryptage
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-				
+
 				// cryptage du mot de passe avec la méthode encode()
 				String hashedMotDePasse = passwordEncoder.encode(MDP);
-				
+
 				// passage du mdp crypté
 				pEtudiant.setMotDePasse(hashedMotDePasse);
-				
-				// passage du role 
+
+				// passage du role
 				pEtudiant.setRole("ROLE_ETUDIANT");
-				
+
 				// Modif etudiant via couche service
 
 				etudiantsService.modifierEtudiant(pEtudiant);
@@ -334,7 +356,7 @@ public class GestionEtudiantsController {
 
 		} // END IF idPersonne !=0
 
-		return "Personnels/listeEtudiants";
+		return "personnels/listeEtudiants";
 
 	}// END METHODE
 
@@ -357,10 +379,9 @@ public class GestionEtudiantsController {
 
 		model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-		return "Personnels/listeEtudiants";
+		return "personnels/listeEtudiants";
 
 	}// END SUPPRIMER
 
 
-	
 }// END CLASS

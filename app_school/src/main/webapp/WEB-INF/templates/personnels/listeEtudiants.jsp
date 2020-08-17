@@ -62,9 +62,21 @@
 				type="button" class="btn btn-dark" style="align-content: right"> <span class="fa fa-user-circle" ></span> Déconnexion</a>
 		</s:authorize>
 
-		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
-			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
-				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+		<s:authorize
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
+				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
 		</s:authorize>
 		</div>
 
@@ -88,15 +100,17 @@
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-    <ul class="sidebar-links">
-      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
-      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
-    </ul>
+		<ul class="sidebar-links">
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
+			</s:authorize>
+		</ul>
     
 	</nav>
 	

@@ -54,6 +54,13 @@ public class AideServiceImpl implements IAideService{
 	public List<Aide> findAll() {
 		return aideDAO.getAll();
 	}//end findAll
+
+
+
+	@Override
+	public Aide findAideByURL(String pURL) {
+		return aideDAO.getByUrl(pURL);
+	}
 	
 	
 

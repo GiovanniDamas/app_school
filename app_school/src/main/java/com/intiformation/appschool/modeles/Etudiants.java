@@ -45,8 +45,8 @@ public class Etudiants extends Personnes implements Serializable {
 	Date dateDeNaissance;
 
 	//association entre Etudiants et Promotion : ManyToOne
-	@ManyToOne
-	@JoinColumn(name = "promotion_id", referencedColumnName="id_promotion")
+	@ManyToOne(optional=true)
+	@JoinColumn(name = "promotion_id", referencedColumnName="id_promotion", nullable=true)
 	private Promotion promotion;
 	
 	//association entre Etudiants et EtudiantCours : OneToMany

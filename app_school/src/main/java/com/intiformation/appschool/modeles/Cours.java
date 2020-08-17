@@ -55,7 +55,7 @@ public class Cours implements Serializable{
 	/**
 	 * relation entre cours et matières
 	 */
-	@ManyToOne(cascade=CascadeType.ALL)		//enlever cascadeType
+	@ManyToOne
 	@JoinColumn(name="matiere_id", referencedColumnName="id_matiere")
 	private Matiere matieres;
 	

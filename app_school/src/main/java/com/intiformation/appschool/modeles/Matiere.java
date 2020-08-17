@@ -39,7 +39,7 @@ public class Matiere implements Serializable {
 	 * OneToMany
 	 * 	 
 	 */
-	@OneToMany(mappedBy="matieres")
+	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="matieres")
 	private List<Cours> coursMatiere;
 	
 	/**

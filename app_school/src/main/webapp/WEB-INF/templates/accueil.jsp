@@ -112,23 +112,14 @@
 		</div>
 
 		<ul class="sidebar-links">
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>
-			</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
 			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
-			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
-			</li>
-			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
-			</li>
-			<li><a
-				href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>
-			</li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
 			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
-				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>
-				</li>
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
 			</s:authorize>
 		</ul>
 
@@ -165,7 +156,7 @@
 			
 			<br/><br/>
 			<p > 
-				Nous avons le plaisir d'accompagner vos enfant du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
+				Nous avons le plaisir d'accompagner vos enfants du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
 				ces conditions si spéciales.<br/>
 				Nous mettrons tout en oeuvre pour continuer notre enseignement tel que vous le connaissez tout en respectant les consignes pour le bien de la cause sanitaire.<br/>
 				Nous vous remercions pour votre soutient et votre compréhension. <br/>

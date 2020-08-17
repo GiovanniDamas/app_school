@@ -48,8 +48,19 @@
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			     <span class="fa fa-user-circle" ></span> Mon compte
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			  </div>
+			</div>
+			<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -75,15 +86,17 @@
 			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
 		
-    <ul class="sidebar-links">
-      <li > <a  href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>   </li>   
-      <li > <a  href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>    </li>
-      <li > <a  href="#">Promotion</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/matiere/liste">Matière(s)</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/cours/liste">Cours</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>   </li>
-      <li > <a  href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>   </li>  
-    </ul>
+ 		<ul class="sidebar-links">
+			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
+			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
+			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
+			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
+			</s:authorize>
+		</ul>
     
 	</nav>
 		
@@ -106,71 +119,6 @@
 	 	</s:authorize>
 	 
 	 <br/>
-	 
-	 <%-- 
-	 
-	 <form id="rechercher" name="rechercher">
-	 
-	 <fieldset class="form-group col-12">
-		<div class="row">
-			<legend class="col-form-label col-sm-2 pt-0">Rechercher selon : </legend>
-		 	<div class="col-sm-10">
-
-				<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
-  					<label class="form-check-label" for="inlineRadio1">Matière</label>
-				</div>
-	
-				<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/>
-  					<label class="form-check-label" for="inlineRadio2">Promotion</label>
-				</div>
-	
-				<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"/>
-  					<label class="form-check-label" for="inlineRadio3">Date</label>
-				</div>
-	
-				<div class="form-check form-check-inline">
-  					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
-  					<label class="form-check-label" for="inlineRadio3">Afficher tous</label>
-				</div>
-			</div>
-		</div>
-  	</fieldset>
-  	
-  	 <button class="btn btn-outline-success my-2 my-sm-0 col-2" type="submit">Valider</button>
-  		 
-	</form>
-	
-	 <br/><br/><br/><br/>
-	 
-	 --%>
-	 
-	 <%-- ================== TEST COURS D'UN ENSEIGNANT ======================================== --%>
-	 <%-- 
-	 <s:authentication property="authorities" var="authorites"/>
-	 
-	 <c:if test="${authorites.authority} == 'ROLE_ENSEIGNANT' "></c:if>
-
-	 	 <br/><br/><br/><br/>
-	 
-	 <div class="content">
-	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-enseignant">
-	 	 <label for="recherche-enseignant">Rechercher cours d'un enseignant : </label>	 	
-	 	<select class="form-control ml-2" id="recherche-enseignant" name="id-enseignant">
-	 		<option value="0" label="Afficher tous les cours">
-	 		<c:forEach items="${attribut_enseignant}" var="ens">
-	 			 <option value="${ens.idPersonne}" label="${ens.nom}"/>
-	 		</c:forEach>
-       	</select>
-    	<button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
-  	</form>
-  	</div>
-	 
-	 	 <br/><br/><br/><br/>
-	 --%>	 
-	 <%-- ================================================================================================== --%>
 	 	 
 	 <div>
 	 <form class="form-inline" action="${pageContext.request.contextPath}/cours/recherche-matiere">

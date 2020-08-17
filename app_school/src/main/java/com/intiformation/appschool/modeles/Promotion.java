@@ -39,11 +39,11 @@ public class Promotion implements Serializable {
 	
 	// _________________ ASSOCIATIONS ___________________ //
 	/**
-	 * Relation entre Promotion et Etudiant: plusieurs promotion pour plusieurs etudiants
-	 * ManyToMany	 	 
+	 * Relation entre Promotion et Etudiant: une promotion pour plusieurs etudiants
+	 * OneToMany	 	 
 	 */
 	
-	@OneToMany(mappedBy="promotion", cascade=CascadeType.MERGE)
+	@OneToMany(mappedBy="promotion")
 	private List<Etudiants> etudiantsPromotions;
 	
 
@@ -64,7 +64,7 @@ public class Promotion implements Serializable {
 	 * Mais je ne suis pas trop d'accord : en parler avec les autre
 	 * 	 	 
 	 */
-	@OneToMany(mappedBy="promotions")
+	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="promotions")
 	private List<Cours> coursPromotion; 
 	
 	// _________________ CONSTRUCTEUR ___________________ //

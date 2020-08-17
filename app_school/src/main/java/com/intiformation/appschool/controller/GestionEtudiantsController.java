@@ -48,7 +48,8 @@ import com.intiformation.appschool.service.IPromotionService;
 @Controller
 public class GestionEtudiantsController {
 
-	private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images";
+	//private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images";
+	private static final String UPLOAD_DIRECTORY = "/Users/marle/Desktop/Marlene/Formation_INTI_JAVA/Projet_groupe_app_school/app_school/app_school/src/main/webapp/resources/Images";
 
 	private Etudiants etudiants;
 	// Déclaration de la couche service Etudiants
@@ -239,19 +240,24 @@ public class GestionEtudiantsController {
 			
 			// ajout de l'étudiants dans la liste de présence des cours de sa promo
 			Long idPromo = pEtudiant.getPromotion().getIdPromotion();
-			List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idPromo);
+			
+			if(idPromo != null) {
 				
-			if (listeCoursPromo != null ) {
+				List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idPromo);
 				
-				for (Cours cours : listeCoursPromo) {
+				if (listeCoursPromo != null ) {
 					
-					EtudiantCours etudiantCoursToAdd = new EtudiantCours();
-					etudiantCoursToAdd.setCours(cours);
-					etudiantCoursToAdd.setEtudiant(pEtudiant);
-					etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+					for (Cours cours : listeCoursPromo) {
+						
+						EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+						etudiantCoursToAdd.setCours(cours);
+						etudiantCoursToAdd.setEtudiant(pEtudiant);
+						etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+						
+					}//end for each
 					
-				}//end for each
-				
+				}//end if
+
 			}//end if
 
 			// Recup nouvelle liste d'etudiant après ajout
@@ -278,29 +284,35 @@ public class GestionEtudiantsController {
 					
 					// suppression des cours de l'ancienne promo de l'étudiant dans etudiantcours
 					Long idAnciennePromo = etudiantUpdate.getPromotion().getIdPromotion();
-					List<Cours> anciensCours = coursService.findCoursParPromotion(idAnciennePromo);
-										
-					if (anciensCours != null ) {
-						for (Cours cours : anciensCours) {
-							etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(pEtudiant.getIdPersonne(), cours.getIdCours()));
-						}//end for each
+					
+					if(idAnciennePromo != null) {
+						List<Cours> anciensCours = coursService.findCoursParPromotion(idAnciennePromo);
 						
+						if (anciensCours != null ) {
+							for (Cours cours : anciensCours) {
+								etudiantCoursService.supprimerEtudiantCours(etudiantCoursService.findIdEtudiantCours(pEtudiant.getIdPersonne(), cours.getIdCours()));
+							}//end for each
+							
+						}//end if
 					}//end if
 								
 					// ajout des cours de la nouvelle promo de l'étudiant dans etudiantcours
 					Long idNouvellePromo = pEtudiant.getPromotion().getIdPromotion();
-					List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idNouvellePromo); 
 					
-					if (listeCoursPromo != null ) {
+					if(idNouvellePromo != null) {
+						List<Cours> listeCoursPromo = coursService.findCoursParPromotion(idNouvellePromo); 
 						
-						for (Cours cours : listeCoursPromo) {
+						if (listeCoursPromo != null ) {
 							
-							EtudiantCours etudiantCoursToAdd = new EtudiantCours();
-							etudiantCoursToAdd.setCours(cours);
-							etudiantCoursToAdd.setEtudiant(pEtudiant);
-							etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
+							for (Cours cours : listeCoursPromo) {
+								
+								EtudiantCours etudiantCoursToAdd = new EtudiantCours();
+								etudiantCoursToAdd.setCours(cours);
+								etudiantCoursToAdd.setEtudiant(pEtudiant);
+								etudiantCoursService.ajouterEtudiantCours(etudiantCoursToAdd);
 
-						}//end for each
+							}//end for each
+						}//end if
 					}//end if
 					
 				}// end else			

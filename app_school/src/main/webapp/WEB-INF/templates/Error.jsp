@@ -1,15 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Envoie RÃ©ussi!</title>
+<title>Echec de l'envoi</title>
 
 <!-- Lien vers feuille de style de Bootstrap -->
 <link
@@ -77,12 +76,12 @@
 							class="fa fa-address-card "></span> Mes informations</a> <a
 							class="dropdown-item"
 							href="${pageContext.request.contextPath}/logout"><span
-							class="fas fa-sign-out-alt"></span> DÃ©connexion</a>
+							class="fas fa-sign-out-alt"></span> Déconnexion</a>
 					</div>
 				</div>
 				<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> DÃ©connexion</a>--%>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
 			</s:authorize>
 
 			<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -119,7 +118,7 @@
 			<li><a
 				href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
 			<li><a
-				href="${pageContext.request.contextPath}/matiere/liste-matiere">MatiÃ¨re(s)</a>
+				href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>
 			</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>
 			</li>
@@ -138,9 +137,9 @@
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
 		<br/><br/>
-		<center>
-			<h2>Erreur: votre e-mail n'a pas Ã©tÃ© envoyÃ©!</h2>
-		</center>
+		<div style="padding: 30px;">
+			<h2>Erreur: votre e-mail n'a pas été envoyé!</h2>
+		</div>
 	</div>
 	<!-- end wrapper -->
 
@@ -152,7 +151,7 @@
 
 	<footer class="footer">
 
-	<p>2020 Copyright Â© Groupe2 : Gio, Hannah, MarlÃ¨ne &#x26; Gab</p>
+	<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
 
 	</footer>
 

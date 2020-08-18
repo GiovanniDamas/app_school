@@ -16,12 +16,12 @@
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />
 		<sec:intercept-url pattern="/accueil*"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')" />
-		<sec:intercept-url
+  		<sec:intercept-url
 			pattern="/GestionEtudiantsController/**"
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />		
 		<sec:intercept-url
 			pattern="/GestionEnseignantsController/**"
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
+			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />		
 		<sec:intercept-url pattern="/etudiants-cours/**"
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ENSEIGNANT', 'ROLE_ADMIN')" />
 		<sec:intercept-url pattern="/cours/**"

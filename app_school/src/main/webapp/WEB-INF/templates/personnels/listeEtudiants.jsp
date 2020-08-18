@@ -169,6 +169,7 @@
 					<th scope="col">Promotion</th>				
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
+					<th scope="col">Envoyer un mail</th>										
 				</tr>
 			</thead>
 			<tbody>
@@ -195,6 +196,12 @@
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
 						</td>
+						
+						<!-- colonne pour l'envoi d'un mail -->
+						<td>
+						<a href="${pageContext.request.contextPath}/sendEmail/form?destinator=${etu.email}">Envoyer un mail</a>
+						</td>
+						
 					</tr>
 				</c:forEach>
 			</tbody>

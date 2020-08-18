@@ -45,35 +45,61 @@
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
+		
+		
+			<c:if test="${attribut_help != null}">
+				<!-- Bouton d'aide lançant un modal -->
+				<button type="button" class="btn" 
+						data-toggle="modal" data-target="#exampleModal" 
+						style="padding:0;max-width:16x;max-height:16px" >
+				  	<span class="fa fa-info-circle fa-1x" style="align:center;color:white"></span>
+				</button>
+						
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" style="color:black">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">${attribut_help.urlPage}</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body" style="text-align:center;">
+				        <p>${attribut_help.contenu}</p>
+				      </div>					
+					</div><!-- end modal content -->
+				  </div>
+				</div> 
+		  	</c:if>
+		  <br/>		
+		
 		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
-			<h5>
+			<h5 style="margin-top:5px;margin-bottom:20px">
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-		
-		<br/>
-		
-		<s:authorize
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 			
-			<div class="dropdown">
-			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			     <span class="fa fa-user-circle" ></span> Mon compte
-			  </button>
-			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
-			  </div>
-			</div>
-			<%-- 
-				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
-		</s:authorize>
-
-		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
-			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
-				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
-		</s:authorize>
+	
+			
+			<s:authorize
+				access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				
+				<div class="dropdown">
+				  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				     <span class="fa fa-user-circle" ></span> Mon compte
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+				    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+				  </div>
+				</div>
+			</s:authorize>
+	
+			<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+				<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+					type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+			</s:authorize>
 		</div>
 
 	</div>

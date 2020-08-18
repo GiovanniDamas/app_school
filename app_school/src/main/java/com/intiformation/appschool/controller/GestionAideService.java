@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,10 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.intiformation.appschool.dao.AideDAOImpl;
 import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Personnes;
+import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.IAideService;
+import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IEtudiantsService;
 
 /**
  * 
@@ -31,6 +37,9 @@ import com.intiformation.appschool.service.IAideService;
  */
 @Controller
 public class GestionAideService {
+	
+
+	
 	
 	// _________________ PROPRIETES ___________________ //
 
@@ -49,8 +58,71 @@ public class GestionAideService {
 			this.aideService = aideService;
 		}//end setter
 
-	
+		
+		
+		//___ déclaration du service de enseignant avec setter pour injection spring
+		@Autowired //injection par modificateur
+		private IEnseignantsService enseignantsService;
+
+		public void setEnseignantsService(IEnseignantsService enseignantsService) {
+			this.enseignantsService = enseignantsService;
+		}
+		
+		//____ déclaration du service de administrateur avec setter pour injection spring
+		@Autowired //injection par modificateur
+		private IAdministrateursService administrateursService;
+
+		public void setAdministrateursService(IAdministrateursService administrateursService) {
+			this.administrateursService = administrateursService;
+		}
+
+		//___ déclaration du service de etudiant avec setter pour injection spring
+		@Autowired //injection par modificateur
+		private IEtudiantsService etudiantsService;
+
+		public void setEtudiantsService(IEtudiantsService etudiantsService) {
+			this.etudiantsService = etudiantsService;
+		}		
+		
+		
 		/*__________________________ méthodes __________________________*/
+		
+		/**
+		 * méthode qui permet de récupérer les informations de la personne connectée
+		 * @param authentication
+		 * @return
+		 */
+		public Personnes getInfosPersonneConnecte(Authentication authentication) {
+			
+			Personnes personneConnecte = null;
+			
+			if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
+				
+				//1. cas d'un admin : récupération de l'administrateur connecté
+				personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+		
+			} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
+				
+				//1. cas d'un enseignant : récupération de l'enseignant connecté
+				personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
+				
+			} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
+				
+				//1. cas d'un etudiant : récupération de l'eutidnat connecté
+				personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
+			}
+			
+			return personneConnecte;
+			
+		}//end getInfosPersonneConnecte
+		
+		
+
+		
+		/*=================================================================*/
+		/*======================= méthodes gestionnaires ==================*/
+		/*=================================================================*/
+		
 		/**
 		 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
 		 * appellée lors d'une requête HTTP de type GET
@@ -59,7 +131,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/listeAide", method = RequestMethod.GET)
-		public String recupererListeEtudiantBdd(ModelMap model) {
+		public String recupererListeAideBdd(ModelMap model) {
 
 			// 1. recup de la liste des employés dans la bdd via le service
 
@@ -69,11 +141,14 @@ public class GestionAideService {
 
 			model.addAttribute("attribut_liste_aide", listeAideBDD);
 
-			// 3. renvoie du nom logique de la vue
-
+		
+			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
+			model.addAttribute("attribut_help", aideDeLaPage);
+			
+			// 3. renvoie du nom logique de la vue			
 			return "liste-aide";
 
-		}// END RECUP LISTE
+		}//end recupererListeAideBdd
 
 		/**
 		 * Méthode pour l'initialisation de l'ajout d'étudiant Cette méthode permet

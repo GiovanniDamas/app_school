@@ -59,7 +59,7 @@ public class AideServiceImpl implements IAideService{
 
 	@Override
 	public Aide findAideByURL(String pURL) {
-		return aideDAO.getByUrl(pURL);
+		return aideDAO.getByURL(pURL);
 	}
 	
 	

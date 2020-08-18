@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantsService;
 
@@ -46,6 +48,19 @@ public class WelcomeController {
 		this.etudiantsService = etudiantsService;
 	}
 
+
+	
+	
+	// Declaration de la couche Service:
+	@Autowired // injectiion du bean dans la propriété 'matiereService'
+	private IAideService aideService;
+
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}//end setter
+	
+	
+	
 	
 	
 	/**
@@ -103,8 +118,16 @@ public class WelcomeController {
 		
 		//2. renvoi de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
+
+		// 3. recup de l'aide associée a la page
+		Aide aideDeLaPage = aideService.findAideByURL("index");
+		System.out.println("\n\t> aide de la page : " + aideDeLaPage);
+		System.out.println("\n\t> aide not null : " + (aideDeLaPage != null ) );
+
+		model.addAttribute("attribut_help", aideDeLaPage);
 		
-		//2. renvoi du nom logique de la vue
+		
+		//4. renvoi du nom logique de la vue
 		return "accueil";
 		
 	}//end welcomeMethod

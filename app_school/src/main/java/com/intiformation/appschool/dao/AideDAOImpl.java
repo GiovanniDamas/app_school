@@ -145,22 +145,29 @@ public class AideDAOImpl  implements IAideDAO{
 		
 	}//end getAll()
 
-
+	@Transactional
 	@Override
-	public Aide getByUrl(String pUrl) {
+	public Aide getByURL(String pUrl) {
 		
 		// 1. Récupération de la session
 		Session session = sessionFactory.getCurrentSession();
 
 		// 2. Définition de la requete HQL à envoyer
-		Query query = session.createQuery("SELECT a FROM Aide a WHERE a.url_page LIKE '%:pUrl %' ");		
+		Query query = session.createQuery("SELECT a FROM Aide a WHERE a.urlPage LIKE concat('%', :pUrl,'%') ");		
 
 		query.setParameter("pUrl", pUrl);
 		
 		try {
 			// 3. Envoi, exécution, résultat
-			Aide aideURL = (Aide) query.getSingleResult();
-			return aideURL; 
+			
+			List<Aide> aidesURL =  query.list();
+			if(aidesURL.size()==0) {
+				return null;
+			}else {
+				return aidesURL.get(0); 
+			}
+			
+			
 			
 		} catch (HibernateException e) {
 			// En cas d'erreur:
@@ -168,7 +175,7 @@ public class AideDAOImpl  implements IAideDAO{
 			throw e;
 		}//end catch
 				
-	}
+	}//end getByUrl
 
 	
 }//end class

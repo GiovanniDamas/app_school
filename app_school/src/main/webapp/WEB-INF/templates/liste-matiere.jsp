@@ -27,10 +27,7 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
-	<style>
 	
-
-	</style>
 
 </head>
 
@@ -183,7 +180,7 @@
 	
 	</div>
 </div>
-
+</div>
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->

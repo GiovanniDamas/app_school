@@ -143,6 +143,7 @@
 					<th scope="col">Identifiant</th>
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
+					<th scope="col">Envoyer un mail</th>					
 				</tr>
 			</thead>
 			<tbody>
@@ -162,6 +163,12 @@
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
 						</td>
+						
+						<!-- colonne pour l'envoi d'un mail -->
+						<td>
+						<a href="${pageContext.request.contextPath}/gestionMail/send?destinator=${ens.email}">Envoyer un mail</a>
+						</td>
+				
 					</tr>
 				</c:forEach>
 			</tbody>

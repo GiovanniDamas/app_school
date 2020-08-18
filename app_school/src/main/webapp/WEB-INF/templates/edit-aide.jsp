@@ -11,29 +11,34 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Ajout/modif Aide</title>
 
-
-
-	<!-- Lien vers la font de la sidebar -->
-    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
-	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 	
-	
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">	
+	<!--  
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">	-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>		
 	
-	
+
+	<!-- Lien vers feuille de style de Bootstrap -->
+	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
+		rel="stylesheet">
+
 	<!-- Lien vers feuille de style perso de index -->
 	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
 	    rel="stylesheet">
+	    
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    
+   	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 	    
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>	
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
 	
 </head>
 
@@ -42,6 +47,7 @@
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
+
 
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
@@ -80,24 +86,19 @@
 
 	</div>
 
+	<div class="wrapper">
 
-<div class="wrapper">
+		<!-- ===================================================== -->
+		<!-- =============== SIDEBAR ============================= -->
+		<!-- ===================================================== -->
+		<nav class="sidebar" id="sidebar"> 
 
-	<!-- ===================================================== -->
-	<!-- =============== SIDEBAR ============================= -->
-	<!-- ===================================================== -->
-    <nav class="sidebar" id="sidebar">
-    
-      <!--
-        <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
-        -->
 
-	
-	
 		<div class="sidebar-header">
-			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a href="${pageContext.request.contextPath}/index.jsp"><span
+				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
-		
+
 		<ul class="sidebar-links">
 			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
 			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
@@ -109,19 +110,18 @@
 				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
 			</s:authorize>
 		</ul>
-    
-	</nav>
-	
-	
-	<!-- ===================================================== -->
-	<!-- =============== CONTENT ============================= -->
-	<!-- ===================================================== -->
-  <div id="content" style="width:100%">
-     <button type="button" id="sidebarCollapse" class="navbar-btn">
-         <span></span>
-         <span></span>
-         <span></span>
-     </button>
+
+		</nav>
+
+
+		<!-- ===================================================== -->
+		<!-- =============== CONTENT ============================= -->
+		<!-- ===================================================== -->
+		<div id="content" style="width:100%">
+							
+			<button type="button" id="sidebarCollapse" class="navbar-btn">
+				<span></span> <span></span> <span></span>
+			</button>
 
 
 
@@ -134,45 +134,40 @@
 	<div align="center">
 
 		<form:form modelAttribute="attribut_aide" method="POST"
-			action="${pageContext.request.contextPath}/aide/edit">
+			action="${pageContext.request.contextPath}/aide/edit"
+			enctype="multipart/form-data">  
 
 			<%-- affichage de tous les messages d'erreurs --%>
-			<form:errors path="*" cssClass="erreur_validation" element="div" />
+			<%-- <form:errors path="*" cssClass="erreur_validation" element="div" />--%>
 
-			<tr>
-				<c:if test="${idAide} != 0"> </c:if>
-				<td><form:hidden path="idAide"/></td>
-				
-				
-			</tr>
 
-			<table width="60%">
-				<tr>
-					<td><form:label path="urlPage">Page :</form:label></td>
-					<td><form:input path="urlPage" /></td>
-					<td><form:errors path="urlPage"
-							cssStyle="color:red; font-style:italic;" /></td>
-				</tr>
+			<fieldset>
+			
+				<!--  récup de l'id du cours à modifier dans un champ caché -->
+				<c:if test="${idAide} != 0"> 
+					<form:hidden path="idAide"/>			
+				</c:if>
 				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="urlPage">Nom</form:label>
+					<form:input type="text" class="form-control" path="urlPage" />
+					<form:errors path="urlPage" cssStyle="color:red; font-style:italic;" />
+				</div>
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="contenu">Prénom</form:label>
+					<form:textarea type="text" class="helpcontent" rows="20" path="contenu" />
+					<form:errors path="contenu" cssStyle="color:red; font-style:italic;" />
+				</div>
 				
-				<tr>
-					<td><form:label path="contenu">Contenu :</form:label></td>
-					<td><form:textarea  path="contenu" class="helpcontent" rows="10" /></td>
-					<td><form:errors path="contenu"
-							cssStyle="color:red; font-style:italic;" /></td>
-				</tr>
-				
+				<div class="form-group">
+					<input type="submit" value="Ajouter" />
 
-				<tr>
-					
-					<td><input type="submit" value="Ajouter" /></td>
-				</tr>
-				<tr>
-					<c:if test="${idAide} != 0"></c:if>
-					<td><input type="submit" value="Modifier"/></td>
-				</tr>
-			</table>
-
+					<c:if test="${idPersonne} != 0"></c:if>
+					<input type="submit" value="Modifier" />
+				</div>
+			
+			</fieldset>
+			
 		</form:form>
 	</div>
 
@@ -184,7 +179,7 @@
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->
-  <div class="clear" style="clear:both"></div>
+
      
 	<footer class="footer" >
   

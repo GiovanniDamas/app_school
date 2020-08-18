@@ -28,6 +28,7 @@
     
      <!--  lien font-awesome -->
     <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
 
 </head>
 
@@ -177,10 +178,6 @@
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->	
-
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
-	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     

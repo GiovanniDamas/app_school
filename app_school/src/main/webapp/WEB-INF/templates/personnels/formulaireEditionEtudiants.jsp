@@ -32,13 +32,15 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
 
-
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
 </head>
 <body>
 
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
+
 
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
@@ -77,24 +79,21 @@
 
 	</div>
 
+	<div class="wrapper">
 
-<div class="wrapper">
-
-	<!-- ===================================================== -->
-	<!-- =============== SIDEBAR ============================= -->
-	<!-- ===================================================== -->
-    <nav class="sidebar" id="sidebar">
-    
-      <!--
+		<!-- ===================================================== -->
+		<!-- =============== SIDEBAR ============================= -->
+		<!-- ===================================================== -->
+		<nav class="sidebar" id="sidebar"> <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-	
-	
+
 		<div class="sidebar-header">
-			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a href="${pageContext.request.contextPath}/index.jsp"><span
+				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
-		
+
 		<ul class="sidebar-links">
 			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
 			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
@@ -106,10 +105,10 @@
 				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
 			</s:authorize>
 		</ul>
-    
-	</nav>
-	
-	
+
+		</nav>
+
+
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
 	<!-- ===================================================== -->
@@ -233,9 +232,6 @@
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->	
 
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
-	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     

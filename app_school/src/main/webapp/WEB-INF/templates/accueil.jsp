@@ -168,7 +168,8 @@
 			<p >
 				Les inscriptions à l'école pour l'année scolaire 2020/2021 sont désormais ouvertes !!
 			</p>
-
+			
+			
 		</div>
 		</div>
 	</div>

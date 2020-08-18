@@ -30,7 +30,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
 	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
-
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
 
 </head>
 <body>
@@ -39,17 +40,44 @@
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
 
+
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
+
+			<c:if test="${attribut_help != null}">
+				<!-- Bouton d'aide lançant un modal -->
+				<button type="button" class="btn" 
+						data-toggle="modal" data-target="#exampleModal" 
+						style="padding:0;max-width:16x;max-height:16px" >
+				  	<span class="fa fa-info-circle fa-1x" style="align:center;color:white"></span>
+				</button>
+						
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" style="color:black">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">${attribut_help.urlPage}</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body" style="text-align:center;">
+				        <p>${attribut_help.contenu}</p>
+				      </div>					
+					</div><!-- end modal content -->
+				  </div>
+				</div> 
+		  	</c:if>
+		  <br/>		
+		
 		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
-			<h5>
+			<h5 style="margin-top:5px;margin-bottom:20px">
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-		
-		<br/>
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -76,24 +104,21 @@
 
 	</div>
 
+	<div class="wrapper">
 
-<div class="wrapper">
-
-	<!-- ===================================================== -->
-	<!-- =============== SIDEBAR ============================= -->
-	<!-- ===================================================== -->
-    <nav class="sidebar" id="sidebar">
-    
-      <!--
+		<!-- ===================================================== -->
+		<!-- =============== SIDEBAR ============================= -->
+		<!-- ===================================================== -->
+		<nav class="sidebar" id="sidebar"> <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-	
-	
+
 		<div class="sidebar-header">
-			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a href="${pageContext.request.contextPath}/index.jsp"><span
+				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
-		
+
 		<ul class="sidebar-links">
 			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
 			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
@@ -105,8 +130,10 @@
 				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
 			</s:authorize>
 		</ul>
-    
-	</nav>
+
+		</nav>
+
+
 	
 	
 	<!-- ===================================================== -->
@@ -203,10 +230,7 @@
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->	
-
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
 	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>	
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     

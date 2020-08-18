@@ -1,6 +1,7 @@
 package com.intiformation.appschool.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,8 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Matiere;
+import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
+import com.intiformation.appschool.service.IEnseignantsService;
+import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
 
@@ -45,6 +50,31 @@ public class GestionMatiereController {
 	@Autowired
 	private IEnseignantMatierePromotionLinkService linkService;
 
+	// ___ déclaration du service de enseignant avec setter pour injection spring
+	@Autowired // injection par modificateur
+	private IEnseignantsService enseignantsService;
+
+	public void setEnseignantsService(IEnseignantsService enseignantsService) {
+		this.enseignantsService = enseignantsService;
+	}
+
+	// ____ déclaration du service de administrateur avec setter pour injection
+	// spring
+	@Autowired // injection par modificateur
+	private IAdministrateursService administrateursService;
+
+	public void setAdministrateursService(IAdministrateursService administrateursService) {
+		this.administrateursService = administrateursService;
+	}
+
+	// ___ déclaration du service de etudiant avec setter pour injection spring
+	@Autowired // injection par modificateur
+	private IEtudiantsService etudiantsService;
+
+	public void setEtudiantsService(IEtudiantsService etudiantsService) {
+		this.etudiantsService = etudiantsService;
+	}
+
 	/**
 	 * Setter de la couche service pour injection pour modificateur de Spring
 	 * 
@@ -67,6 +97,36 @@ public class GestionMatiereController {
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
 
 	/**
+	 * méthode qui permet de récupérer les informations de la personne connectée
+	 * 
+	 * @param authentication
+	 * @return
+	 */
+	public Personnes getInfosPersonneConnecte(Authentication authentication) {
+
+		Personnes personneConnecte = null;
+
+		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
+
+			// 1. cas d'un admin : récupération de l'administrateur connecté
+			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
+
+			// 1. cas d'un enseignant : récupération de l'enseignant connecté
+			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
+
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
+
+			// 1. cas d'un etudiant : récupération de l'eutidnat connecté
+			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
+		}
+
+		return personneConnecte;
+
+	}// end getInfosPersonneConnecte
+
+	/**
 	 * <pre>
 	 * Méthode pour récupérer la liste des matières dans la database via le service
 	 * Invoquée via une requete HTTP en GET ayant l'URL:
@@ -78,15 +138,19 @@ public class GestionMatiereController {
 	 * @return
 	 */
 	@RequestMapping(value = "/matiere/liste-matiere", method = RequestMethod.GET)
-	public String recupererListeMatieresDB(ModelMap model) {
+	public String recupererListeMatieresDB(ModelMap model, Authentication authentication) {
+		
+		// 1. Récupération de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 
-		// 1. Récupération de la liste des matières dans la databse via le service
+		// 2. Récupération de la liste des matières dans la databse via le service
 		List<Matiere> listeMatieresDB = matiereService.trouverAllMatieres();
 
-		// 2. Renvoi de la liste vers la vue via l'objet model
+		// 3. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_matieres", listeMatieresDB);
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
-		// 3. Renvoi de la liste vers la vue
+		// 4. Renvoi de la liste vers la vue
 
 		return "liste-matiere";
 	}// end recupererListeMatieresDB
@@ -278,8 +342,9 @@ public class GestionMatiereController {
 	public ModelAndView AfficherFormulaireAjoutPromotions(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
 
 		EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
-		
-		// List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService.trouverlinkViaIdMatiere(pIdMatiere);
+
+		// List<EnseignantMatierePromotionLink> listeLinksParMatière =
+		// linkService.trouverlinkViaIdMatiere(pIdMatiere);
 
 		Matiere matiereToUpdate = matiereService.trouverMatiereId(pIdMatiere);
 
@@ -306,39 +371,37 @@ public class GestionMatiereController {
 	public String lierMatierePromotionDB(@RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect,
 			ModelMap model, @ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink) throws Exception {
 
-	
 		System.out.println("pIdMatiere" + pLink.getMatiere().getIdMatiere());
 
-		
 		Matiere matiereAAjouter = matiereService.trouverMatiereId(pLink.getMatiere().getIdMatiere());
 
-		//List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService
-		//		.trouverlinkViaIdMatiere(pLink.getMatiere().getIdMatiere());
-		//List<EnseignantMatierePromotionLink> listeTousLesLinks = linkService.trouverAllLinks();
+		// List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService
+		// .trouverlinkViaIdMatiere(pLink.getMatiere().getIdMatiere());
+		// List<EnseignantMatierePromotionLink> listeTousLesLinks =
+		// linkService.trouverAllLinks();
 
 		for (Long IdPromotion : listeIDPromSelect) {
-			
+
 			System.out.println("PidPromotion=" + IdPromotion);
-			
+
 			List<EnseignantMatierePromotionLink> listLinkPromo = linkService.trouverlinkViaIdPromo(IdPromotion);
 
 			for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
-				
-					
+
 				System.out.println("Id de la promotion à changer = " + linkParPromo.getPromotion().getIdPromotion());
-				
+
 				if (linkParPromo.getMatiere() != null) {
-					
+
 					linkParPromo.setMatiere(matiereAAjouter);
 					linkService.ajouterLink(linkParPromo);
 
-				}else {
-					
+				} else {
+
 					linkParPromo.setMatiere(matiereAAjouter);
 					linkService.modifierLink(linkParPromo);
-									
+
 				}
-	
+
 			} // end for
 		}
 

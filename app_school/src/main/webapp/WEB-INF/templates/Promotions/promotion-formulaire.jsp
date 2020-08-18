@@ -2,8 +2,10 @@
 	pageEncoding="UTF-8"%>
 
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,6 +31,8 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
 	rel="stylesheet">
+ 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
 
 
 </head>
@@ -41,13 +45,39 @@
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
+
+			<c:if test="${attribut_help != null}">
+				<!-- Bouton d'aide lançant un modal -->
+				<button type="button" class="btn" 
+						data-toggle="modal" data-target="#exampleModal" 
+						style="padding:0;max-width:16x;max-height:16px" >
+				  	<span class="fa fa-info-circle fa-1x" style="align:center;color:white"></span>
+				</button>
+						
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" style="color:black">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">${attribut_help.urlPage}</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body" style="text-align:center;">
+				        <p>${attribut_help.contenu}</p>
+				      </div>					
+					</div><!-- end modal content -->
+				  </div>
+				</div> 
+		  	</c:if>
+		  <br/>		
+		
 		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
-			<h5>
+			<h5 style="margin-top:5px;margin-bottom:20px">
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-		
-		<br/>
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -205,11 +235,7 @@
 		<!-- ==================  SCRIPTS  ======================================== -->
 		<!-- ===================================================================== -->
 
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
 
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
 
 		<script type="text/javascript"
 			src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Enseignants;
 import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IAdministrateursService;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantsService;
@@ -48,6 +51,8 @@ public class GestionPromotionController {
 	private IEnseignantMatierePromotionLinkService enseignantMatierePromotionLinkService;
 	@Autowired
 	private IEtudiantsService etudiantService;
+	@Autowired
+	private IAdministrateursService administrateursService;
 
 	/**
 	 * 
@@ -58,7 +63,6 @@ public class GestionPromotionController {
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
-
 
 	public void setEnseignantService(IEnseignantsService enseignantService) {
 		this.enseignantService = enseignantService;
@@ -73,7 +77,9 @@ public class GestionPromotionController {
 		this.etudiantService = etudiantService;
 	}
 
-
+	public void setAdministrateursService(IAdministrateursService administrateursService) {
+		this.administrateursService = administrateursService;
+	}
 
 	// Declaration du validator:
 	@Autowired
@@ -84,6 +90,35 @@ public class GestionPromotionController {
 	}
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
+
+	/**
+	 * méthode qui permet de récupérer les informations de la personne connectée
+	 * 
+	 * @param authentication
+	 * @return
+	 */
+	public Personnes getInfosPersonneConnecte(Authentication authentication) {
+
+		Personnes personneConnecte = null;
+
+		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
+
+			// 1. cas d'un admin : récupération de l'administrateur connecté
+			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
+
+			// 1. cas d'un enseignant : récupération de l'enseignant connecté
+			personneConnecte = enseignantService.findEnseignantByIdentifiant(authentication.getName());
+
+		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
+
+			// 1. cas d'un etudiant : récupération de l'eutidnat connecté
+			personneConnecte = etudiantService.findEtudiantByIdentifiant(authentication.getName());
+		}
+
+		return personneConnecte;
+	}
 
 	/**
 	 * <pre>
@@ -97,15 +132,20 @@ public class GestionPromotionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/promotion/liste-promotion", method = RequestMethod.GET)
-	public String recupererListePromotionsDB(ModelMap model) {
+	public String recupererListePromotionsDB(ModelMap model, Authentication authentication) {
 
-		// 1. Récupération de la liste des matières dans la databse via le service
+		// 1. Récupération de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		// 2. Récupération de la liste des matières dans la databse via le service
 		List<Promotion> listePromotionsDB = promotionService.trouverAllPromotions();
 
-		// 2. Renvoi de la liste vers la vue via l'objet model
+		// 3. Renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
-		// 3. Renvoi de la liste vers la vue
+
+		// 4. Renvoi de la liste vers la vue
 
 		return "Promotions/liste-promotion";
 	}// end recupererListePromotionsDB
@@ -119,17 +159,17 @@ public class GestionPromotionController {
 	@RequestMapping(value = "/promotion/delete", method = RequestMethod.GET)
 	public String supprimerPromotionDB(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
 
-		//modification des etudiants liés à la promo supprimée
+		// modification des etudiants liés à la promo supprimée
 		List<Etudiants> listeEtudiantsBdd = etudiantService.findAllEtudiant();
 		for (Etudiants etudiants : listeEtudiantsBdd) {
-			if(etudiants.getPromotion() != null) {
-				if(etudiants.getPromotion().getIdPromotion() == pIdPromotion) {
+			if (etudiants.getPromotion() != null) {
+				if (etudiants.getPromotion().getIdPromotion() == pIdPromotion) {
 					etudiants.setPromotion(null);
 					etudiantService.modifierEtudiant(etudiants);
-				}//end if
-			}//end if		
-		}//end for each
-		
+				} // end if
+			} // end if
+		} // end for each
+
 		// 1. Suppresion de la matière de la database via le service
 		promotionService.supprimerPromotion(pIdPromotion);
 
@@ -152,20 +192,23 @@ public class GestionPromotionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/promotion/edit-promotion-form", method = RequestMethod.GET)
-	public ModelAndView afficherFormulaire(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
+	public ModelAndView afficherFormulaire(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model, Authentication authentication) {
 
 		if (pIdPromotion == 0) {
 
 			// Promotion promotion = new Promotion();
-
 			EnseignantMatierePromotionLink enseignantMatierePromotionLink = new EnseignantMatierePromotionLink();
 
+			//3. récup de la personne connectée
+			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			
 			// ajout liste des enseignants
 			List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant();
 			model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+
 
 			Map<String, Object> dataCommand = new HashMap<>();
-			// dataCommand.put("promotionCommand", promotion);
 			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
 			String viewName = "Promotions/promotion-formulaire";
@@ -177,12 +220,17 @@ public class GestionPromotionController {
 			EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
 			// enseignantMatierePromotionLinkService.trouverLinkId(pIdLink);
 
+			//3. récup de la personne connectée
+			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			
 			Promotion promotionToUpdate = promotionService.trouverPromotionId(pIdPromotion);
 
 			linkToUpdate.setPromotion(promotionToUpdate);
 
 			List<Enseignants> listeEnseignantsDB = enseignantService.findAllEnseignant();
 			model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+
 
 			return new ModelAndView("Promotions/promotion-formulaire", "linkCommand", linkToUpdate);
 
@@ -206,8 +254,7 @@ public class GestionPromotionController {
 	public String ajouterPromotionDB(@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink,
 			@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnsSelect, ModelMap model,
 			BindingResult result) {
-		
-			
+
 		linkValidator.validate(pLink.getPromotion(), result);
 		if (result.hasErrors()) {
 
@@ -224,8 +271,7 @@ public class GestionPromotionController {
 
 				// Ajout de la promotion via la couche service
 				promotionService.ajouterPromotion(pLink.getPromotion());
-				
-	
+
 				// Ajout des liens entre Promotion et chaque Enseignant selectionné
 				for (Long IdEnseignant : listeIDEnsSelect) {
 
@@ -233,7 +279,7 @@ public class GestionPromotionController {
 
 					// set de l'enseignant
 					pLink.getEnseignant().setIdPersonne(IdEnseignant);
-				
+
 					enseignantMatierePromotionLinkService.ajouterLink(pLink);
 				}
 
@@ -270,7 +316,7 @@ public class GestionPromotionController {
 					pLink.getEnseignant().setIdPersonne(IdEnseignant);
 
 					enseignantMatierePromotionLinkService.ajouterLink(pLink);
-				}//end for
+				} // end for
 
 				// Recup nouvelle liste d'etudiant après ajout
 
@@ -287,10 +333,16 @@ public class GestionPromotionController {
 	}// end ajouterMatiereDB
 
 	@RequestMapping(value = "promotion/enseignant-promotion", method = RequestMethod.GET)
-	public String afficherPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model) {
+	public String afficherPromotionEnseignants(@RequestParam("idPromotion") Long pIdPromotion, ModelMap model, Authentication authentication) {
 
+		//3. récup de la personne connectée
+				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				
+		
 		model.addAttribute("attribut_liste_enseignants_promotion",
 				enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+
 
 		return "Promotions/enseignants-promotion";
 

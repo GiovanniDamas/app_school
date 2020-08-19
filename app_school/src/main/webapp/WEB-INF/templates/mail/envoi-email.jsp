@@ -140,22 +140,24 @@
 		<!-- ===================================================== -->
 		<div id="content">
 			<div class="form-group">
+				<br/><br/>		
 				<center>
 					<h2>Envoi d'un e-mail</h2>
-					<form:form modelAttribute="attribut_destinataire" method="POST"
-						action="${pageContext.request.contextPath}/sendEmail.do">
+					<br/>
+					<form method="POST"
+						action="${pageContext.request.contextPath}/sendEmail/do">
 
 						<table border="0" width="80%">
 							<tr>
-								<!--  
+								<td>
+									<input type="hidden" value="${attribut_personne_connecte.email}" name="sender" >
+								</td>
+							</tr>
+							<tr>
+								  
 								<td>Destinataire:</td>
 								<td><input class="form-control" type="text"
-									name="recipient" size="65" /></td>-->
-								<td><form:label class="col-form-label"
-										path="email"> Destinataire :</form:label></td>
-								<td><form:input class="form-control" path="email" /></td>
-								<td><form:errors path="email"
-										cssStyle="color:red; font-style:italic;" /></td>
+									name="recipient" size="65" value="${attribut_destinataire}"/></td>
 							</tr>
 							<tr>
 								<td>Objet:</td>
@@ -169,11 +171,11 @@
 										name="message"></textarea></td>
 							</tr>
 							<tr>
-								<td colspan="2" align="center"><input type="submit"
+								<td colspan="2" align="right"><input type="submit"
 									value="Envoyer" /></td>
 							</tr>
 						</table>
-					</form:form>
+					</form>
 				</center>
 
 			</div>

@@ -138,9 +138,9 @@
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
 		<br/><br/>
-		<center>
+		<div style="padding: 30px;">
 			<h2>Votre e-mail a bien été envoyé !</h2>
-		</center>
+		</div>
 	</div>
 	<!-- end wrapper -->
 

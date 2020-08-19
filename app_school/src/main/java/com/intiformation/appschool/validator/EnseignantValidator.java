@@ -46,10 +46,6 @@ public class EnseignantValidator implements Validator {
 		
 		// validation du champ mdp
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "motDePasse", "required.mdp", "Ce Champ est obligatoire");
-		
-		//validation du champ photo
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "photo", "required.photo", "Ce Champ est obligatoire" );
-		
 
 	}//END METHODE
 

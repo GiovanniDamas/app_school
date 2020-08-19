@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Enseignants;
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantsService;
@@ -53,7 +55,8 @@ public class GestionPromotionController {
 	private IEtudiantsService etudiantService;
 	@Autowired
 	private IAdministrateursService administrateursService;
-
+	@Autowired
+	private IAideService aideService;
 	/**
 	 * 
 	 * Setter de la couche service pour injection pour modificateur de Spring
@@ -80,6 +83,11 @@ public class GestionPromotionController {
 	public void setAdministrateursService(IAdministrateursService administrateursService) {
 		this.administrateursService = administrateursService;
 	}
+	
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}
+
 
 	// Declaration du validator:
 	@Autowired
@@ -144,9 +152,11 @@ public class GestionPromotionController {
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
-
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("liste-promotion");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		// 4. Renvoi de la liste vers la vue
-
 		return "Promotions/liste-promotion";
 	}// end recupererListePromotionsDB
 
@@ -211,8 +221,11 @@ public class GestionPromotionController {
 			Map<String, Object> dataCommand = new HashMap<>();
 			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("promotion-formulaire");
+			model.addAttribute("attribut_help", aideDeLaPage);
+			
 			String viewName = "Promotions/promotion-formulaire";
-
 			return new ModelAndView(viewName, dataCommand);
 
 		} else {
@@ -231,6 +244,9 @@ public class GestionPromotionController {
 			model.addAttribute("attribut_liste_enseignants", listeEnseignantsDB);
 			model.addAttribute("attribut_personne_connecte", personneConnecte);
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("promotion-formulaire");
+			model.addAttribute("attribut_help", aideDeLaPage);
 
 			return new ModelAndView("Promotions/promotion-formulaire", "linkCommand", linkToUpdate);
 
@@ -288,7 +304,7 @@ public class GestionPromotionController {
 				// model.addAttribute("attribut_link", pLink);
 
 				// Renvoi vers la page liste-promotion.jsp
-				return "Promotions/liste-promotion";
+				return "redirect:/promotion/liste-promotion";
 
 			} // end if
 
@@ -322,13 +338,13 @@ public class GestionPromotionController {
 
 				model.addAttribute("attribut_liste_promotions", promotionService.trouverAllPromotions());
 
-				return "Promotions/liste-promotion";
+				return "redirect:/promotion/liste-promotion";
 
 			} // END IF
 
 		} // end else
 
-		return "Promotions/liste-promotion";
+		return "redirect:/promotion/liste-promotion";
 
 	}// end ajouterMatiereDB
 
@@ -343,7 +359,10 @@ public class GestionPromotionController {
 				enseignantMatierePromotionLinkService.trouverlinkViaIdPromo(pIdPromotion));
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
-
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("enseignants-promotion");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		return "Promotions/enseignants-promotion";
 
 	}// end afficherPromotionEnseignants

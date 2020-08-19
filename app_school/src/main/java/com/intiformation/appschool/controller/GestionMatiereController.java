@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.Matiere;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantsService;
@@ -53,6 +55,13 @@ public class GestionMatiereController {
 	// ___ déclaration du service de enseignant avec setter pour injection spring
 	@Autowired // injection par modificateur
 	private IEnseignantsService enseignantsService;
+	
+	@Autowired
+	private IAideService aideService;
+
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}
 
 	public void setEnseignantsService(IEnseignantsService enseignantsService) {
 		this.enseignantsService = enseignantsService;
@@ -150,8 +159,12 @@ public class GestionMatiereController {
 		model.addAttribute("attribut_liste_matieres", listeMatieresDB);
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
+		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("liste-matiere");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		// 4. Renvoi de la liste vers la vue
-
 		return "liste-matiere";
 	}// end recupererListeMatieresDB
 
@@ -204,8 +217,11 @@ public class GestionMatiereController {
 			Map<String, Object> dataCommand = new HashMap<>();
 			dataCommand.put("linkCommand", enseignantMatierePromotionLink);
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("matiere-formulaire");
+			model.addAttribute("attribut_help", aideDeLaPage);
+			
 			String viewName = "matiere-formulaire";
-
 			return new ModelAndView(viewName, dataCommand);
 
 			// model.addAttribute("attribut_matiere", matiere);
@@ -222,6 +238,10 @@ public class GestionMatiereController {
 			List<Promotion> listePromotionsDB = promoService.trouverAllPromotions();
 			model.addAttribute("attribut_liste_promotions", listePromotionsDB);
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("matiere-formulaire");
+			model.addAttribute("attribut_help", aideDeLaPage);
+			
 			return new ModelAndView("matiere-formulaire", "linkCommand", linkToUpdate);
 
 		} // end else
@@ -276,7 +296,7 @@ public class GestionMatiereController {
 			// Recup nouvelle liste d'etudiant après ajout
 			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-			return "liste-matiere";
+			return "redirect:/matiere/liste-matiere";
 
 		} // end if
 
@@ -292,11 +312,11 @@ public class GestionMatiereController {
 
 			model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-			return "liste-matiere";
+			return "redirect:/matiere/liste-matiere";
 
 		} // END IF
 
-		return "liste-matiere";
+		return "redirect:/matiere/liste-matiere";
 
 		// Application du validateur de l'objet pEmploye
 		// employeValidator.validate(pEmploye, resultatValidation);
@@ -354,6 +374,10 @@ public class GestionMatiereController {
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
 		model.addAttribute("idMatiere", pIdMatiere);
 
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("lier-matiere-enseignant");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		return new ModelAndView("lier-matiere-enseignant", "linkCommand", linkToUpdate);
 
 	}// end AfficherFormulaireModification
@@ -462,7 +486,7 @@ public class GestionMatiereController {
 		 */
 		model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
-		return "liste-matiere";
+		return "redirect:/matiere/liste-matiere";
 
 	}// end modifierEmployeDB()
 

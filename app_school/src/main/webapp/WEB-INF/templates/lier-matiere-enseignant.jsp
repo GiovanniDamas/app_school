@@ -90,7 +90,7 @@
 						<span class="fa fa-user-circle"></span> Mon compte
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#"><span
+						<a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span
 							class="fa fa-address-card "></span> Mes informations</a> <a
 							class="dropdown-item"
 							href="${pageContext.request.contextPath}/logout"><span

@@ -3,6 +3,7 @@ package com.intiformation.appschool.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,6 +59,14 @@ public class GestionEnseignantsController {
 	public void setEnseignantValidator(EnseignantValidator enseignantValidator) {
 		this.enseignantValidator = enseignantValidator;
 	}
+	
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
+	
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}
 
 	/**
 	 * Méthode permettant de récupérer la liste des enseignants via le service,
@@ -68,13 +77,14 @@ public class GestionEnseignantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEnseignants/listeEnseignants", method = RequestMethod.GET)
-	public String recupererListeEnseignantsBDD(ModelMap model) {
+	public String recupererListeEnseignantsBDD(ModelMap model, Authentication authentication) {
 
 		// 1. recup de la liste des enseignants dans la bdd via le service
 
 		List<Enseignants> listeEnseignantsBDD = enseignantsService.findAllEnseignant();
 
 		// 2. renvoi de la liste vers la vue via l'objet model
+		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 		model.addAttribute("attribut_liste_enseignants", listeEnseignantsBDD);
 
 		// aide de la page
@@ -96,7 +106,7 @@ public class GestionEnseignantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEnseignants/form-edit", method = RequestMethod.GET)
-	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEnseignant, ModelMap model) {
+	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEnseignant, ModelMap model, Authentication authentication) {
 
 		System.out.println("methode form :" + pIdEnseignant);
 		if (pIdEnseignant == 0) {
@@ -106,7 +116,7 @@ public class GestionEnseignantsController {
 			Enseignants enseignant = new Enseignants();
 
 			// Renvoi de l'objet vers la vue
-
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 			model.addAttribute("attribut_enseignants", enseignant);
 			model.addAttribute("idPersonne", pIdEnseignant);
 
@@ -117,7 +127,7 @@ public class GestionEnseignantsController {
 			Enseignants enseignantToUpdate = enseignantsService.findEnseignantById(pIdEnseignant);
 
 			// Renvoi de l'objet vers la vue
-
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 			model.addAttribute("attribut_enseignants", enseignantToUpdate);
 			model.addAttribute("idPersonne", pIdEnseignant);
 
@@ -142,12 +152,14 @@ public class GestionEnseignantsController {
 	 */
 	@RequestMapping(value = "/gestionEnseignants/edit", method = RequestMethod.POST)
 	public String ajoutEnseignantBdd(@ModelAttribute("attribut_enseignants") Enseignants pEnseignant, ModelMap model,
-			BindingResult result) {
+			BindingResult result, Authentication authentication) {
 
 		// appel du validator
 		enseignantValidator.validate(pEnseignant, result);
 
 		if (result.hasErrors()) {
+
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			// renvoie du formulaire
 
@@ -178,6 +190,10 @@ public class GestionEnseignantsController {
 
 			enseignantsService.ajouterEnseignant(pEnseignant);
 
+			// Recup nouvelle liste d'enseignant après ajout
+
+			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			return "redirect:/gestionEnseignants/listeEnseignants";
 
@@ -189,6 +205,8 @@ public class GestionEnseignantsController {
 			Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEnseignants");
 			model.addAttribute("attribut_help", aideDeLaPage);			
 			
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
 			// renvoie du formulaire
 			return "personnels/formulaireEditionEnseignants";
 
@@ -216,6 +234,7 @@ public class GestionEnseignantsController {
 			// Recup nouvelle liste d'enseignants après ajout
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			return "redirect:/gestionEnseignants/listeEnseignants";
 
@@ -234,7 +253,7 @@ public class GestionEnseignantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEnseignants/delete", method = RequestMethod.GET)
-	public String supprimerEnseignantBDD(@RequestParam("idPersonne") Long pIdEnseignant, ModelMap model) {
+	public String supprimerEnseignantBDD(@RequestParam("idPersonne") Long pIdEnseignant, ModelMap model, Authentication authentication) {
 
 		// Récup de l'enseignant à supprimer
 
@@ -243,6 +262,7 @@ public class GestionEnseignantsController {
 		// Récup nouvelle liste et envoie vers vue
 
 		model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
+		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		return "redirect:/gestionEnseignants/listeEnseignants";
 

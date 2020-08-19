@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class PasswordEncoderGenerator {
 
-	private static final String MOT_DE_PASSE = "111";
+	private static final String MOT_DE_PASSE = "admin";
 	
 	/**
 	 * main

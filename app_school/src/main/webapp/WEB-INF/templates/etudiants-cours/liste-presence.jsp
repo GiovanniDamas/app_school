@@ -177,7 +177,7 @@
 
 	<table class="table table-hover" style="width:90%;margin-left:5%";">
 	 	
-	 	<thead style="text-align: center;">
+	 	<thead class="thead-light" style="text-align: center;">
     		<tr>
     			<th scope="row">Motif</th>
       			<th scope="row">Etudiant</th>
@@ -228,14 +228,13 @@
 	 	 	
 	 <table class="table table-hover" style="width:90%;margin-left:5%";text-align: center">
 	 	
-	 	<thead style="text-align: center;">
+	 	<thead class="thead-light" style="text-align: center;">
     		<tr>
       			<th scope="row">Absence</th>
     			<th scope="row">Motif</th>
       			<th scope="row">Etudiant</th>
       			<th scope="row">Cours</th>
       			<th scope="row">Modifier</th>
-      	<%-- 	<th scope="row">Supprimer</th>  --%>
     		</tr>
   	  </thead>
   	  

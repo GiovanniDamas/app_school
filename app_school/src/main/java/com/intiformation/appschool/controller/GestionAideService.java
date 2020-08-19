@@ -56,69 +56,16 @@ public class GestionAideService {
 		
 		public void setAideService(IAideService aideService) {
 			this.aideService = aideService;
-		}//end setter
-
+		}//end setter	
+				
+		//déclaration WelcomeController pour recup infos personne connectée
+		@Autowired
+		private WelcomeController welcomeController;
 		
-		
-		//___ déclaration du service de enseignant avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IEnseignantsService enseignantsService;
-
-		public void setEnseignantsService(IEnseignantsService enseignantsService) {
-			this.enseignantsService = enseignantsService;
+		public void setWelcomeController(WelcomeController welcomeController) {
+			this.welcomeController = welcomeController;
 		}
-		
-		//____ déclaration du service de administrateur avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IAdministrateursService administrateursService;
-
-		public void setAdministrateursService(IAdministrateursService administrateursService) {
-			this.administrateursService = administrateursService;
-		}
-
-		//___ déclaration du service de etudiant avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IEtudiantsService etudiantsService;
-
-		public void setEtudiantsService(IEtudiantsService etudiantsService) {
-			this.etudiantsService = etudiantsService;
-		}		
-		
-		
-		/*__________________________ méthodes __________________________*/
-		
-		/**
-		 * méthode qui permet de récupérer les informations de la personne connectée
-		 * @param authentication
-		 * @return
-		 */
-		public Personnes getInfosPersonneConnecte(Authentication authentication) {
-			
-			Personnes personneConnecte = null;
-			
-			if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-				
-				//1. cas d'un admin : récupération de l'administrateur connecté
-				personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
-		
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-				
-				//1. cas d'un enseignant : récupération de l'enseignant connecté
-				personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-				
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-				
-				//1. cas d'un etudiant : récupération de l'eutidnat connecté
-				personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-			}
-			
-			return personneConnecte;
-			
-		}//end getInfosPersonneConnecte
-		
-		
-
-		
+	
 		/*=================================================================*/
 		/*======================= méthodes gestionnaires ==================*/
 		/*=================================================================*/
@@ -131,7 +78,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/listeAide", method = RequestMethod.GET)
-		public String recupererListeAideBdd(ModelMap model) {
+		public String recupererListeAideBdd(ModelMap model, Authentication authentication) {
 
 			// 1. recup de la liste des employés dans la bdd via le service
 
@@ -144,7 +91,8 @@ public class GestionAideService {
 		
 			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
 			model.addAttribute("attribut_help", aideDeLaPage);
-			
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
 			// 3. renvoie du nom logique de la vue			
 			return "liste-aide";
 
@@ -159,7 +107,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/editAide", method = RequestMethod.GET)
-		public String afficherFormulaireEdition(@RequestParam("idAide") Long pIdAide, ModelMap model) {
+		public String afficherFormulaireEdition(@RequestParam("idAide") Long pIdAide, ModelMap model, Authentication authentication) {
 
 			if (pIdAide == 0) {
 
@@ -171,6 +119,7 @@ public class GestionAideService {
 
 				model.addAttribute("attribut_aide", aide);
 				model.addAttribute("idAide", pIdAide);
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} else if (pIdAide != 0) {
 
@@ -182,6 +131,7 @@ public class GestionAideService {
 
 				model.addAttribute("attribut_aide", aideToUpdate);
 				model.addAttribute("idAide", pIdAide);
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} //end else
 
@@ -199,7 +149,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/edit", method = RequestMethod.POST)
-		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model) {
+		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model, Authentication authentication) {
 			
 			if (pAide.getIdAide() == null) {
 
@@ -210,7 +160,8 @@ public class GestionAideService {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
-				
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
 				return "liste-aide";
 
 			}
@@ -223,6 +174,7 @@ public class GestionAideService {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 				return "liste-aide";
 			
@@ -241,7 +193,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/delete", method = RequestMethod.GET)
-		public String supprimerAideBDD(@RequestParam("idAide") Long pIdAide, ModelMap model) {
+		public String supprimerAideBDD(@RequestParam("idAide") Long pIdAide, ModelMap model, Authentication authentication) {
 
 			// Récup de l'aide à supprimer
 
@@ -250,6 +202,7 @@ public class GestionAideService {
 			// Récup nouvelle liste et envoie vers vue
 
 			model.addAttribute("attribut_liste_aide", aideService.findAll());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			return "liste-aide";
 

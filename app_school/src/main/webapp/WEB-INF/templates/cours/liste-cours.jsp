@@ -192,7 +192,7 @@
 	 
  	<table class="table table-hover" style="width:90%; margin-left:5%";">
 	 	
- 	  <thead style="text-align: center;">
+ 	  <thead class="thead-light" style="text-align: center;">
     		<tr>
       			<th scope="col">Libellé</th>
     			<th scope="col">Date</th>

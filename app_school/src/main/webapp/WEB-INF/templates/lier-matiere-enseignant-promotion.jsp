@@ -1,16 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Matière - formulaire d'ajout/édition</title>
+<title>Liaison matière à enseignants</title>
 
 <!-- Lien vers feuille de style de Bootstrap -->
 <link
@@ -30,12 +29,16 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
 	rel="stylesheet">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap"
+	rel="stylesheet">
+<!-- 'Fredericka the Great' -->
+
+
 </head>
 <body>
+
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
@@ -115,7 +118,6 @@
 
 	</div>
 
-
 	<div class="wrapper">
 
 		<!-- ===================================================== -->
@@ -157,71 +159,122 @@
 
 		</nav>
 
+
 		<!-- ===================================================== -->
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
-		<div id="content" style="width: 100%">
 
+
+
+
+
+		<div id="content" style="width: 100%">
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
-
-			<!-- =========================================================== -->
-			<!-- ======== Content ========================================== -->
-			<!-- =========================================================== -->
-			<div class="form-group">
-				<h2 style="margin-left: 20px">
-					<u>Formulaire d'ajout/édition d'une matière :</u>
-				</h2>
-
-
-				<form:form modelAttribute="linkCommand" method="POST"
-					action="${pageContext.request.contextPath}/matiere/add">
-
-					<%-- affichage de tous les messages d'erreurs --%>
-					<form:errors path="*" cssClass="erreur_validation" element="div" />
-
-					<table width="60%">
-
-
-						<tr>
-
-							<td><form:hidden path="matiere.idMatiere" /></td>
-
-						</tr>
-
-						<tr>
-							<td><form:label class="col-form-label"
-									path="matiere.libelle"> Libellé :</form:label></td>
-							<td><form:input class="form-control" path="matiere.libelle" /></td>
-							<td><form:errors path="matiere.libelle"
-									cssStyle="color:red; font-style:italic;" /></td>
-						</tr>
+ 
+			<%
+				List<Long> listIdPromotion = (List<Long>) request.getAttribute("attribut_liste_idPromotion");
+				request.setAttribute("liste_idPromotions", listIdPromotion);
+			%>
 
 
 
-						
-						<c:if test="${matiere.idMatiere eq '0'}">
-							<tr>
-								<td><input type="submit" value="Ajouter" /></td>
-							</tr>
-						</c:if>
-						<c:if test="${matiere.idMatiere ne '0'}">
-							<tr>
-								<td><input type="submit" value="Modifier" /></td>
-							</tr>
-						</c:if>
+			<form:form modelAttribute="linkCommand" method="POST"
+				action="${pageContext.request.contextPath}/matiere/lier2">
 
 
-					</table>
-				</form:form>
-			</div>
+				<%-- affichage de tous les messages d'erreurs --%>
+				<form:errors path="*" cssClass="erreur_validation" element="div" />
+
+				<table width="60%">
+					<tr>
+						<td><form:hidden path="matiere.idMatiere" /></td>
+						<td><form:hidden path="promotion.idPromotion" /></td>
+
+					</tr>
+
+					<tr>
+
+						<td><form:label class="col-form-label"
+								path="matiere.idMatiere"> Id de la Matiere: </form:label></td>
+						<td><form:input disabled="true" path="matiere.idMatiere" /></td>
+					</tr>
+
+					<tr>
+						<td><form:label class="col-form-label"
+								path="promotion.idPromotion"> Promotions: </form:label></td>
+
+						<td><form:select class="form-control" disabled="true"
+								 path="promotion.idPromotion">
+								<c:forEach items="${attribut_liste_promotions}" var="prom">
+									<form:option value="${prom.idPromotion}">
+										<c:out value="${prom.libelle}" />
+									</form:option>
+								</c:forEach>
+							</form:select></td>
+
+					</tr>
+
+					<tr>
+
+						<td><form:label class="col-form-label"
+								path="enseignant.idPersonne"> Enseignants: </form:label></td>
+
+						<td><form:select class="form-control" multiple="true"
+								path="enseignant.idPersonne">
+								<c:forEach items="${attribut_liste_enseignant}" var="link">
+									<form:option value="${link.enseignant.idPersonne}">
+										<c:out
+											value="${link.enseignant.nom} ${link.enseignant.prenom}" />
+									</form:option>
+								</c:forEach>
+							</form:select></td>
+
+					</tr>
+
+					<tr>
+						<td><input type="submit" value="Suivant" /></td>
+					</tr>
+
+
+				</table>
+			</form:form>
+
 		</div>
-
 	</div>
-	<!-- =========================================================== -->
-	<!-- ======== FOOTER  ========================================== -->
-	<!-- =========================================================== -->
-	<%@include file="../generic/footer.jsp"%>
+
+	<!-- ===================================================== -->
+	<!-- =============== FOOTER ============================== -->
+	<!-- ===================================================== -->
+	<div class="clear" style="clear: both"></div>
+
+	<footer class="footer">
+
+	<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
+
+	</footer>
+
+
+	<!-- ===================================================================== -->
+	<!-- ==================  SCRIPTS  ======================================== -->
+	<!-- ===================================================================== -->
+
+	<script type="text/javascript">
+		
+	</script>
+
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
+
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
+
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
+
+
+
+
 </body>
 </html>

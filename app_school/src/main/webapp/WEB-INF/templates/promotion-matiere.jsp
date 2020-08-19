@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
@@ -10,7 +7,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Matière - formulaire d'ajout/édition</title>
+<title>Liste des promotions pour la matiere</title>
+
 
 <!-- Lien vers feuille de style de Bootstrap -->
 <link
@@ -26,14 +24,24 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
+<script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"
+	data-auto-a11y="true"></script>
+
 <!-- Lien vers la font de la sidebar -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
 	rel="stylesheet">
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap"
+	rel="stylesheet">
+<!-- 'Fredericka the Great' -->
+
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
 	<!-- ===================================================== -->
@@ -157,71 +165,79 @@
 
 		</nav>
 
+
 		<!-- ===================================================== -->
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
 		<div id="content" style="width: 100%">
-
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
 
-			<!-- =========================================================== -->
-			<!-- ======== Content ========================================== -->
-			<!-- =========================================================== -->
-			<div class="form-group">
-				<h2 style="margin-left: 20px">
-					<u>Formulaire d'ajout/édition d'une matière :</u>
-				</h2>
+
+			<!--Put some content here	-->
+			<br />
+			<br />
+
+			<div style="padding: 30px;">
+				<h1 style="margin-left: 20px">
+					<u>Liste des Promotions:</u>
+				</h1>
+			</div>
+			<div class="container">
+				<table class="table table-hover" style="width: 100%;">
 
 
-				<form:form modelAttribute="linkCommand" method="POST"
-					action="${pageContext.request.contextPath}/matiere/add">
 
-					<%-- affichage de tous les messages d'erreurs --%>
-					<form:errors path="*" cssClass="erreur_validation" element="div" />
-
-					<table width="60%">
-
-
+					<thead>
 						<tr>
+							<th scope="col">Id Promotion</th>
+							<th scope="col">Libellé</th>
+							<th scope="col">Professeur</th>
+							<th scope="col">Supprimer</th>
 
-							<td><form:hidden path="matiere.idMatiere" /></td>
+
 
 						</tr>
+					</thead>
+					<tbody>
 
-						<tr>
-							<td><form:label class="col-form-label"
-									path="matiere.libelle"> Libellé :</form:label></td>
-							<td><form:input class="form-control" path="matiere.libelle" /></td>
-							<td><form:errors path="matiere.libelle"
-									cssStyle="color:red; font-style:italic;" /></td>
-						</tr>
-
-
-
-						
-						<c:if test="${matiere.idMatiere eq '0'}">
+						<c:forEach items="${attribut_liste_promotion_matiere }" var="link">
 							<tr>
-								<td><input type="submit" value="Ajouter" /></td>
+								<td>${link.promotion.idPromotion}</td>
+								<td>${link.promotion.libelle}</td>
+								<td>${link.enseignant.nom}${link.enseignant.prenom}</td>
+								<td><a
+									href="${pageContext.request.contextPath}/matiere/supprimer-lien?idLien=${link.id}">
+										Supprimer</a></td>
 							</tr>
-						</c:if>
-						<c:if test="${matiere.idMatiere ne '0'}">
-							<tr>
-								<td><input type="submit" value="Modifier" /></td>
-							</tr>
-						</c:if>
-
-
-					</table>
-				</form:form>
+						</c:forEach>
+					</tbody>
+				</table>
 			</div>
 		</div>
-
 	</div>
-	<!-- =========================================================== -->
-	<!-- ======== FOOTER  ========================================== -->
-	<!-- =========================================================== -->
-	<%@include file="../generic/footer.jsp"%>
+	<!-- ===================================================== -->
+	<!-- =============== FOOTER ============================== -->
+	<!-- ===================================================== -->
+	<div class="clear" style="clear: both"></div>
+
+	<footer class="footer">
+
+	<p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab</p>
+
+	</footer>
+
+
+	<!-- ===================================================================== -->
+	<!-- ==================  SCRIPTS  ======================================== -->
+	<!-- ===================================================================== -->
+
+
+
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
+
+
 </body>
 </html>

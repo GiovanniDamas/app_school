@@ -49,36 +49,41 @@
 
 			<c:if test="${attribut_help != null}">
 				<!-- Bouton d'aide lançant un modal -->
-				<button type="button" class="btn" 
-						data-toggle="modal" data-target="#exampleModal" 
-						style="padding:0;max-width:16x;max-height:16px" >
-				  	<span class="fa fa-info-circle fa-1x" style="align:center;color:white"></span>
+				<button type="button" class="btn" data-toggle="modal"
+					data-target="#exampleModal"
+					style="padding: 0; max-width: 16x; max-height: 16px">
+					<span class="fa fa-info-circle fa-1x"
+						style="align: center; color: white"></span>
 				</button>
-						
+
 				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" style="color:black">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">${attribut_help.urlPage}</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body" style="text-align:center;">
-				        <p>${attribut_help.contenu}</p>
-				      </div>					
-					</div><!-- end modal content -->
-				  </div>
-				</div> 
-		  	</c:if>
-		  <br/>		
-		
-		<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
-			<h5 style="margin-top:5px;margin-bottom:20px">
-			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
-			</h5>
-		</s:authorize>
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					role="dialog" style="color: black">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">${attribut_help.urlPage}</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body" style="text-align: center;">
+								<p>${attribut_help.contenu}</p>
+							</div>
+						</div>
+						<!-- end modal content -->
+					</div>
+				</div>
+			</c:if>
+			<br />
+
+			<s:authorize
+				access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT', 'ROLE_ETUDIANT')">
+				<h5 style="margin-top: 5px; margin-bottom: 20px">Bienvenue,
+					${attribut_personne_connecte.prenom}
+					${attribut_personne_connecte.nom}</h5>
+			</s:authorize>
 
 			<s:authorize
 				access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -163,16 +168,18 @@
 			</button>
 
 			<form:form modelAttribute="linkCommand" method="POST"
-				action="${pageContext.request.contextPath}/matiere/lier">
+				action="${pageContext.request.contextPath}/matiere/lier1">
 
 				<%-- affichage de tous les messages d'erreurs --%>
 				<form:errors path="*" cssClass="erreur_validation" element="div" />
 
 				<table width="60%">
-				<tr><td><form:hidden path="matiere.idMatiere" /></td></tr>
-				
 					<tr>
-						 
+						<td><form:hidden path="matiere.idMatiere" /></td>
+					</tr>
+
+					<tr>
+
 						<td><form:label class="col-form-label"
 								path="matiere.idMatiere"> Id de la Matiere: </form:label></td>
 						<td><form:input disabled="true" path="matiere.idMatiere" /></td>
@@ -181,7 +188,8 @@
 					<tr>
 						<td><form:label class="col-form-label"
 								path="promotion.idPromotion"> Promotions: </form:label></td>
-						<td><form:select class="form-control" multiple="true"
+
+						<td><form:select class="form-control" 
 								path="promotion.idPromotion">
 								<c:forEach items="${attribut_liste_promotions}" var="prom">
 									<form:option value="${prom.idPromotion}">
@@ -189,18 +197,30 @@
 									</form:option>
 								</c:forEach>
 							</form:select></td>
-						<td></td>
+						
 					</tr>
-					<c:if test="${matier.idMatiere == null}">
+
+					<tr>
+					<!--  
+						<td><form:label class="col-form-label"
+								path="enseignant.idPersonne"> Enseignants: </form:label></td>
+
+						<td><form:select class="form-control" multiple="true"
+								path="enseignant.idPersonne">
+								<c:forEach items="${attribut_liste_enseignant}" var="ens">
+									<form:option value="${ens.idPersonne}" >
+										<c:out value="${ens.nom} ${ens.prenom}" />
+									</form:option>
+								</c:forEach>
+							</form:select></td>
+						-->
+					</tr>
+
 						<tr>
-							<td><input type="submit" value="Ajouter" /></td>
+							<td><input type="submit" value="Suivant" /></td>
 						</tr>
-					</c:if>
-					<c:if test="${matiere.idMatiere != null}">
-						<tr>
-							<td><input type="submit" value="Modifier" /></td>
-						</tr>
-					</c:if>
+					
+					
 				</table>
 			</form:form>
 
@@ -222,6 +242,13 @@
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->
+	
+	<script type="text/javascript">
+
+		
+		
+
+	</script>
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
@@ -231,6 +258,8 @@
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
+		
+		
 
 
 </body>

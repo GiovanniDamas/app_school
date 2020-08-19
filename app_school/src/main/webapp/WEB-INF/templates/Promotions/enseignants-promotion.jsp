@@ -158,7 +158,7 @@
 		
 			<div style="padding: 30px;">
 				<h1 style="margin-left: 20px">
-					<u>Liste des Promotions:</u>
+					<u>Liste des Enseignants:</u>
 				</h1>
 			</div>
 			<div class="container">

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Enseignants;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.validator.EnseignantValidator;
 
@@ -27,6 +29,9 @@ public class GestionEnseignantsController {
 	@Autowired
 	private IEnseignantsService enseignantsService;
 
+	@Autowired // injectiion du bean dans la propriété 'matiereService'
+	private IAideService aideService;	
+	
 	/**
 	 * Déclaration du setter de enseignantsService pour l'injection par modificateur
 	 * </br>
@@ -36,7 +41,11 @@ public class GestionEnseignantsController {
 	public void setEnseignantsService(IEnseignantsService enseignantsService) {
 		this.enseignantsService = enseignantsService;
 	}
-
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}//end setter
+	
+	
 	// délcaration du validator de l'enseignant
 	@Autowired
 	private EnseignantValidator enseignantValidator;
@@ -66,11 +75,13 @@ public class GestionEnseignantsController {
 		List<Enseignants> listeEnseignantsBDD = enseignantsService.findAllEnseignant();
 
 		// 2. renvoi de la liste vers la vue via l'objet model
-
 		model.addAttribute("attribut_liste_enseignants", listeEnseignantsBDD);
 
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("listeEnseignants");
+		model.addAttribute("attribut_help", aideDeLaPage);		
+		
 		// 3. renvoie du nom logique de la vue
-
 		return "personnels/listeEnseignants";
 
 	}// END RECUP LISTE
@@ -112,6 +123,10 @@ public class GestionEnseignantsController {
 
 		} // END IF ELSE IF
 
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEnseignants");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		return "personnels/formulaireEditionEnseignants";
 
 	}// END METHODE
@@ -136,6 +151,10 @@ public class GestionEnseignantsController {
 
 			// renvoie du formulaire
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEnseignants");
+			model.addAttribute("attribut_help", aideDeLaPage);
+			
 			return "personnels/formulaireEditionEnseignants";
 
 		} else if (pEnseignant.getIdPersonne() == null) {
@@ -159,18 +178,18 @@ public class GestionEnseignantsController {
 
 			enseignantsService.ajouterEnseignant(pEnseignant);
 
-			// Recup nouvelle liste d'enseignant après ajout
 
-			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
-
-			return "personnels/listeEnseignants";
+			return "redirect:/gestionEnseignants/listeEnseignants";
 
 		} // END IF id == null
 
 		if (result.hasErrors()) {
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEnseignants");
+			model.addAttribute("attribut_help", aideDeLaPage);			
+			
 			// renvoie du formulaire
-
 			return "personnels/formulaireEditionEnseignants";
 
 		} else if (pEnseignant.getIdPersonne() != 0) {
@@ -198,11 +217,11 @@ public class GestionEnseignantsController {
 
 			model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-			return "personnels/listeEnseignants";
+			return "redirect:/gestionEnseignants/listeEnseignants";
 
 		} // END IF
 
-		return "personnels/listeEnseignants";
+		return "redirect:/gestionEnseignants/listeEnseignants";
 
 	}// END METHODE
 
@@ -225,7 +244,7 @@ public class GestionEnseignantsController {
 
 		model.addAttribute("attribut_liste_enseignants", enseignantsService.findAllEnseignant());
 
-		return "personnels/listeEnseignants";
+		return "redirect:/gestionEnseignants/listeEnseignants";
 
 	}// END SUPPRIMER
 

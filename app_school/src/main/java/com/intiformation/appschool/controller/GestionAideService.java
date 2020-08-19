@@ -46,8 +46,16 @@ public class GestionAideService {
 		// Declaration de la couche Service:
 		@Autowired // injectiion du bean dans la propriété 'matiereService'
 		private IAideService aideService;
-
-
+		
+		@Autowired //injection par modificateur
+		private IEnseignantsService enseignantsService;
+		
+		@Autowired //injection par modificateur
+		private IAdministrateursService administrateursService;
+		
+		@Autowired //injection par modificateur
+		private IEtudiantsService etudiantsService;		
+		
 		/**
 		 * Setter de la couche service pour injection pour modificateur de Spring
 		 * 
@@ -58,27 +66,13 @@ public class GestionAideService {
 			this.aideService = aideService;
 		}//end setter
 
-		
-		
-		//___ déclaration du service de enseignant avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IEnseignantsService enseignantsService;
-
 		public void setEnseignantsService(IEnseignantsService enseignantsService) {
 			this.enseignantsService = enseignantsService;
 		}
 		
-		//____ déclaration du service de administrateur avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IAdministrateursService administrateursService;
-
 		public void setAdministrateursService(IAdministrateursService administrateursService) {
 			this.administrateursService = administrateursService;
 		}
-
-		//___ déclaration du service de etudiant avec setter pour injection spring
-		@Autowired //injection par modificateur
-		private IEtudiantsService etudiantsService;
 
 		public void setEtudiantsService(IEtudiantsService etudiantsService) {
 			this.etudiantsService = etudiantsService;
@@ -141,7 +135,7 @@ public class GestionAideService {
 
 			model.addAttribute("attribut_liste_aide", listeAideBDD);
 
-		
+			// aide de la page
 			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
 			model.addAttribute("attribut_help", aideDeLaPage);
 			

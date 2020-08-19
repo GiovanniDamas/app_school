@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
@@ -74,7 +76,14 @@ public class GestionEtudiantCoursController {
 	public void setAdministrateursService(IAdministrateursService administrateursService) {
 		this.administrateursService = administrateursService;
 	}
+	
+	@Autowired
+	private IAideService aideService;
 		
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}
+
 	//___ déclaration du validateur
 	@Autowired //injection par modificateur
 	private EtudiantCoursValidator etudiantCoursValidator;
@@ -142,6 +151,10 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
 		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif-presence");
+		model.addAttribute("attribut_help", aideDeLaPage);		
+		
 		//3. renvoi du nom logique de la vue
 		return "etudiants-cours/formulaire-modif-presence";
 		
@@ -159,6 +172,7 @@ public class GestionEtudiantCoursController {
 		etudiantCoursValidator.validate(pEtudiantCours, result);
 		
 		if (result.hasErrors()) {
+			
 			
 			//2.a renvoi vers le formulaire
 			return "etudiants-cours/formulaire-modif-presence";
@@ -204,6 +218,10 @@ public class GestionEtudiantCoursController {
 			model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 			model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
 			
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("liste-presence");
+			model.addAttribute("attribut_help", aideDeLaPage);	
+			
 			//3. renvoi du nom logique de la vue
 			return "etudiants-cours/liste-presence";			
 		
@@ -233,6 +251,10 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_liste_presence", etudiantCoursService.findEtudiantCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
+		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("liste-presence");
+		model.addAttribute("attribut_help", aideDeLaPage);			
 		
 		//5. renvoi du nom logique de la vue
 		return "etudiants-cours/liste-presence";			
@@ -273,6 +295,10 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_liste_absence", etudiantCoursService.findAbsencesPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_cours", coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		model.addAttribute("attribut_etudiants", etudiantsService.findEtudiantsByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));			
+		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("liste-presence");
+		model.addAttribute("attribut_help", aideDeLaPage);			
 		
 		//5. renvoi du nom logique de la vue
 		return "etudiants-cours/liste-presence";

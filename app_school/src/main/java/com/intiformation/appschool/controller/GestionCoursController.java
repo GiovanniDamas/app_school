@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEnseignantsService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
@@ -43,6 +45,33 @@ public class GestionCoursController {
 	//___ déclaration du service coursService
 	@Autowired //injection par modificateur
 	private ICoursService coursService;
+	
+	//___ déclaration du service de matière avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IMatiereService matiereService;
+
+	//___ déclaration du service de promotion avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IPromotionService promotionService;
+	
+	//___ déclaration du service de enseignant avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEnseignantsService enseignantsService;
+
+	//____ déclaration du service de administrateur avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IAdministrateursService administrateursService;
+
+	//___ déclaration du service de etudiant avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEtudiantsService etudiantsService;
+
+	//___ déclaration du service de etudiantcours avec setter pour injection spring
+	@Autowired //injection par modificateur
+	private IEtudiantCoursService etudiantCoursService;
+
+	@Autowired
+	private IAideService aideService;
 
 	/** 
 	 * setter pour injection spring du service
@@ -51,54 +80,29 @@ public class GestionCoursController {
 	public void setCoursService(ICoursService coursService) {
 		this.coursService = coursService;
 	}
-	
-	//___ déclaration du service de matière avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IMatiereService matiereService;
-
 	public void setMatiereService(IMatiereService matiereService) {
 		this.matiereService = matiereService;
-	}
-
-	//___ déclaration du service de promotion avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IPromotionService promotionService;
-
+	}	
+	public void setEnseignantsService(IEnseignantsService enseignantsService) {
+		this.enseignantsService = enseignantsService;
+	}	
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
-	
-	//___ déclaration du service de enseignant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEnseignantsService enseignantsService;
-
-	public void setEnseignantsService(IEnseignantsService enseignantsService) {
-		this.enseignantsService = enseignantsService;
-	}
-
-	//____ déclaration du service de administrateur avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IAdministrateursService administrateursService;
-
 	public void setAdministrateursService(IAdministrateursService administrateursService) {
 		this.administrateursService = administrateursService;
 	}
-
-	//___ déclaration du service de etudiant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEtudiantsService etudiantsService;
-
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
-	}
-	
-	//___ déclaration du service de etudiantcours avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEtudiantCoursService etudiantCoursService;
-
+	}	
 	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
 		this.etudiantCoursService = etudiantCoursService;
+	}	
+	
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
 	}
+
 
 	//___ déclaration du validateur
 	@Autowired //injection par modificateur
@@ -111,7 +115,9 @@ public class GestionCoursController {
 	public void setCoursValidator(CoursValidator coursValidator) {
 		this.coursValidator = coursValidator;
 	}
+
 	
+	/*======================Methodes======================*/
 	/**
 	 * méthode qui permet de récupérer les informations de la personne connectée
 	 * @param authentication
@@ -181,7 +187,13 @@ public class GestionCoursController {
 		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
-		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaire-ajout");
+		model.addAttribute("attribut_help", aideDeLaPage);		
+		
+		
 		//5. renvoi du nom logique de la vue
 		return "cours/formulaire-ajout";
 		
@@ -207,6 +219,10 @@ public class GestionCoursController {
 				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 				model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
 
+				// aide de la page
+				Aide aideDeLaPage = aideService.findAideByURL("formulaire-ajout");
+				model.addAttribute("attribut_help", aideDeLaPage);
+				
 				//2.a renvoi vers le formulaire
 				return "cours/formulaire-ajout";
 			
@@ -274,6 +290,10 @@ public class GestionCoursController {
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		//5. renvoi du nom logique de la vue
 		return "cours/formulaire-modif";
 		
@@ -298,6 +318,10 @@ public class GestionCoursController {
 			//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+			
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif");
+			model.addAttribute("attribut_help", aideDeLaPage);
 			
 			//2.a renvoi vers le formulaire
 			return "cours/formulaire-modif";
@@ -402,6 +426,10 @@ public class GestionCoursController {
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 		
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("liste-cours");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
 		//5. renvoi du nom logique de la vue
 		return "cours/liste-cours";
 				
@@ -434,6 +462,10 @@ public class GestionCoursController {
 			model.addAttribute("attribut_personne_connecte", personneConnecte);
 			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+			
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("liste-cours");
+			model.addAttribute("attribut_help", aideDeLaPage);
 			
 			//5. renvoi du nom logique de la vue
 			return "cours/liste-cours";
@@ -469,6 +501,10 @@ public class GestionCoursController {
 			model.addAttribute("attribut_personne_connecte", personneConnecte);
 			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+			
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("liste-cours");
+			model.addAttribute("attribut_help", aideDeLaPage);
 			
 			//5. renvoi du nom logique de la vue
 			return "cours/liste-cours";
@@ -511,6 +547,10 @@ public class GestionCoursController {
 				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 				model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
 				
+				// aide de la page
+				Aide aideDeLaPage = aideService.findAideByURL("liste-cours");
+				model.addAttribute("attribut_help", aideDeLaPage);
+				
 				//3. renvoi du nom logique de la vue
 				return "cours/liste-cours";
 			
@@ -520,7 +560,7 @@ public class GestionCoursController {
 			e.printStackTrace();
 		}//end catch
 		
-		return "cours/liste-cours";
+		return "redirect:/cours/liste";
 	
 	}//end afficherListeCoursByDate
 	

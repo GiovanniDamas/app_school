@@ -31,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Cours;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Promotion;
+import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.ICoursService;
 import com.intiformation.appschool.service.IEtudiantCoursService;
 import com.intiformation.appschool.service.IEtudiantsService;
@@ -56,6 +58,18 @@ public class GestionEtudiantsController {
 	@Autowired
 	private IEtudiantsService etudiantsService;
 
+	@Autowired // injectiion du bean dans la propriété 'matiereService'
+	private IAideService aideService;	
+	
+	@Autowired
+	private IPromotionService promotionService;	
+	
+	@Autowired 
+	private IEtudiantCoursService etudiantCoursService;
+	
+	@Autowired 
+	private ICoursService coursService;
+	
 	/**
 	 * Déclaration du setter de etudiantsService pour l'injection par modificateur
 	 * </br>
@@ -66,42 +80,23 @@ public class GestionEtudiantsController {
 		this.etudiantsService = etudiantsService;
 	}
 	
-	//déclartion couche service promotion
-	@Autowired
-	private IPromotionService promotionService;
-
-	/**
-	 * setter de promotionservice pour injection par modificateur
-	 * @param promotionService
-	 */
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
 	}
-	
-	//déclaration couche service de etudiantcours 
-	@Autowired 
-	private IEtudiantCoursService etudiantCoursService;
 
-	/**
-	 * setter de etudiantCoursService pour injection par modificateur
-	 * @param etudiantCoursService
-	 */
 	public void setEtudiantCoursService(IEtudiantCoursService etudiantCoursService) {
 		this.etudiantCoursService = etudiantCoursService;
 	}
 	
-	// déclaration du service coursService
-	@Autowired 
-	private ICoursService coursService;
-
-	/** 
-	 * setter de coursService pour injection spring par modificateur
-	 * @param coursService
-	 */
 	public void setCoursService(ICoursService coursService) {
 		this.coursService = coursService;
 	}
 	
+
+	public void setAideService(IAideService aideService) {
+		this.aideService = aideService;
+	}
+
 
 	// déclaration du validateur
 	@Autowired
@@ -131,11 +126,13 @@ public class GestionEtudiantsController {
 		List<Etudiants> listeEtudiantsBDD = etudiantsService.findAllEtudiant();
 
 		// 2. renvoi de la liste vers la vue via l'objet model
-
 		model.addAttribute("attribut_liste_etudiants", listeEtudiantsBDD);
 
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("listeEtudiants");
+		model.addAttribute("attribut_help", aideDeLaPage);		
+		
 		// 3. renvoie du nom logique de la vue
-
 		return "personnels/listeEtudiants";
 
 	}// END RECUP LISTE
@@ -176,6 +173,10 @@ public class GestionEtudiantsController {
 
 		} // END IF ELSE IF
 
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEtudiants");
+		model.addAttribute("attribut_help", aideDeLaPage);	
+		
 		return "personnels/formulaireEditionEtudiants";
 
 	}// END METHODE
@@ -198,6 +199,10 @@ public class GestionEtudiantsController {
 		etudiantValidator.validate(pEtudiant, result);
 
 		if (result.hasErrors()) {
+			
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEtudiants");
+			model.addAttribute("attribut_help", aideDeLaPage);	
 			
 			// renvoie du formulaire
 			return "personnels/formulaireEditionEtudiants";
@@ -273,7 +278,7 @@ public class GestionEtudiantsController {
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-			return "personnels/listeEtudiants";
+			return "redirect:/gestionEtudiants/listeEtudiants";
 
 		}
 
@@ -437,7 +442,7 @@ public class GestionEtudiantsController {
 
 		} // END IF idPersonne !=0
 
-		return "personnels/listeEtudiants";
+		return "redirect:/gestionEtudiants/listeEtudiants";
 
 	}// END METHODE
 
@@ -460,7 +465,7 @@ public class GestionEtudiantsController {
 
 		model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
 
-		return "personnels/listeEtudiants";
+		return "redirect:/gestionEtudiants/listeEtudiants";
 
 	}// END SUPPRIMER
 

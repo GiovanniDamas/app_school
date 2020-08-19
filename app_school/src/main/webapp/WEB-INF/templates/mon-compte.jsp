@@ -158,11 +158,18 @@
 						
 						<div class="col-md-2">
 							<figure class="photo" > 
-								<%-- 
-								<c:if test="${attribut_personne_connecte instanceof Etudiants }"></c:if>
-								<c:if test="${attribut_personne_connecte instanceof Enseignants }"></c:if>
-								<c:if test="${attribut_personne_connecte instanceof Administrateurs }"></c:if>
-								--%>
+								
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ENSEIGNANT' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/conseiller.jpg" alt="Ens"/>
+								</c:if>
+								
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/${attribut_personne_connecte.photo}" alt="Etu"/>
+								</c:if>
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ADMIN' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/administrateur.png" alt="A"/>
+								</c:if>
+								
 							</figure> 	
 						</div>
 					</div><!-- end informations-header -->
@@ -182,17 +189,26 @@
 					
 					<div class="row info">	<div class="col-md-4 info-header">Password :</div> 	<div class="col-md-8 info-content">**********</div>	</div> 
 					
-					<%-- 
-					<c:if test="${attribut_personne_connecte instanceof Etudiant }">
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+						<hr align="center" size="1px" width="100%" color="gray"/>
 						<div class="info">	<div class="info-header">Anniversaire</div> 	<div class="info-contetn">${attribut_personne_connecte.dateDeNaissance }</div>	</div>
 					</c:if>
-					--%>
+					
+					
 				
 					<br/>
-					<a class="btn btn-info" type="button" style="align:right"
-							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
-							Modifier
-					</a>
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ENSEIGNANT' }">
+						<a class="btn btn-info" type="button" style="align:right"
+								href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
+								Modifier
+						</a>
+					</c:if>
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+						<a class="btn btn-info" type="button" style="align:right"
+								href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
+								Modifier
+						</a>
+					</c:if>					
 					
 				</div>
 	

@@ -1,5 +1,9 @@
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IAdministrateursDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/service/EtudiantsServiceImpl.java
+<<<<<<< Updated upstream
+=======
+/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionMailController.java
+>>>>>>> Stashed changes
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Personnes.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/service/IEnseignantsService.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionEtudiantsController.java

@@ -46,6 +46,10 @@ com/intiformation/appschool/validator/PromotionValidator.class
 com/intiformation/appschool/controller/GestionPromotionController.class
 com/intiformation/appschool/service/ICoursService.class
 com/intiformation/appschool/service/MatiereServiceImpl.class
+<<<<<<< Updated upstream
+=======
+com/intiformation/appschool/controller/GestionMailController.class
+>>>>>>> Stashed changes
 com/intiformation/appschool/modeles/Administrateurs.class
 com/intiformation/appschool/modeles/Promotion.class
 com/intiformation/appschool/dao/EnseignantMatierePromotionLinkDAOImpl.class

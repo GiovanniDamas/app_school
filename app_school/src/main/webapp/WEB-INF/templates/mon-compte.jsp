@@ -16,6 +16,10 @@
 	<!-- Lien vers feuille de style perso de index -->
 	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
 	    rel="stylesheet">
+	    
+	<!-- Lien vers feuille de style perso de compte -->
+	<link href="${pageContext.request.contextPath}/resources/styles/compte.css"
+	    rel="stylesheet">	    
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
@@ -32,20 +36,6 @@
 </head>
 <body>
 	
-<%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
-	
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
-
-	<div>
-
-     	<!--Put some content here-->
-
-		<h1>Hello world !!</h1>
- 	</div>
- 	
- <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
---%>
 
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
@@ -148,15 +138,72 @@
 		<!-- ===================================================== -->
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
-		<div id="content">
+		<div id="content" style="width:100%">
 							
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
 	
 		
+			<div class="container-fluid" style="align:center">
 	
 	
+				<h1 style="text-align:center">Informations Personnelles</h1>
+	
+				<div class="container informations" >
+					<div class="row informations-header"> 
+					
+						<h2 class="col-md-4">Profil</h2>	
+						<div class="col-md-6"></div> 
+						
+						<div class="col-md-2">
+							<figure class="photo" > 
+								<%-- 
+								<c:if test="${attribut_personne_connecte instanceof Etudiants }"></c:if>
+								<c:if test="${attribut_personne_connecte instanceof Enseignants }"></c:if>
+								<c:if test="${attribut_personne_connecte instanceof Administrateurs }"></c:if>
+								--%>
+							</figure> 	
+						</div>
+					</div><!-- end informations-header -->
+					<hr align="center" size="1px" width="100%" color="gray"/>
+				
+					<div class="row info">	<div class="col-md-4 info-header">Nom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.nom }</div>	</div>
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Prénom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.prenom }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">E-mail :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.email }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Identifiant :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.identifiant }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Password :</div> 	<div class="col-md-8 info-content">**********</div>	</div> 
+					
+					<%-- 
+					<c:if test="${attribut_personne_connecte instanceof Etudiant }">
+						<div class="info">	<div class="info-header">Anniversaire</div> 	<div class="info-contetn">${attribut_personne_connecte.dateDeNaissance }</div>	</div>
+					</c:if>
+					--%>
+				
+					<br/>
+					<a class="btn btn-info" type="button" style="align:right"
+							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
+							Modifier
+					</a>
+					
+				</div>
+	
+				
+				<div class="adresses">
+				
+				</div>
+	
+			</div>
+
+
 		</div><!-- end content -->
 	</div>	<!-- end wrapper -->
 

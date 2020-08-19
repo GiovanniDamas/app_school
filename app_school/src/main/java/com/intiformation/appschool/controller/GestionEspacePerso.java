@@ -92,6 +92,7 @@ public class GestionEspacePerso {
 			personneConnecte = etudiantService.findEtudiantByIdentifiant(authentication.getName());
 		}
 
+
 		return personneConnecte;
 	}//end getInfosPersonneConnecte
 	

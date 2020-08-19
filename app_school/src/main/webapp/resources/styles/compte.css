@@ -1,0 +1,53 @@
+@charset "ISO-8859-1";
+
+
+
+
+.informations{
+	
+	align:center;
+	width:90%;
+	border: 1px solid lightgray;
+	border-radius:15px;
+	margin: 20px 4% 20px 4%;	
+	padding: 15px 30px;	
+			
+}
+	
+.informations-header{
+	
+}	
+
+
+.photo{
+	align: center;
+	height: 100px;
+	width: 100px;
+	border-radius:50%;
+	background: lightgray;
+}
+		
+.info{
+}		
+		
+.info-header{
+	padding-left:20px;
+	padding-top:5px;
+	color: #7e7e7e;
+	font-family: sans-serif;
+	letter-spacing:2px;
+	font-size: 12px;	
+	font-weight: 520;
+	text-transform: uppercase;
+}
+
+.info-content{
+	padding-left:20px;
+	font-size: 20px;
+}
+	
+	
+	
+.adresses{
+		
+}

@@ -117,40 +117,17 @@ public class GestionCoursController {
 	}
 
 	
-	/*======================Methodes======================*/
-	/**
-	 * méthode qui permet de récupérer les informations de la personne connectée
-	 * @param authentication
-	 * @return
-	 */
-	public Personnes getInfosPersonneConnecte(Authentication authentication) {
-		
-		Personnes personneConnecte = null;
-		
-		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-			
-			//1. cas d'un admin : récupération de l'administrateur connecté
-			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
 	
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-			
-			//1. cas d'un enseignant : récupération de l'enseignant connecté
-			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-			
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-			
-			//1. cas d'un etudiant : récupération de l'eutidnat connecté
-			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-		}
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}
 		
-		return personneConnecte;
-		
-	}//end getInfosPersonneConnecte
-	
 	/*=================================================================*/
 	/*======================= méthodes gestionnaires ==================*/
 	/*=================================================================*/
-
 	/**
 	 * permet de supprimer un cours de la bdd
 	 * @param model
@@ -182,7 +159,7 @@ public class GestionCoursController {
 		model.addAttribute("attribut_cours", cours);
 		
 		//3. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
@@ -213,7 +190,7 @@ public class GestionCoursController {
 			if (result.hasErrors()) {
 				
 				//récup de la personne connectée
-				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 				
 				//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
@@ -283,7 +260,7 @@ public class GestionCoursController {
 		model.addAttribute("attribut_cours", coursToUpdate);
 				
 		//3. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
@@ -313,7 +290,7 @@ public class GestionCoursController {
 		if (result.hasErrors()) {
 
 			//récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 			//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
@@ -413,7 +390,8 @@ public class GestionCoursController {
 	public String afficherListeCoursByPersonne(ModelMap model, Authentication authentication) {
 		
 		//1. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
+		System.out.println(personneConnecte.getNom());
 		
 		//2. récup de la liste des cours de la bdd via le service
 		List<Cours> listeCoursByPersonneBdd = coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
@@ -450,7 +428,7 @@ public class GestionCoursController {
 		} else {
 			
 			//1. récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 
 			//2. récup de la liste des cours de la bdd via le service
 			List<Cours> listeCoursByMatiereBdd = coursService.findCoursPersonneMatiere(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pIdMatiere);
@@ -489,7 +467,7 @@ public class GestionCoursController {
 		} else {
 			
 			//1. récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 			//2. récup de la liste des cours de la bdd via le service
 			List<Cours> listeCoursByPromoBdd = coursService.findCoursPersonneByPromotion(personneConnecte.getIdPersonne(), pIdPromotion, personneConnecte.getRole());
@@ -534,7 +512,7 @@ public class GestionCoursController {
 			} else {
 				
 				//1. récup de la personne connectée
-				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 				//2. récup de la liste des cours de la bdd via le service
 				List<Cours> listeCoursByDateBdd = coursService.findCoursPersonneByDate(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pDate);

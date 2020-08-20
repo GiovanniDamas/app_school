@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.intiformation.appschool.modeles.Adresse;
-import com.intiformation.appschool.modeles.Aide;
+import com.intiformation.appschool.modeles.Personnes;
+
 
 /**
  * Implementation DAO pour les adresses
@@ -148,7 +149,7 @@ public class AdresseDAOImpl implements IAdresseDAO {
 
 	@Transactional
 	@Override
-	public List<Adresse> getAdressesByPersonne(Long pIdPersonne) {
+	public List<Adresse> getAdressesByPersonne(Personnes pPersonne) {
 	
 		
 		try {
@@ -157,14 +158,18 @@ public class AdresseDAOImpl implements IAdresseDAO {
 			Session session = sessionFactory.getCurrentSession();
 
 			// 2. Définition de la requete HQL à envoyer
-			Query query = session.createQuery("FROM adresses A WHERE A.personne_id = :personne_id");
+			Query query = session.createQuery("FROM Adresse A WHERE A.proprio = :pPersonne");
 			
-			query.setParameter("personne_id", pIdPersonne);
+			query.setParameter("pPersonne", pPersonne);
+			System.out.println(pPersonne.getIdPersonne());
 
 			// 3. Envoi, exécution, résultat
-			List<Adresse> listAdresseBDD = query.list();
+			List<Adresse> listAdressePersonne = query.list();
+			
+			System.out.println(pPersonne.getIdentifiant());
 
-			return listAdresseBDD;
+			return listAdressePersonne;
+			
 		} catch (HibernateException e) {
 
 			// En cas d'erreur:

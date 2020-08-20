@@ -3,6 +3,7 @@ package com.intiformation.appschool.service;
 import java.util.List;
 
 import com.intiformation.appschool.modeles.Adresse;
+import com.intiformation.appschool.modeles.Personnes;
 
 /**
  * Interface pour la couche service pour les adresses
@@ -22,6 +23,6 @@ public interface IAdresseService {
 	
 	public List<Adresse> findAll();
 	
-	public List<Adresse> findAdresseByPersonne(Long pIdPersonne);
+	public List<Adresse> findAdresseByPersonne(Personnes pPersonne);
 	
 }//end interface

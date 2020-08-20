@@ -1,17 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
-
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>    
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>    
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>Page gestion des Enseignants</title>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Adresses</title>
+	
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
 		rel="stylesheet">
@@ -22,14 +21,18 @@
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
 
 	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
-	
  	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
+	<style>
+	
+
+	</style>
 
 </head>
 
@@ -39,14 +42,14 @@
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
 
-
 	<div id="divhaute" class="container-fluid col-lg-12">
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
-
+		
+		
 			<c:if test="${attribut_help != null}">
-				<!-- Bouton d'aide lanÃ§ant un modal -->
+				<!-- Bouton d'aide lançant un modal -->
 				<button type="button" class="btn" 
 						data-toggle="modal" data-target="#exampleModal" 
 						style="padding:0;max-width:16x;max-height:16px" >
@@ -77,62 +80,63 @@
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-		
-		<s:authorize
-			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 			
-			<div class="dropdown">
-			  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			     <span class="fa fa-user-circle" ></span> Mon compte
-			  </button>
-			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> DÃ©connexion</a>
-			  </div>
-			</div>
-			<%-- 
-				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> DÃ©connexion</a>--%>
-		</s:authorize>
-
-		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
-			<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
-				type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
-		</s:authorize>
+	
+			
+			<s:authorize
+				access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
+				
+				<div class="dropdown">
+				  <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				     <span class="fa fa-user-circle" ></span> Mon compte
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
+				    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+				  </div>
+				</div>
+			</s:authorize>
+	
+			<s:authorize access="hasRole('ROLE_ANONYMOUS')">
+				<a href="${pageContext.request.contextPath}/login.jsp" id="connexion"
+					type="button" class="btn btn-dark" > <span class="fa fa-user-circle" ></span> Se Connecter</a>
+			</s:authorize>
 		</div>
 
 	</div>
 
-	<div class="wrapper">
 
-		<!-- ===================================================== -->
-		<!-- =============== SIDEBAR ============================= -->
-		<!-- ===================================================== -->
-		<nav class="sidebar" id="sidebar"> <!--
+<div class="wrapper">
+
+	<!-- ===================================================== -->
+	<!-- =============== SIDEBAR ============================= -->
+	<!-- ===================================================== -->
+    <nav class="sidebar" id="sidebar">
+    
+      <!--
         <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
         -->
 
-
+	
+	
 		<div class="sidebar-header">
-			<a href="${pageContext.request.contextPath}/index.jsp"><span
-				class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
+			<a   href="${pageContext.request.contextPath}/index.jsp" ><span class="fa fa-home" style="margin-right: 5px;"></span>Accueil</a>
 		</div>
-
+		
 		<ul class="sidebar-links">
 			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
 			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
 			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
-			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">MatiÃ¨re(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
 			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
 			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
 				<li><a href="${pageContext.request.contextPath}/aide/listeAide">Aide</a>	</li>
 			</s:authorize>
 		</ul>
-
-		</nav>
-
-
+    
+	</nav>
+	
 	
 	<!-- ===================================================== -->
 	<!-- =============== CONTENT ============================= -->
@@ -143,76 +147,60 @@
          <span></span>
          <span></span>
      </button>
-   <!--Put some content here	
-	<h2 style="text-align: center;"> Bienvenue dans l'aide ! </h2>
-	-->
+
+
+     <!--Put some content here	-->
 	<br/><br/>
 	
+		<h2 align="center" style="margin-bottom:20px;">Gestion de l'aide</h2>
+	
+		<table class="table table-bordered rounded"  style="width:90%;margin-left:5%">
 
-
-		<table class="table table-bordered" style="width:90%;margin-left:5%">
-
-			<h3 align="center">Liste des Enseignant</h3>
-			
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Nom</th>
-					<th scope="col">PrÃ©nom</th>
-					<th scope="col">E-mail</th>
-					<th scope="col">Identifiant</th>
-					<th scope="col">Adresse(s)</th>
-					<th scope="col">Modifier</th>
-					<th scope="col">Supprimer</th>
-					<th scope="col">Envoyer un mail</th>	
-									
+					<th scope="col"> #	</th>
+					<th scope="col" colspan="2" > Rue	</th>
+					<th scope="col" > Code Postal	</th>
+					<th scope="col" > Ville	</th>
+					<th scope="col" colspan="2" > Gestion	</th>
 				</tr>
 			</thead>
-			<tbody>
-				<c:forEach items="${attribut_liste_enseignants}" var="ens">
+			
+			<tbody >
+				<c:forEach items="${attribut_liste_adresses}" var="adresse">
 					<tr>
-						<th scope="row">${ens.idPersonne}</th>
-						<th>${ens.nom}</th>
-						<th>${ens.prenom}</th>
-						<td>${ens.email}</td>
-						<td>${ens.identifiant}</td>
+						<td scope="row">	${adresse.idAdresse}	</td>
+						<td colspan="2">	${adresse.numero}, ${adresse.rue }	</td>
+						<td >	${adresse.codePostal}	</td>
+						<td >	${adresse.ville}	</td>
 						
-						
-						<td><a
-							href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
-							class="fa fa-home fa-1x"
-							aria-pressed="true">
-							<i > <span ></span> Voir adresse(s) </i>
-							</a>
-						</td>						
-						
-						<td><a
-							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
-							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
-						</a></td>
-
-						<!-- colonne pour la suppression de l'emploe -->
-						<td><a
-							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
-						</td>
-						
-						<!-- colonne pour l'envoi d'un mail -->
 						<td>
-						<a href="${pageContext.request.contextPath}/sendEmail/form?destinator=${ens.email}">Envoyer un mail</a>
+							<a	href="${pageContext.request.contextPath}/adresses/editAdresse?idAdresse=${adresse.idAdresse}" >
+								<span class="fa fa-pencil-square-o fa-1x" ></span><i > Modifier</i>
+							</a>
 						</td>
-				
+
+						<!-- colonne pour la suppression de l'adresse -->
+						<td>
+							<a	href="${pageContext.request.contextPath}/adresses/delete?idAdresse=${adresse.idAdresse}">
+								<span class="fa fa-trash-o fa-1x" ></span><i> Supprimer</i>
+							</a>
+						</td>
+						
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-
-		<a
-			href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=0"
+		
+		<br/><br/>
+		<a	href="${pageContext.request.contextPath}/adresses/editAdresse?idAdresse=0"
 			class="btn btn-primary btn-md active" role="button"
-			aria-pressed="true" style="align-content: left;margin-left:5%" >
-			Ajout d'un enseignant
+			aria-pressed="true" style="align-content: left;margin-left:5%" > 
+			Ajouter une nouvelle adresse
 		</a>
 
+
+	
 	</div><!-- end content -->
 </div><!-- end wrapper -->
 
@@ -223,7 +211,7 @@
      
 	<footer class="footer" >
   
-        <p>2020 Copyright Â© Groupe2 : Gio, Hannah, MarlÃ¨ne &#x26; Gab  </p>
+        <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          
   </footer>
 
@@ -235,6 +223,5 @@
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     
-
 </body>
 </html>

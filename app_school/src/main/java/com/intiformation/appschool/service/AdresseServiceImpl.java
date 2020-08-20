@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.intiformation.appschool.dao.IAdresseDAO;
 import com.intiformation.appschool.dao.IEtudiantsDAO;
 import com.intiformation.appschool.modeles.Adresse;
+import com.intiformation.appschool.modeles.Personnes;
 
 /**
  * Implémentation concrète de la couche service pour les adresses.
@@ -64,8 +65,8 @@ public class AdresseServiceImpl implements IAdresseService{
 
 	
 	@Override
-	public List<Adresse> findAdresseByPersonne(Long pIdPersonne) {
-		return adresseDAO.getAdressesByPersonne(pIdPersonne);
+	public List<Adresse> findAdresseByPersonne(Personnes pPersonne) {
+		return adresseDAO.getAdressesByPersonne(pPersonne);
 	}//end findAdresseByPersonne
 
 		

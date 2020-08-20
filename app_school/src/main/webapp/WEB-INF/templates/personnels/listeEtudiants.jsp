@@ -25,7 +25,7 @@
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
+
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -93,12 +93,10 @@
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fa fa-sign-out" ></span> Déconnexion</a>
 			  </div>
 			</div>
-			<%-- 
-				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
+
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -190,21 +188,25 @@
 						<td>${etu.promotion.libelle}</td>
 						
 						<td><a
-							href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
+							href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${etu.idPersonne}&role=${etu.role}"
 							class="fa fa-home fa-1x"
 							aria-pressed="true">
-							<i > <span ></span> Voir adresse(s) </i>
+							 	Voir adresse(s) 
 							</a>
 						</td>	
 												
-						<td><a
-							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
-							aria-pressed="true"><i class="fas fa-pencil-alt fa-2x"></i>
-						</a></td>
+						<td>
+							<a	href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
+								class="fa fa-pencil-square-o fa-1x" style="padding: 0 auto"
+								aria-pressed="true">
+									Modifier
+							</a>
+						</td>
 
 						<!-- colonne pour la suppression de l'emploe -->
 						<td><a
-							href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
+							href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}" 
+							class="fa fa-trash fa-1x"> Supprimer</a>
 						</td>
 						
 						<!-- colonne pour l'envoi d'un mail -->

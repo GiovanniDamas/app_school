@@ -21,7 +21,6 @@
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
 
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -92,7 +91,7 @@
 				  </button>
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 				    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
-				    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+				    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fa fa-sign-out" ></span> Déconnexion</a>
 				  </div>
 				</div>
 			</s:authorize>

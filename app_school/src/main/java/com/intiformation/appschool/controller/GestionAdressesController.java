@@ -39,6 +39,16 @@ public class GestionAdressesController {
 	@Autowired
 	private IAdministrateursService adminService;
 	
+	private Personnes propriétaire;
+	
+	public Personnes getPropriétaire() {
+		return propriétaire;
+	}
+
+	public void setPropriétaire(Personnes propriétaire) {
+		this.propriétaire = propriétaire;
+	}
+
 	/**
 	 * Setter de la couche service pour injection pour modificateur de Spring
 	 * 
@@ -81,6 +91,9 @@ public class GestionAdressesController {
 		
 		Personnes personne = null;
 		
+		System.out.println(pRole);
+		System.out.println(pRole.contains("ROLE_ETUDIANT"));
+		
 		if (pRole.contains("ROLE_ADMIN") ) {
 				
 			//1. cas d'un admin : récupération de l'administrateur connecté
@@ -113,11 +126,11 @@ public class GestionAdressesController {
 
 		
 		// 0. renvoi de la personne associé à cette adresse:
-		Personnes personne = findPersonneByRole(pIdPersonne,pRole);
-		model.addAttribute("attribut_proprio", personne );	
+		propriétaire = findPersonneByRole(pIdPersonne,pRole);
+		model.addAttribute("attribut_proprio", propriétaire );	
 		
 		// 1. recup de la liste des employés dans la bdd via le service
-		List<Adresse> listeAdresseByPersonneBDD = adresseService.findAdresseByPersonne(personne);
+		List<Adresse> listeAdresseByPersonneBDD = adresseService.findAdresseByPersonne(propriétaire);
 
 		// 2. renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_adresses", listeAdresseByPersonneBDD);
@@ -143,13 +156,16 @@ public class GestionAdressesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/adresses/editAdresse", method = RequestMethod.GET)
-	public String afficherFormulaireEdition(@RequestParam("idAdresse") Long pIdAdresse,@ModelAttribute("attribut_proprio") Personnes pPersonne, ModelMap model, Authentication authentication) {
+	public String afficherFormulaireEdition(@RequestParam("idAdresse") Long pIdAdresse, ModelMap model, Authentication authentication) {
+
 
 		if (pIdAdresse == 0) {
 
 			// définition d'un objet de commande
 
 			Adresse adresse = new Adresse();
+			
+			
 			
 			// Renvoi de l'objet vers la vue
 
@@ -192,31 +208,26 @@ public class GestionAdressesController {
 	@RequestMapping(value = "/adresses/edit", method = RequestMethod.POST)
 	public String ajoutAideBdd(@ModelAttribute("attribut_adresse") Adresse pAdresse, ModelMap model, Authentication authentication) {
 		
-		System.out.println(pAdresse.getIdAdresse());
+		pAdresse.setPersonne(propriétaire);
 		
 		if (pAdresse.getIdAdresse() == null) {
 
-			// Ajout etudiant via couche service
-
+		
+				
+			// Ajout adresse via couche service
 			adresseService.ajouterAdresse(pAdresse);
 
-			// redirection => necessité params
-			return "redirect:/adresses/listeAdresses";
 
 		}
 		else {			
 
 			// Modif etudiant via couche service
-
 			adresseService.modifierAdresse(pAdresse);
 
-			// redirection => necessité params
-			return "redirect:/adresses/listeAdresses";
-		
 		}//end if
 
 		// redirection => necessité params
-		//return "redirect:/adresses/listeAdresses";
+		return "redirect:/adresses/listeAdresses?idPersonne="+ propriétaire.getIdPersonne() + "&role="+propriétaire.getRole();
 
 	}//end ajoutAideBdd
 
@@ -238,7 +249,7 @@ public class GestionAdressesController {
 		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		//// ====> ATTENTION NECESSITE PARAM POUR LE GET
-		return "liste-aide";
+		return "redirect:/adresses/listeAdresses?idPersonne="+ propriétaire.getIdPersonne() + "&role="+propriétaire.getRole();
 
 	}//end supprimerAdresseBDD	
 	

@@ -121,9 +121,6 @@ public class WelcomeController {
 
 		// 3. recup de l'aide associée a la page
 		Aide aideDeLaPage = aideService.findAideByURL("index");
-		System.out.println("\n\t> aide de la page : " + aideDeLaPage);
-		System.out.println("\n\t> aide not null : " + (aideDeLaPage != null ) );
-
 		model.addAttribute("attribut_help", aideDeLaPage);
 		
 		

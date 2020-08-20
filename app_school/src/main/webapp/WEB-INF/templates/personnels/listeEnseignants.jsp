@@ -87,7 +87,7 @@
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fa fa-sign-out" ></span> Déconnexion</a>
 			  </div>
 			</div>
 			<%-- 
@@ -178,22 +178,23 @@
 						<td>${ens.identifiant}</td>
 						
 						
-						<td><a
-							href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
-							class="fa fa-home fa-1x"
-							aria-pressed="true">
-							<i > <span ></span> Voir adresse(s) </i>
+						<td><a	href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
+								class="fa fa-home fa-1x"
+								aria-pressed="true">
+								Voir adresse(s)
 							</a>
 						</td>						
 						
-						<td><a
-							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
-							aria-pressed="true"><i class="fas fa-pencil-alt fa-1x"></i>Modifier
+						<td><a	href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
+								class="fa fa-pencil-square-o fa-1x"
+								aria-pressed="true">
+								Modifier
 						</a></td>
 
 						<!-- colonne pour la suppression de l'emploe -->
 						<td><a
-							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
+							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}"
+							class="fa fa-trash fa-1x"> Supprimer</a>
 						</td>
 						
 						<!-- colonne pour l'envoi d'un mail -->

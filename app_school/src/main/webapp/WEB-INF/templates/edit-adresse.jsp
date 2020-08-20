@@ -167,12 +167,11 @@
 			
 				<!--  récup de l'id du cours à modifier dans un champ caché -->
 				<%-- <c:if test="${idAide != 0} "> --%>
-				<form:hidden path="idAdresse"/>			
-				
+				<form:hidden path="idAdresse"/>		
 				
 				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
 					<form:label class="col-form-label" path="numero">Numéro</form:label>
-					<form:input type="text" class="form-control" path="numero" />
+					<form:input type="text" class="form-control" path="numero"  />
 					<form:errors path="numero" cssStyle="color:red; font-style:italic;" />
 				</div>
 				

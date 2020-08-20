@@ -242,6 +242,43 @@ public class PromotionDAOImpl implements IPromotionDAO {
 				
 		}//end catch
 	
-	}//end afficherPromotionByEnseignant
+	}//end afficherPromotionByEtudiant
+	
+	/**
+	 * permet de récup la liste des promotions associés à une matiere 
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Promotion> afficherPromotionByMatiere(Long pIdMatiere) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Promotion> getPromotionByMatiereQuery = session.createQuery("SELECT p FROM Promotion p, "
+																					+ "Matiere m, "
+																					+ "EnseignantMatierePromotionLink link "
+																					+ "WHERE p.idPromotion = link.promotion.idPromotion "
+																					+ "AND link.matiere.idMatiere = m.idMatiere "
+																					+ "AND m.idMatiere = :pIdMatiere");
+					
+			//passage de paramètre
+			getPromotionByMatiereQuery.setParameter("pIdMatiere", pIdMatiere);
+					
+			//envoi, execution et récup résultat
+			return getPromotionByMatiereQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherPromotionByMatiere ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherPromotionByMatiere
 
 }// end classe

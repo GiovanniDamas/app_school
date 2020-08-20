@@ -83,5 +83,10 @@ public class PromotionServiceImpl implements IPromotionService {
 		
 		return null;		
 	}
+	
+	@Override
+	public List<Promotion> findPromotionByMatiere(Long pIdMatiere){
+		return promotionDAO.afficherPromotionByMatiere(pIdMatiere);
+	}//end findPromotionByMatiere
 
 }// end classe

@@ -226,6 +226,8 @@
 	 			<td>${cours.matieres.libelle}</td>
 
 	 			<td>${cours.promotions.libelle}</td>
+	 			
+	 			<td><input type="hidden" name="${modifMatiere}"></td> 		 			
 	 		
 	    	<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">    			
 	 		

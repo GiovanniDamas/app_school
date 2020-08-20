@@ -152,7 +152,7 @@
      <!--Put some content here	-->
 	<br/><br/>
 	
-		<h2 align="center" style="margin-bottom:20px;">Gestion de l'aide</h2>
+		<h2 align="center" style="margin-bottom:20px;">Adresse(s) de ${attribut_proprio.nom} ${attribut_proprio.prenom }</h2>
 	
 		<table class="table table-bordered rounded"  style="width:90%;margin-left:5%">
 

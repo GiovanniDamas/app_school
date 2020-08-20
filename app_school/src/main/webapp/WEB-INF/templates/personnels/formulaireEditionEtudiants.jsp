@@ -167,7 +167,7 @@
 			enctype="multipart/form-data">
 
 			<tr>
-				<c:if test="${idPersonne} != 0"></c:if>
+
 				<td><form:hidden path="idPersonne" /></td>
 
 			</tr>
@@ -229,10 +229,12 @@
 				</div>
 
 				<div class="form-group">
-					<input type="submit" value="Ajouter" />
-
-					<c:if test="${idPersonne} != 0"></c:if>
-					<input type="submit" value="Modifier" />
+					<c:if test="${idPersonne == 0"} >
+						<input type="submit" value="Ajouter" />
+					</c:if>
+					<c:if test="${idPersonne != 0}">
+						<input type="submit" value="Modifier" />
+					</c:if>
 				</div>
 
 			</fieldset>

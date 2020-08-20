@@ -1,19 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>   
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Ajout/modif Adresse</title>
 
-<title>Formulaire pour l'édition de l'enseignant</title>
-
+	
+	<!--  
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">	-->
+ 
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
 		rel="stylesheet">
@@ -21,19 +24,20 @@
 	<!-- Lien vers feuille de style perso de index -->
 	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
 	    rel="stylesheet">
+	    
+	<!-- Lien vers la font de la sidebar -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    
+   	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 	    
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
-
-	<!-- Lien vers la font de la sidebar -->
-    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-
-	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' -->
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>	
+	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
-
+	
 </head>
+
 <body>
 
 	<!-- ===================================================== -->
@@ -45,7 +49,7 @@
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
-
+		
 			<c:if test="${attribut_help != null}">
 				<!-- Bouton d'aide lançant un modal -->
 				<button type="button" class="btn" 
@@ -109,9 +113,7 @@
 		<!-- ===================================================== -->
 		<!-- =============== SIDEBAR ============================= -->
 		<!-- ===================================================== -->
-		<nav class="sidebar" id="sidebar"> <!--
-        <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
-        -->
+		<nav class="sidebar" id="sidebar"> 
 
 
 		<div class="sidebar-header">
@@ -134,91 +136,89 @@
 		</nav>
 
 
-	
-	
-	<!-- ===================================================== -->
-	<!-- =============== CONTENT ============================= -->
-	<!-- ===================================================== -->
-  <div id="content" style="width:100%">
-     <button type="button" id="sidebarCollapse" class="navbar-btn">
-         <span></span>
-         <span></span>
-         <span></span>
-     </button>
+		<!-- ===================================================== -->
+		<!-- =============== CONTENT ============================= -->
+		<!-- ===================================================== -->
+		<div id="content" style="width:100%">
+							
+			<button type="button" id="sidebarCollapse" class="navbar-btn">
+				<span></span> <span></span> <span></span>
+			</button>
 
 
-     <!--Put some content here	-->
-	<br/><br/>
 
-	
-	<div align="center">
-		<h1>Formulaire édition d'un enseignant</h1>
+	<div align="center" >
+		<h1>Edition de l'adresse</h1>
 	</div>
 
-	<br />
+	<br/>
+	
 	<div align="center">
 
-		<form:form modelAttribute="attribut_enseignants" method="POST"
-			action="${pageContext.request.contextPath}/gestionEnseignants/edit">
+		<form:form modelAttribute="attribut_adresse" method="POST"
+			action="${pageContext.request.contextPath}/adresses/edit"
+			enctype="multipart/form-data">  
 
-			<tr>
-				<td><form:hidden path="idPersonne" /></td>
-			</tr>
+			<%-- affichage de tous les messages d'erreurs --%>
+			<%-- <form:errors path="*" cssClass="erreur_validation" element="div" />--%>
+
 
 			<fieldset>
-				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
-					<form:label class="col-form-label" path="nom">Nom</form:label>
-					<form:input type="text" class="form-control" path="nom" />
-					<form:errors path="nom" cssStyle="color:red; font-style:italic;" />
+			
+				<!--  récup de l'id du cours à modifier dans un champ caché -->
+				<%-- <c:if test="${idAide != 0} "> --%>
+				<form:hidden path="idAdresse"/>			
+				
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="numero">Numéro</form:label>
+					<form:input type="text" class="form-control" path="numero" />
+					<form:errors path="numero" cssStyle="color:red; font-style:italic;" />
 				</div>
-
-				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
-					<form:label class="col-form-label" path="prenom">Prénom</form:label>
-					<form:input type="text" class="form-control" path="prenom" />
-					<form:errors path="prenom" cssStyle="color:red; font-style:italic;" />
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="rue">Rue</form:label>
+					<form:input type="text" class="form-control" rows="20" path="rue" />
+					<form:errors path="rue" cssStyle="color:red; font-style:italic;" />
 				</div>
-
-				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
-					<form:label class="col-form-label" path="email">Email</form:label>
-					<form:input type="text" class="form-control" path="email" />
-					<form:errors path="email" cssStyle="color:red; font-style:italic;" />
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="codePostal">Code Postal</form:label>
+					<form:input type="text" class="form-control" rows="20" path="codePostal" />
+					<form:errors path="codePostal" cssStyle="color:red; font-style:italic;" />
 				</div>
-
-				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
-					<form:label class="col-form-label" path="identifiant">Identifiant</form:label>
-					<form:input type="text" class="form-control" path="identifiant" />
-					<form:errors path="identifiant"
-						cssStyle="color:red; font-style:italic;" />
-				</div>
-
-				<div class="form-group" style="margin-left: 30%; margin-right: 30%">
-					<form:label class="col-form-label" path="motDePasse">Mot de Passe</form:label>
-					<form:input type="text" class="form-control" path="motDePasse" />
-					<form:errors path="motDePasse"
-						cssStyle="color:red; font-style:italic;" />
-				</div>
-
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="ville">Ville</form:label>
+					<form:input type="text" class="form-control" rows="20" path="ville" />
+					<form:errors path="ville" cssStyle="color:red; font-style:italic;" />
+				</div>								
+				
 				<div class="form-group">
-					<c:if test="${idPersonne == 0"} >
+				
+					<c:if test="${idAdresse == 0}">
 						<input type="submit" value="Ajouter" />
 					</c:if>
-					<c:if test="${idPersonne != 0}">
+					
+					<c:if test="${idAdresse != 0}">
 						<input type="submit" value="Modifier" />
 					</c:if>
 				</div>
-
+			
 			</fieldset>
-
+			
 		</form:form>
 	</div>
-	
+
+
+
 	</div><!-- end content -->
 </div><!-- end wrapper -->
 
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->
-  <div class="clear" style="clear:both"></div>
+
      
 	<footer class="footer" >
   
@@ -230,9 +230,11 @@
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->	
-	
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     
+	
+
+	
 </body>
 </html>

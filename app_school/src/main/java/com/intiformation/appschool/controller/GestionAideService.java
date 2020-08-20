@@ -79,7 +79,7 @@ public class GestionAideService {
 		/*=================================================================*/
 		
 		/**
-		 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
+		 * Méthode permettant de récupérer la liste des aides via le service, Méthode
 		 * appellée lors d'une requête HTTP de type GET
 		 * 
 		 * @param model
@@ -107,8 +107,8 @@ public class GestionAideService {
 		}//end recupererListeAideBdd
 
 		/**
-		 * Méthode pour l'initialisation de l'ajout d'étudiant Cette méthode permet
-		 * d'afficher le formulaire permettant l'ajout d'un nouvel Etudiant </br>
+		 * Méthode pour l'initialisation de l'ajout d'aide.
+		 * Cette méthode permet d'afficher le formulaire permettant l'ajout d'une nouvelle Aide </br>
 		 * Appelée via une requête HTTP de type GET
 		 * 
 		 * @param model
@@ -122,7 +122,7 @@ public class GestionAideService {
 				// définition d'un objet de commande
 
 				Aide aide = new Aide();
-
+				
 				// Renvoi de l'objet vers la vue
 
 				model.addAttribute("attribut_aide", aide);
@@ -143,23 +143,27 @@ public class GestionAideService {
 
 			} //end else
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("edit-aide");
+			model.addAttribute("attribut_help", aideDeLaPage);			
+			
 			return "edit-aide";
 
 		}//end afficherFormulaireEdition
 
 		/**
-		 * Méthode permettant d'ajouter l'étudiant à la bdd après soumission du
+		 * Méthode permettant d'ajouter l'aide à la bdd après soumission du
 		 * formulaire </br>
 		 * Appelée via une requête HTTP de type POST
 		 * 
-		 * @param pEtudiant
+		 * @param pAide
 		 * @param model
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/edit", method = RequestMethod.POST)
 		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model, Authentication authentication) {
 			
-			if (pAide.getIdAide() == null) {
+			if (pAide.getIdAide() == 0) {
 
 				// Ajout etudiant via couche service
 
@@ -212,7 +216,7 @@ public class GestionAideService {
 			model.addAttribute("attribut_liste_aide", aideService.findAll());
 			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-			return "liste-aide";
+			return "redirect:/aide/listeAide";
 
 		}//end supprimerAideBDD
 		

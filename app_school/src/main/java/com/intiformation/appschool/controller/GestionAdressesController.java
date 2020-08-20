@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,8 +102,8 @@ public class GestionAdressesController {
 	}
 	
 	/**
-	 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
-	 * appellée lors d'une requête HTTP de type GET
+	 * Méthode permettant de récupérer la liste des adresses d'une personne via le service.
+	 *  Méthode appellée lors d'une requête HTTP de type GET
 	 * 
 	 * @param model
 	 * @return
@@ -132,6 +133,114 @@ public class GestionAdressesController {
 		return "liste-adresses";
 
 	}//end recupererListeAdressePersonneBdd	
+	
+	/**
+	 * Méthode pour l'initialisation de l'ajout d'une adresse Cette méthode permet
+	 * d'afficher le formulaire permettant l'ajout d'un nouvel Etudiant </br>
+	 * Appelée via une requête HTTP de type GET
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/adresses/editAdresse", method = RequestMethod.GET)
+	public String afficherFormulaireEdition(@RequestParam("idAdresse") Long pIdAdresse, ModelMap model, Authentication authentication) {
+
+		if (pIdAdresse == 0) {
+
+			// définition d'un objet de commande
+
+			Adresse adresse = new Adresse();
+
+			// Renvoi de l'objet vers la vue
+
+			model.addAttribute("attribut_adresse", adresse);
+			model.addAttribute("idAdresse", pIdAdresse);
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
+		} else if (pIdAdresse != 0) {
+
+			// Récup de l'aiide à récup
+
+			Adresse adresseToUpdate = adresseService.findAdresseById(pIdAdresse);
+
+			// Renvoi de l'objet vers la vue
+
+			model.addAttribute("attribut_adresse", adresseToUpdate);
+			model.addAttribute("idAdresse", pIdAdresse);
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
+		} //end else
+
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("edit-adresse");
+		model.addAttribute("attribut_help", aideDeLaPage);			
+		
+		return "edit-adresse";
+
+	}//end afficherFormulaireEdition	
+	
+	
+	/**
+	 * Méthode permettant d'ajouter l'adresse à la bdd après soumission du
+	 * formulaire </br>
+	 * Appelée via une requête HTTP de type POST
+	 * 
+	 * @param pAide
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/adresses/edit", method = RequestMethod.POST)
+	public String ajoutAideBdd(@ModelAttribute("attribut_adresse") Adresse pAdresse, ModelMap model, Authentication authentication) {
+		
+		System.out.println(pAdresse.getIdAdresse());
+		
+		if (pAdresse.getIdAdresse() == 0) {
+
+			// Ajout etudiant via couche service
+
+			adresseService.ajouterAdresse(pAdresse);
+
+			// redirection => necessité params
+			return "redirect:/adresses/listeAdresses";
+
+		}
+		if (pAdresse.getIdAdresse() != 0) {			
+
+			// Modif etudiant via couche service
+
+			adresseService.modifierAdresse(pAdresse);
+
+			// redirection => necessité params
+			return "redirect:/adresses/listeAdresses";
+		
+		}//end if
+
+		// redirection => necessité params
+		return "redirect:/adresses/listeAdresses";
+
+	}//end ajoutAideBdd
+
+	/**
+	 * Méthode permettant de supprimer l'adresse de la bdd Appelée via une requête
+	 * HTTP de type GET
+	 * 
+	 * @param pIdAide
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/adresses/delete", method = RequestMethod.GET)
+	public String supprimerAdresseBDD(@RequestParam("idAdresse") Long pIdAdresse, ModelMap model, Authentication authentication) {
+
+		// Récup de l'aide à supprimer
+
+		adresseService.supprimerAdresse(pIdAdresse);
+
+		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
+		//// ====> ATTENTION NECESSITE PARAM POUR LE GET
+		return "liste-aide";
+
+	}//end supprimerAdresseBDD	
 	
 	
 }//end class

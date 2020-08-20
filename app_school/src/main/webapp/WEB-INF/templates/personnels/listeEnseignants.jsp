@@ -188,7 +188,7 @@
 						
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
-							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
+							aria-pressed="true"><i class="fas fa-pencil-alt fa-1x"></i>Modifier
 						</a></td>
 
 						<!-- colonne pour la suppression de l'emploe -->

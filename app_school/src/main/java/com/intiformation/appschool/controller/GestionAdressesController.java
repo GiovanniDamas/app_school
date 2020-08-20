@@ -143,14 +143,14 @@ public class GestionAdressesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/adresses/editAdresse", method = RequestMethod.GET)
-	public String afficherFormulaireEdition(@RequestParam("idAdresse") Long pIdAdresse, ModelMap model, Authentication authentication) {
+	public String afficherFormulaireEdition(@RequestParam("idAdresse") Long pIdAdresse,@ModelAttribute("attribut_proprio") Personnes pPersonne, ModelMap model, Authentication authentication) {
 
 		if (pIdAdresse == 0) {
 
 			// définition d'un objet de commande
 
 			Adresse adresse = new Adresse();
-
+			
 			// Renvoi de l'objet vers la vue
 
 			model.addAttribute("attribut_adresse", adresse);
@@ -194,7 +194,7 @@ public class GestionAdressesController {
 		
 		System.out.println(pAdresse.getIdAdresse());
 		
-		if (pAdresse.getIdAdresse() == 0) {
+		if (pAdresse.getIdAdresse() == null) {
 
 			// Ajout etudiant via couche service
 
@@ -204,7 +204,7 @@ public class GestionAdressesController {
 			return "redirect:/adresses/listeAdresses";
 
 		}
-		if (pAdresse.getIdAdresse() != 0) {			
+		else {			
 
 			// Modif etudiant via couche service
 
@@ -216,7 +216,7 @@ public class GestionAdressesController {
 		}//end if
 
 		// redirection => necessité params
-		return "redirect:/adresses/listeAdresses";
+		//return "redirect:/adresses/listeAdresses";
 
 	}//end ajoutAideBdd
 

@@ -163,7 +163,7 @@ public class GestionAideService {
 		@RequestMapping(value = "/aide/edit", method = RequestMethod.POST)
 		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model, Authentication authentication) {
 			
-			if (pAide.getIdAide() == 0) {
+			if (pAide.getIdAide() == null) {
 
 				// Ajout etudiant via couche service
 
@@ -174,10 +174,8 @@ public class GestionAideService {
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
 				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-				return "liste-aide";
 
-			}
-			if (pAide.getIdAide() != 0) {			
+			}else  {			
 
 				// Modif etudiant via couche service
 
@@ -188,12 +186,15 @@ public class GestionAideService {
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
 				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-				return "liste-aide";
+				
 			
 			}//end if
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
+			model.addAttribute("attribut_help", aideDeLaPage);	
+			
 			return "liste-aide";
-
 		}//end ajoutAideBdd
 
 		/**

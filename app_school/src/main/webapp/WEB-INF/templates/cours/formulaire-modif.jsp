@@ -248,11 +248,12 @@
          		<form:errors path="promotions.idPromotion" cssStyle="color:red; font-style:italic;"/>
 			</div>
 			
-		</fieldset>
 				
 		<br/>
 		
 		<input type="submit" class="btn btn-dark" value="Modifier"/>
+	
+		</fieldset>
 		
 		</form:form>
 		

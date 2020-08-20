@@ -411,9 +411,11 @@ public class CoursDAOImpl implements ICoursDAO{
 			Query<Cours> getCoursEtudiantByMatiereQuery = session.createQuery("SELECT c FROM Cours c, "
 																						+ "EnseignantMatierePromotionLink link, "
 																						+ "Promotion p "
+																						+ "Etudiants e"
 																						+ "WHERE c.promotions.idPromotion = p.idPromotion "
 																						+ "AND link.promotion.idPromotion = p.idPromotion "
-																						+ "AND link.etudiant.idPersonne = :pIdEtudiant "
+																						+ "AND e.promotion.idPromotion = p.idPromotion"
+																						+ "AND e.idPersonne = :pIdEtudiant "
 																						+ "AND c.matieres.idMatiere = :pIdMatiere");
 			//passage de paramètre
 			getCoursEtudiantByMatiereQuery.setParameter("pIdMatiere", pIdMatiere);

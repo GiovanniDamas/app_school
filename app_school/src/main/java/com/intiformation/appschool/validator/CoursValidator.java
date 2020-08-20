@@ -43,10 +43,7 @@ public class CoursValidator implements Validator {
 		//4. validation du champ 'description'
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "required.description", "le champ est obligatoire");
 		
-		//5. validation du champ 'matiere'
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "matieres.idMatiere", "required.matiere", "le champ est obligatoire");
-
-		//6. validation du champ 'promotion'
+		//5. validation du champ 'promotion'
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "promotions.idPromotion", "required.promotion", "le champ est obligatoire");
 		
 	}//end validate

@@ -61,22 +61,6 @@ public class GestionEtudiantCoursController {
 		this.etudiantsService = etudiantsService;
 	}
 	
-	//___ déclaration du service de enseignant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEnseignantsService enseignantsService;
-
-	public void setEnseignantsService(IEnseignantsService enseignantsService) {
-		this.enseignantsService = enseignantsService;
-	}
-
-	//____ déclaration du service de administrateur avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IAdministrateursService administrateursService;
-
-	public void setAdministrateursService(IAdministrateursService administrateursService) {
-		this.administrateursService = administrateursService;
-	}
-	
 	@Autowired
 	private IAideService aideService;
 		

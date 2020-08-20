@@ -166,7 +166,8 @@
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
 					<th scope="col">Photo</th>
-					<th scope="col">Promotion</th>				
+					<th scope="col">Promotion</th>
+					<th scope="col">Adresse(s)</th>				
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
 					<th scope="col">Envoyer un mail</th>										
@@ -187,6 +188,14 @@
 						</td>
 						<td>${etu.promotion.libelle}</td>
 						
+						<td><a
+							href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
+							class="fa fa-home fa-1x"
+							aria-pressed="true">
+							<i > <span ></span> Voir adresse(s) </i>
+							</a>
+						</td>	
+												
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-2x"></i>

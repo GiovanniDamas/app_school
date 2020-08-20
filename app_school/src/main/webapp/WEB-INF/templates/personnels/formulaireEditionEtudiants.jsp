@@ -229,7 +229,7 @@
 				</div>
 
 				<div class="form-group">
-					<c:if test="${idPersonne == 0"} >
+					<c:if test="${idPersonne == 0}" >
 						<input type="submit" value="Ajouter" />
 					</c:if>
 					<c:if test="${idPersonne != 0}">

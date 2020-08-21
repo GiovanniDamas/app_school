@@ -112,7 +112,7 @@
 				<h4>
 					<c:url value="/login.jsp" var="loginVar" />
 		
-					Veuillez vous connecter pour accéder à ce contenu : <a href="${loginVar}">Se Connecter</a>
+					Veuillez vous connecter en tant qu'admin pour accéder à ce contenu : <a href="${loginVar}">Se Connecter</a>
 				</h4>
 			</s:authorize>
 

@@ -166,9 +166,11 @@
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
 					<th scope="col">Photo</th>
-					<th scope="col">Promotion</th>				
+					<th scope="col">Promotion</th>	
+					<s:authorize access="hasAnyRole('ROLE_ADMIN')">			
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
+					</s:authorize>
 					<th scope="col">Envoyer un mail</th>										
 				</tr>
 			</thead>
@@ -187,15 +189,19 @@
 						</td>
 						<td>${etu.promotion.libelle}</td>
 						
+						<s:authorize access="hasAnyRole('ROLE_ADMIN')">
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${etu.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-2x"></i>
 						</a></td>
+						</s:authorize>
 
 						<!-- colonne pour la suppression de l'emploe -->
+						<s:authorize access="hasAnyRole('ROLE_ADMIN')">
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEtudiants/delete?idPersonne=${etu.idPersonne}">Supprimer</a>
 						</td>
+						</s:authorize>
 						
 						<!-- colonne pour l'envoi d'un mail -->
 						<td>

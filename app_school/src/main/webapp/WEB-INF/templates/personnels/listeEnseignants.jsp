@@ -161,8 +161,10 @@
 					<th scope="col">Prénom</th>
 					<th scope="col">E-mail</th>
 					<th scope="col">Identifiant</th>
+					<s:authorize access="hasAnyRole('ROLE_ADMIN')">
 					<th scope="col">Modifier</th>
 					<th scope="col">Supprimer</th>
+					</s:authorize>
 					<th scope="col">Envoyer un mail</th>					
 				</tr>
 			</thead>
@@ -174,15 +176,21 @@
 						<th>${ens.prenom}</th>
 						<td>${ens.email}</td>
 						<td>${ens.identifiant}</td>
-						<td><a
+						<s:authorize access="hasAnyRole('ROLE_ADMIN')">
+						<td>
+						<a
 							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
 						</a></td>
+						</s:authorize>
+						
 
 						<!-- colonne pour la suppression de l'emploe -->
+						<s:authorize access="hasAnyRole('ROLE_ADMIN')">
 						<td><a
 							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
 						</td>
+						</s:authorize>
 						
 						<!-- colonne pour l'envoi d'un mail -->
 						<td>

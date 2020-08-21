@@ -52,12 +52,14 @@
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/validator/EnseignantValidator.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/service/MatiereServiceImpl.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Enseignants.java
+/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionEspacePerso.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Promotion.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IPromotionDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/validator/CoursValidator.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/Matiere.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/modeles/EtudiantCours.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionAdministrateursController.java
+/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionAdressesController.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/GestionMatiereController.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/dao/IEtudiantsDAO.java
 /Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/java/com/intiformation/appschool/controller/WelcomeController.java

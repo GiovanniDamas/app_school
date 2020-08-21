@@ -198,6 +198,10 @@
 					<td><a
 						href="${pageContext.request.contextPath}/matiere/liaison-matiere-form?idMatiere=${mat.idMatiere}">
 							Lier</a></td>
+							
+							<td><a
+						href="${pageContext.request.contextPath}/matiere/promotion-matiere?idMatiere=${mat.idMatiere}">
+							Enseignants</a></td>
 
 				</tr>
 

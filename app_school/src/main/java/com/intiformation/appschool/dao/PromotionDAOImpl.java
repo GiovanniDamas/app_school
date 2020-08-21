@@ -187,7 +187,7 @@ public class PromotionDAOImpl implements IPromotionDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
 																					+ "EnseignantMatierePromotionLink link, "
 																					+ "Enseignants e "
 																					+ "WHERE p.idPromotion = link.promotion.idPromotion "
@@ -224,7 +224,7 @@ public class PromotionDAOImpl implements IPromotionDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
 																					+ "Etudiants e "
 																					+ "WHERE p.idPromotion = e.promotion.idPromotion "
 																					+ "AND e.idPersonne = :pIdEtudiant ");
@@ -259,7 +259,7 @@ public class PromotionDAOImpl implements IPromotionDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Promotion> getPromotionByMatiereQuery = session.createQuery("SELECT p FROM Promotion p, "
+			Query<Promotion> getPromotionByMatiereQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
 																					+ "Matiere m, "
 																					+ "EnseignantMatierePromotionLink link "
 																					+ "WHERE p.idPromotion = link.promotion.idPromotion "

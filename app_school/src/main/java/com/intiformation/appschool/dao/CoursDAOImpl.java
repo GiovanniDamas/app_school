@@ -262,7 +262,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<Cours> getCoursByEnseignantQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursByEnseignantQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																			+ "EnseignantMatierePromotionLink link, "
 																			+ "Promotion p "
 																			+ "WHERE c.promotions.idPromotion = p.idPromotion "
@@ -297,7 +297,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<Cours> getCoursByEtudiantQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursByEtudiantQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																			+ "Etudiants e, "
 																			+ "Promotion p "
 																			+ "WHERE c.promotions.idPromotion = p.idPromotion "
@@ -331,7 +331,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<Cours> getCoursEnseignantByDateQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursEnseignantByDateQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																			+ "EnseignantMatierePromotionLink link, "
 																			+ "Matiere m "
 																			+ "WHERE c.matieres.idMatiere = m.idMatiere "
@@ -369,7 +369,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 					
 			//construction requête HQL
-			Query<Cours> getCoursEnseignantByMatiereQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursEnseignantByMatiereQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																					+ "EnseignantMatierePromotionLink link, "
 																					+ "Matiere m "
 																					+ "WHERE c.matieres.idMatiere = m.idMatiere "
@@ -408,7 +408,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 					
 			//construction requête HQL
-			Query<Cours> getCoursEtudiantByMatiereQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursEtudiantByMatiereQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																						+ "EnseignantMatierePromotionLink link, "
 																						+ "Promotion p "
 																						+ "Etudiants e"
@@ -448,7 +448,7 @@ public class CoursDAOImpl implements ICoursDAO{
 		try {
 					
 			//construction requête HQL
-			Query<Cours> getCoursEnseignantByPromoQuery = session.createQuery("SELECT c FROM Cours c, "
+			Query<Cours> getCoursEnseignantByPromoQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																					+ "EnseignantMatierePromotionLink link, "
 																					+ "Matiere m "
 																					+ "WHERE c.matieres.idMatiere = m.idMatiere "

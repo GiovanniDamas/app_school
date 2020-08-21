@@ -266,7 +266,7 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec, "
+			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT DISTINCT ec FROM EtudiantCours ec, "
 																			+ "Cours c, "
 																			+ "EnseignantMatierePromotionLink link, "
 																			+ "Matiere m "
@@ -303,7 +303,7 @@ public class EtudiantCoursDAOImpl implements IEtudiantCoursDAO{
 		try {
 			
 			//construction requête HQL
-			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT ec FROM EtudiantCours ec, "
+			Query<EtudiantCours> getAbsenceByEnseignantQuery = session.createQuery("SELECT DISTINCT ec FROM EtudiantCours ec, "
 																			+ "Cours c, "
 																			+ "EnseignantMatierePromotionLink link, "
 																			+ "Matiere m "

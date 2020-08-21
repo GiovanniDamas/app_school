@@ -157,13 +157,13 @@
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
 		<div id="content">
-							
+			<div class="container">			
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
 	
-		<img src="${pageContext.request.contextPath}/resources/media/ecole.jpeg"  style="width:220px;height:120px;position:absolute; top:15px;right:30px " />
-		
+		<img src="${pageContext.request.contextPath}/resources/media/ecole.jpeg"  style=" width:20%; float:left ; margin-top: 20px; margin-right: 20px" />
+		</div>	
 		
 		<!-- Affichage d'un message lors de la déconnexion -->
 	    <div class="présentation" > 
@@ -181,7 +181,7 @@
 	
 			<h3 >Bienvenue sur le site de l'école Sainte Thérèse de Saint-Vaast-la-Hougue. </h3>
 			
-			<br/><br/>
+			<br/><br/><br/>
 			<p > 
 				Nous avons le plaisir d'accompagner vos enfants du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
 				ces conditions si spéciales.<br/>

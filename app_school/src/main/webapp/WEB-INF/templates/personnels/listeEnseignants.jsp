@@ -152,7 +152,7 @@
 
 		<table class="table table-bordered" style="width:90%;margin-left:5%">
 
-			<h3 align="center">Liste des Enseignant</h3>
+			<h3 align="center">Liste des Enseignants</h3>
 			
 			<thead class="thead-dark">
 				<tr>

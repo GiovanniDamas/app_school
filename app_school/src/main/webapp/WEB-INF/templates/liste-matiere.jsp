@@ -151,14 +151,15 @@
 	  <div id="content" style="width:100%" align="left">
 	<h1 style="margin-left:20px">
 		<u>Liste des matières:</u>
+		<br/>
 	</h1>
 	
 
-	<table class="table table-hover" style="width: 70%;" >
+	<table class="table table-hover" style="width: 90%; margin-top: 40px;" >
 
 		<tr>
 
-			<td colspan="5" align="right"><a
+			<td colspan="6" align="right"><a
 				href="${pageContext.request.contextPath}/matiere/edit-matiere-form?idMatiere=0">
 					Ajout d'une matière </a></td>
 		</tr>
@@ -170,6 +171,8 @@
 				<th scope="col">Libelle</th>
 				<th scope="col">Modifier</th>
 				<th scope="col">Supprimer</th>
+				<th scope="col">Lier</th>
+				<th scope="col">Enseignants</th>
 			</tr>
 		</thead>
 

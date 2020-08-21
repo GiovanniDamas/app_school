@@ -84,7 +84,7 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/mon-compte.jsp"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 			  </div>
 			</div>
@@ -142,11 +142,64 @@
 	<div style="padding: 30px;">
 	<h3>Modification d'un cours</h3>
 
+	<c:if test="${attribut_idmatiere eq null}">	
+		
+	<form class="form-group form-inline" action="${pageContext.request.contextPath}/cours/choixpromotion">
+		
+			<div class="form-group form-inline">
+			
+			<label class="my-1 mr-2" for="choix-matiere">Matière</label>
+			<select id="choix-matiere" name="id-matiere" class="form-control custom-select my-1 mr-sm-2">
+			<c:forEach items="${attribut_matieres}" var="matiere">
+				<option value="${matiere.idMatiere}" label="${matiere.libelle}"/>
+			</c:forEach>
+         	</select>  
+         		
+         	<input type="hidden" name="coursId" value="${attribut_cours.idCours}"/>		
+         	<input type="hidden" name="action" value="modif"> 	
+         			
+			<button type="submit" class="btn btn-primary my-1">Valider</button>  
+			</div>
+			
+	</form>
+	
+	</c:if>						
+	
+
+	<c:if test="${attribut_idmatiere ne null}">	
+
+	<form class="form-group form-inline">
+		
+			<div class="form-group form-inline">
+			
+			<label class="my-1 mr-2" for="choix-matiere">Matière</label>
+			<select id="choix-matiere" class="form-control custom-select my-1 mr-sm-2" disabled="disabled">
+				<option>${attribut_matiere.libelle}</option>
+         	</select>  
+         		
+         	<input type="hidden" name="${attribut_cours.idCours}"/>	
+         	<input type="hidden" name="${action}"> 	
+         			
+			<a class="btn btn-primary my-1" href="${pageContext.request.contextPath}/cours/formulaire-modif/modifMatiere?coursId=${attribut_cours.idCours}" role="button">Modifier</a>  
+			</div>
+				  
+	</form>
+	
+	</c:if>
+
+
+
 	<form:form modelAttribute="attribut_cours" 
 				method="POST" 
 				action="${pageContext.request.contextPath}/cours/modifier">			
 
-		<fieldset>
+		<c:if test="${attribut_idmatiere eq null}">			
+			<fieldset disabled>
+		</c:if>
+		
+		<c:if test="${attribut_idmatiere ne null}">	
+			<fieldset>
+		</c:if>
 			
 			<!--  récup de l'id du cours à modifier dans un champ caché -->
 			<form:hidden path="idCours"/>
@@ -184,14 +237,7 @@
   				<form:errors path="description" cssStyle="color:red; font-style:italic;"/>
 			</div>
 			
-			<div class="form-group">
-			  	<form:label path="matieres.idMatiere">Matière</form:label>
-				<form:select path="matieres.idMatiere" class="form-control">
-              			<form:option value="" label="--Sélectionner la matière"/>
-            			<form:options items="${attribut_matieres}" itemValue="idMatiere" itemLabel="libelle"/>
-         		</form:select>  				
-         		<form:errors path="matieres.idMatiere" cssStyle="color:red; font-style:italic;"/>
-			</div>
+			<form:input path="matieres.idMatiere" type="hidden" value="${attribut_idmatiere}"/>
 			
 			<div class="form-group">
 			  	<form:label path="promotions.idPromotion">Promotion</form:label>
@@ -202,11 +248,12 @@
          		<form:errors path="promotions.idPromotion" cssStyle="color:red; font-style:italic;"/>
 			</div>
 			
-		</fieldset>
 				
 		<br/>
 		
 		<input type="submit" class="btn btn-dark" value="Modifier"/>
+	
+		</fieldset>
 		
 		</form:form>
 		

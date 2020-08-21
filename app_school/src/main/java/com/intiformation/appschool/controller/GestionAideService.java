@@ -64,68 +64,29 @@ public class GestionAideService {
 		
 		public void setAideService(IAideService aideService) {
 			this.aideService = aideService;
-		}//end setter
-
-		public void setEnseignantsService(IEnseignantsService enseignantsService) {
-			this.enseignantsService = enseignantsService;
+		}//end setter	
+				
+		//déclaration WelcomeController pour recup infos personne connectée
+		@Autowired
+		private WelcomeController welcomeController;
+		
+		public void setWelcomeController(WelcomeController welcomeController) {
+			this.welcomeController = welcomeController;
 		}
-		
-		public void setAdministrateursService(IAdministrateursService administrateursService) {
-			this.administrateursService = administrateursService;
-		}
-
-		public void setEtudiantsService(IEtudiantsService etudiantsService) {
-			this.etudiantsService = etudiantsService;
-		}		
-		
-		
-		/*__________________________ méthodes __________________________*/
-		
-		/**
-		 * méthode qui permet de récupérer les informations de la personne connectée
-		 * @param authentication
-		 * @return
-		 */
-		public Personnes getInfosPersonneConnecte(Authentication authentication) {
-			
-			Personnes personneConnecte = null;
-			
-			if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-				
-				//1. cas d'un admin : récupération de l'administrateur connecté
-				personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
-		
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-				
-				//1. cas d'un enseignant : récupération de l'enseignant connecté
-				personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-				
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-				
-				//1. cas d'un etudiant : récupération de l'eutidnat connecté
-				personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-			}
-			
-			return personneConnecte;
-			
-		}//end getInfosPersonneConnecte
-		
-		
-
-		
+	
 		/*=================================================================*/
 		/*======================= méthodes gestionnaires ==================*/
 		/*=================================================================*/
 		
 		/**
-		 * Méthode permettant de récupérer la liste des etudiants via le service, Méthode
+		 * Méthode permettant de récupérer la liste des aides via le service, Méthode
 		 * appellée lors d'une requête HTTP de type GET
 		 * 
 		 * @param model
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/listeAide", method = RequestMethod.GET)
-		public String recupererListeAideBdd(ModelMap model) {
+		public String recupererListeAideBdd(ModelMap model, Authentication authentication) {
 
 			// 1. recup de la liste des employés dans la bdd via le service
 
@@ -138,33 +99,35 @@ public class GestionAideService {
 			// aide de la page
 			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
 			model.addAttribute("attribut_help", aideDeLaPage);
-			
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
 			// 3. renvoie du nom logique de la vue			
 			return "liste-aide";
 
 		}//end recupererListeAideBdd
 
 		/**
-		 * Méthode pour l'initialisation de l'ajout d'étudiant Cette méthode permet
-		 * d'afficher le formulaire permettant l'ajout d'un nouvel Etudiant </br>
+		 * Méthode pour l'initialisation de l'ajout d'aide.
+		 * Cette méthode permet d'afficher le formulaire permettant l'ajout d'une nouvelle Aide </br>
 		 * Appelée via une requête HTTP de type GET
 		 * 
 		 * @param model
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/editAide", method = RequestMethod.GET)
-		public String afficherFormulaireEdition(@RequestParam("idAide") Long pIdAide, ModelMap model) {
+		public String afficherFormulaireEdition(@RequestParam("idAide") Long pIdAide, ModelMap model, Authentication authentication) {
 
 			if (pIdAide == 0) {
 
 				// définition d'un objet de commande
 
 				Aide aide = new Aide();
-
+				
 				// Renvoi de l'objet vers la vue
 
 				model.addAttribute("attribut_aide", aide);
 				model.addAttribute("idAide", pIdAide);
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} else if (pIdAide != 0) {
 
@@ -176,24 +139,29 @@ public class GestionAideService {
 
 				model.addAttribute("attribut_aide", aideToUpdate);
 				model.addAttribute("idAide", pIdAide);
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} //end else
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("edit-aide");
+			model.addAttribute("attribut_help", aideDeLaPage);			
+			
 			return "edit-aide";
 
 		}//end afficherFormulaireEdition
 
 		/**
-		 * Méthode permettant d'ajouter l'étudiant à la bdd après soumission du
+		 * Méthode permettant d'ajouter l'aide à la bdd après soumission du
 		 * formulaire </br>
 		 * Appelée via une requête HTTP de type POST
 		 * 
-		 * @param pEtudiant
+		 * @param pAide
 		 * @param model
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/edit", method = RequestMethod.POST)
-		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model) {
+		public String ajoutAideBdd(@ModelAttribute("attribut_aide") Aide pAide, ModelMap model, Authentication authentication) {
 			
 			if (pAide.getIdAide() == null) {
 
@@ -204,11 +172,10 @@ public class GestionAideService {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
-				
-				return "liste-aide";
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-			}
-			if (pAide.getIdAide() != 0) {			
+
+			}else  {			
 
 				// Modif etudiant via couche service
 
@@ -217,13 +184,17 @@ public class GestionAideService {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_aide", aideService.findAll());
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-				return "liste-aide";
+				
 			
 			}//end if
 
+			// aide de la page
+			Aide aideDeLaPage = aideService.findAideByURL("liste-aide");
+			model.addAttribute("attribut_help", aideDeLaPage);	
+			
 			return "liste-aide";
-
 		}//end ajoutAideBdd
 
 		/**
@@ -235,7 +206,7 @@ public class GestionAideService {
 		 * @return
 		 */
 		@RequestMapping(value = "/aide/delete", method = RequestMethod.GET)
-		public String supprimerAideBDD(@RequestParam("idAide") Long pIdAide, ModelMap model) {
+		public String supprimerAideBDD(@RequestParam("idAide") Long pIdAide, ModelMap model, Authentication authentication) {
 
 			// Récup de l'aide à supprimer
 
@@ -244,8 +215,9 @@ public class GestionAideService {
 			// Récup nouvelle liste et envoie vers vue
 
 			model.addAttribute("attribut_liste_aide", aideService.findAll());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
-			return "liste-aide";
+			return "redirect:/aide/listeAide";
 
 		}//end supprimerAideBDD
 		

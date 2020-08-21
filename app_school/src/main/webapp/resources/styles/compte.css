@@ -1,0 +1,150 @@
+@charset "ISO-8859-1";
+
+/* ============== INFORMATIONS ================= */	
+
+.informations{
+	
+	align:center;
+	width:90%;
+	border: 1px solid lightgray;
+	border-radius:15px;
+	margin: 20px 4% 20px 4%;	
+	padding: 15px 30px;	
+			
+}
+	
+.informations-header{
+	
+}	
+
+
+.photo{
+	align: center;
+	height: 100px;
+	width: 100px;
+	border-radius:50%;
+	background: lightgray;
+	overflow: hidden
+}
+
+.photo img{
+	height: 100%;
+	width: 100%;
+	object-fit: cover;		
+}
+		
+.info{
+}		
+		
+.info-header{
+	padding-left:20px;
+	padding-top:5px;
+	color: #7e7e7e;
+	font-family: sans-serif;
+	letter-spacing:2px;
+	font-size: 12px;	
+	font-weight: 520;
+	text-transform: uppercase;
+}
+
+.info-content{
+	padding-left:20px;
+	font-size: 20px;
+}
+	
+/* ============== ADRESSES ================= */	
+	
+.adresses{	
+	align:center;
+	width:90%;
+	margin: 20px 4% 20px 4%;	
+	padding: 15px 30px;	
+}
+
+.adresses-header{
+}
+
+.add-adress{
+	border: dashed 1px lightgray;
+	border-radius:5px;
+	text-align:center;
+	height:200px;
+	margin: 20px 10px 0px 0px;
+	
+}
+
+.add-adress a{
+	width:100%;
+	height:100%;
+	text-transform:none;
+	text-decoration:none;	
+}
+
+.add-adress a:hover{
+	text-transform:none;	
+	text-decoration:none;
+}
+
+.add-adress .plus{
+	margin-top:40px;
+	text-align:center;
+	color:lightgray;
+}
+
+.add-adress h4{
+	margin-top:20px;
+	text-align:center;
+	color: #7e7e7e;
+}
+
+.adresse{
+	margin: 20px 5px 0px 5px;
+	border-radius:5px;
+	border: solid 1px lightgray;
+	height:200px;
+	padding:20px 0 0 50px;
+}
+
+.adresse .numero{
+	font-size:20px;
+}
+
+.adresse .rue{
+	font-size:20px;
+	margin-left:5px;
+	
+}
+
+
+.adresse .code-postal{
+	font-size:22px;
+	margin-right:20px;
+	font-weight:bold;
+}
+
+
+.adresse .ville{
+	font-size:22px;
+}
+
+
+.adresse .gestion{
+	position:absolute;
+	bottom:10px;
+	align:center
+}
+
+.adresse .gestion span{
+	margin:-3px 20px 0 20px;
+	color:lightgray;
+}
+
+.adresse .gestion a{
+	font-size:14px;
+}
+
+
+
+
+
+

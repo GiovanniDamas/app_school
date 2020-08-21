@@ -187,7 +187,7 @@ public class PromotionDAOImpl implements IPromotionDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
 																					+ "EnseignantMatierePromotionLink link, "
 																					+ "Enseignants e "
 																					+ "WHERE p.idPromotion = link.promotion.idPromotion "
@@ -224,7 +224,7 @@ public class PromotionDAOImpl implements IPromotionDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT p FROM Promotion p, "
+			Query<Promotion> getPromotionByEnseignantQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
 																					+ "Etudiants e "
 																					+ "WHERE p.idPromotion = e.promotion.idPromotion "
 																					+ "AND e.idPersonne = :pIdEtudiant ");
@@ -242,6 +242,43 @@ public class PromotionDAOImpl implements IPromotionDAO {
 				
 		}//end catch
 	
-	}//end afficherPromotionByEnseignant
+	}//end afficherPromotionByEtudiant
+	
+	/**
+	 * permet de récup la liste des promotions associés à une matiere 
+	 * @param pIdMatiere : l'id de la matière
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	@Override
+	public List<Promotion> afficherPromotionByMatiere(Long pIdMatiere) {
+
+		//récup de la session d'hibernate
+		Session session = this.sessionFactory.getCurrentSession();
+				
+		try {
+					
+			//construction requête HQL
+			Query<Promotion> getPromotionByMatiereQuery = session.createQuery("SELECT DISTINCT p FROM Promotion p, "
+																					+ "Matiere m, "
+																					+ "EnseignantMatierePromotionLink link "
+																					+ "WHERE p.idPromotion = link.promotion.idPromotion "
+																					+ "AND link.matiere.idMatiere = m.idMatiere "
+																					+ "AND m.idMatiere = :pIdMatiere");
+					
+			//passage de paramètre
+			getPromotionByMatiereQuery.setParameter("pIdMatiere", pIdMatiere);
+					
+			//envoi, execution et récup résultat
+			return getPromotionByMatiereQuery.getResultList();
+					
+		} catch (HibernateException e) {
+					
+			System.out.println("... (CoursDAOImpl) Erreur lors de la méthode afficherPromotionByMatiere ...");
+			throw e;
+				
+		}//end catch
+	
+	}//end afficherPromotionByMatiere
 
 }// end classe

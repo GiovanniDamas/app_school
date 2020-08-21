@@ -61,22 +61,6 @@ public class GestionEtudiantCoursController {
 		this.etudiantsService = etudiantsService;
 	}
 	
-	//___ déclaration du service de enseignant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEnseignantsService enseignantsService;
-
-	public void setEnseignantsService(IEnseignantsService enseignantsService) {
-		this.enseignantsService = enseignantsService;
-	}
-
-	//____ déclaration du service de administrateur avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IAdministrateursService administrateursService;
-
-	public void setAdministrateursService(IAdministrateursService administrateursService) {
-		this.administrateursService = administrateursService;
-	}
-	
 	@Autowired
 	private IAideService aideService;
 		
@@ -96,34 +80,13 @@ public class GestionEtudiantCoursController {
 		this.etudiantCoursValidator = etudiantCoursValidator;
 	}
 	
-	/**
-	 * méthode qui permet de récupérer les informations de la personne connectée
-	 * @param authentication
-	 * @return
-	 */
-	public Personnes getInfosPersonneConnecte(Authentication authentication) {
-		
-		Personnes personneConnecte = null;
-		
-		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-			
-			//1. cas d'un admin : récupération de l'administrateur connecté
-			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
 	
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-			
-			//1. cas d'un enseignant : récupération de l'enseignant connecté
-			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-			
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-			
-			//1. cas d'un etudiant : récupération de l'etudiant connecté
-			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-		}
-		
-		return personneConnecte;
-		
-	}//end getInfosPersonneConnecte
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}
 
 	/*=================================================================*/
 	/*======================= méthodes gestionnaires ==================*/
@@ -143,7 +106,7 @@ public class GestionEtudiantCoursController {
 		model.addAttribute("attribut_etudiant_cours", etudiantCoursToUpdate);
 		
 		//3. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		//4. renvoi de la liste des cours et des étudiants et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
@@ -198,7 +161,7 @@ public class GestionEtudiantCoursController {
 	public String afficherListeAbsencesByEtudiant(@RequestParam("etudiant-id") Long pIdEtudiant, ModelMap model, Authentication authentication) {
 		
 		// récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		if(pIdEtudiant==0) {
 			
@@ -238,7 +201,7 @@ public class GestionEtudiantCoursController {
 	public String afficherListeAbsencesPersonne(ModelMap model, Authentication authentication) {
 		
 		//1. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 		//2. récup de la liste des étudiants cours de la bdd via le service
 		List<EtudiantCours> listeAbsenceByPersonneBdd = etudiantCoursService.findAbsencesPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
@@ -270,7 +233,7 @@ public class GestionEtudiantCoursController {
 	public String afficherListeEtudiantCoursByCours(@RequestParam("id-cours") Long pIdCours, ModelMap model, Authentication authentication) {
 		
 		//1. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		if(pIdCours==0) {
 			

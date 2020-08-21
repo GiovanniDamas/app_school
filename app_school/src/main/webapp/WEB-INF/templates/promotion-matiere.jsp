@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Liaison matière à enseignants</title>
+<title>Liste des promotions pour la matiere</title>
+
 
 <!-- Lien vers feuille de style de Bootstrap -->
 <link
@@ -24,6 +24,9 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
+<script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"
+	data-auto-a11y="true"></script>
+
 <!-- Lien vers la font de la sidebar -->
 <link
 	href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
@@ -34,10 +37,13 @@
 	rel="stylesheet">
 <!-- 'Fredericka the Great' -->
 
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
-
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
 	<!-- ===================================================== -->
@@ -95,7 +101,7 @@
 						<span class="fa fa-user-circle"></span> Mon compte
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span
+						<a class="dropdown-item" href="#"><span
 							class="fa fa-address-card "></span> Mes informations</a> <a
 							class="dropdown-item"
 							href="${pageContext.request.contextPath}/logout"><span
@@ -116,6 +122,7 @@
 		</div>
 
 	</div>
+
 
 	<div class="wrapper">
 
@@ -167,66 +174,49 @@
 				<span></span> <span></span> <span></span>
 			</button>
 
-			<form:form modelAttribute="linkCommand" method="POST"
-				action="${pageContext.request.contextPath}/matiere/lier1">
 
-				<%-- affichage de tous les messages d'erreurs --%>
-				<form:errors path="*" cssClass="erreur_validation" element="div" />
+			<!--Put some content here	-->
+			<br />
+			<br />
 
-				<table width="60%">
-					<tr>
-						<td><form:hidden path="matiere.idMatiere" /></td>
-					</tr>
+			<div style="padding: 30px;">
+				<h1 style="margin-left: 20px">
+					<u>Liste des Promotions:</u>
+				</h1>
+			</div>
+			<div class="container">
+				<table class="table table-hover" style="width: 100%;">
 
-					<tr>
 
-						<td><form:label class="col-form-label"
-								path="matiere.idMatiere"> Id de la Matiere: </form:label></td>
-						<td><form:input disabled="true" path="matiere.idMatiere" /></td>
-					</tr>
 
-					<tr>
-						<td><form:label class="col-form-label"
-								path="promotion.idPromotion"> Promotions: </form:label></td>
-
-						<td><form:select class="form-control" 
-								path="promotion.idPromotion">
-								<c:forEach items="${attribut_liste_promotions}" var="prom">
-									<form:option value="${prom.idPromotion}">
-										<c:out value="${prom.libelle}" />
-									</form:option>
-								</c:forEach>
-							</form:select></td>
-						
-					</tr>
-
-					<tr>
-					<!--  
-						<td><form:label class="col-form-label"
-								path="enseignant.idPersonne"> Enseignants: </form:label></td>
-
-						<td><form:select class="form-control" multiple="true"
-								path="enseignant.idPersonne">
-								<c:forEach items="${attribut_liste_enseignant}" var="ens">
-									<form:option value="${ens.idPersonne}" >
-										<c:out value="${ens.nom} ${ens.prenom}" />
-									</form:option>
-								</c:forEach>
-							</form:select></td>
-						-->
-					</tr>
-
+					<thead>
 						<tr>
-							<td><input type="submit" value="Suivant" /></td>
-						</tr>
-					
-					
-				</table>
-			</form:form>
+							<th scope="col">Id Promotion</th>
+							<th scope="col">Libellé</th>
+							<th scope="col">Professeur</th>
+							<th scope="col">Supprimer</th>
 
+
+
+						</tr>
+					</thead>
+					<tbody>
+
+						<c:forEach items="${attribut_liste_promotion_matiere }" var="link">
+							<tr>
+								<td>${link.promotion.idPromotion}</td>
+								<td>${link.promotion.libelle}</td>
+								<td>${link.enseignant.nom}${link.enseignant.prenom}</td>
+								<td><a
+									href="${pageContext.request.contextPath}/matiere/supprimer-lien?idLien=${link.id}">
+										Supprimer</a></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->
@@ -242,24 +232,11 @@
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
 	<!-- ===================================================================== -->
-	
-	<script type="text/javascript">
 
-		
-		
 
-	</script>
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>
-		
-		
 
 
 </body>

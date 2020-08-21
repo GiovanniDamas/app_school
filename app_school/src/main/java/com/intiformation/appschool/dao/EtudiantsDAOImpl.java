@@ -169,7 +169,7 @@ public class EtudiantsDAOImpl implements IEtudiantsDAO {
 		
 		try {
 
-			Query<Etudiants> queryGetEtuByEns = session.createQuery("SELECT etu From Etudiants etu, Enseignants ens, Promotion p, EnseignantMatierePromotionLink link "
+			Query<Etudiants> queryGetEtuByEns = session.createQuery("SELECT DISTINCT etu From Etudiants etu, Enseignants ens, Promotion p, EnseignantMatierePromotionLink link "
 																				+ "WHERE etu.promotion.idPromotion = p.idPromotion "
 																				+ "AND p.idPromotion = link.promotion.idPromotion "
 																				+ "AND ens.idPersonne = link.enseignant.idPersonne "

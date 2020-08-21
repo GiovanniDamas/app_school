@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Cours;
+import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
 import com.intiformation.appschool.modeles.EtudiantCours;
 import com.intiformation.appschool.modeles.Etudiants;
+import com.intiformation.appschool.modeles.Matiere;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
 import com.intiformation.appschool.service.IAdministrateursService;
@@ -53,14 +55,6 @@ public class GestionCoursController {
 	//___ déclaration du service de promotion avec setter pour injection spring
 	@Autowired //injection par modificateur
 	private IPromotionService promotionService;
-	
-	//___ déclaration du service de enseignant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEnseignantsService enseignantsService;
-
-	//____ déclaration du service de administrateur avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IAdministrateursService administrateursService;
 
 	//___ déclaration du service de etudiant avec setter pour injection spring
 	@Autowired //injection par modificateur
@@ -82,15 +76,9 @@ public class GestionCoursController {
 	}
 	public void setMatiereService(IMatiereService matiereService) {
 		this.matiereService = matiereService;
-	}	
-	public void setEnseignantsService(IEnseignantsService enseignantsService) {
-		this.enseignantsService = enseignantsService;
-	}	
+	}		
 	public void setPromotionService(IPromotionService promotionService) {
 		this.promotionService = promotionService;
-	}
-	public void setAdministrateursService(IAdministrateursService administrateursService) {
-		this.administrateursService = administrateursService;
 	}
 	public void setEtudiantsService(IEtudiantsService etudiantsService) {
 		this.etudiantsService = etudiantsService;
@@ -117,40 +105,17 @@ public class GestionCoursController {
 	}
 
 	
-	/*======================Methodes======================*/
-	/**
-	 * méthode qui permet de récupérer les informations de la personne connectée
-	 * @param authentication
-	 * @return
-	 */
-	public Personnes getInfosPersonneConnecte(Authentication authentication) {
-		
-		Personnes personneConnecte = null;
-		
-		if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-			
-			//1. cas d'un admin : récupération de l'administrateur connecté
-			personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
 	
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-			
-			//1. cas d'un enseignant : récupération de l'enseignant connecté
-			personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-			
-		} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-			
-			//1. cas d'un etudiant : récupération de l'eutidnat connecté
-			personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-		}
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}
 		
-		return personneConnecte;
-		
-	}//end getInfosPersonneConnecte
-	
 	/*=================================================================*/
 	/*======================= méthodes gestionnaires ==================*/
 	/*=================================================================*/
-
 	/**
 	 * permet de supprimer un cours de la bdd
 	 * @param model
@@ -182,17 +147,17 @@ public class GestionCoursController {
 		model.addAttribute("attribut_cours", cours);
 		
 		//3. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
-		
+		model.addAttribute("attribut_idmatiere", null);					
+
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("formulaire-ajout");
 		model.addAttribute("attribut_help", aideDeLaPage);		
-		
 		
 		//5. renvoi du nom logique de la vue
 		return "cours/formulaire-ajout";
@@ -211,13 +176,15 @@ public class GestionCoursController {
 			coursValidator.validate(pCours, result);
 					
 			if (result.hasErrors()) {
-				
+								
 				//récup de la personne connectée
-				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 				
 				//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 				model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
-				model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
+				model.addAttribute("attribut_promotions", null);				
+				model.addAttribute("attribut_cours", pCours);
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication)); 
 
 				// aide de la page
 				Aide aideDeLaPage = aideService.findAideByURL("formulaire-ajout");
@@ -226,7 +193,7 @@ public class GestionCoursController {
 				//2.a renvoi vers le formulaire
 				return "cours/formulaire-ajout";
 			
-			}else {
+			}else {		
 				
 				//2.b ajout du cours dans la bdd
 				coursService.ajouterCours(pCours);
@@ -274,21 +241,23 @@ public class GestionCoursController {
 	 * @return
 	 */
 	@RequestMapping(value="/cours/formulaire-modif", method=RequestMethod.GET)
-	public String chargerModifCoursBdd(@RequestParam("coursId") Long pIdCours, ModelMap model, Authentication authentication) {
-		
+	public String chargerModifCoursBdd(@RequestParam("coursId") Long pIdCours, @ModelAttribute("modifMatiere") String pModifMatiere, ModelMap model, Authentication authentication) {
+				
 		//1. récupération du cours à modifier
 		Cours coursToUpdate = coursService.findCoursById(pIdCours);
-		
+			
 		//2. renvoi du cours vers la vue via l'objet model
 		model.addAttribute("attribut_cours", coursToUpdate);
 				
 		//3. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 		
 		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
-		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByMatiere(coursToUpdate.getMatieres().getIdMatiere()));
+		model.addAttribute("attribut_idmatiere", coursToUpdate.getMatieres().getIdMatiere());					
+		model.addAttribute("attribut_matiere", coursToUpdate.getMatieres());		
 		
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif");
@@ -298,6 +267,39 @@ public class GestionCoursController {
 		return "cours/formulaire-modif";
 		
 	}//end chargerModifCoursBdd
+	
+	/**
+	 * permet d'afficher le formulaire pour modifier un cours dans la bdd
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/cours/formulaire-modif/modifMatiere", method=RequestMethod.GET)
+	public String chargerModifCoursBddModifMatiere(@RequestParam("coursId") Long pIdCours, ModelMap model, Authentication authentication) {
+				
+		//1. récupération du cours à modifier
+		Cours coursToUpdate = coursService.findCoursById(pIdCours);
+			
+		//2. renvoi du cours vers la vue via l'objet model
+		model.addAttribute("attribut_cours", coursToUpdate);
+				
+		//3. récup de la personne connectée
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
+		
+		//4. renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+		model.addAttribute("attribut_promotions", promotionService.findPromotionByMatiere(coursToUpdate.getMatieres().getIdMatiere()));
+		model.addAttribute("attribut_idmatiere", null);					
+		model.addAttribute("attribut_matiere", null);
+	
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif");
+		model.addAttribute("attribut_help", aideDeLaPage);
+		
+		//5. renvoi du nom logique de la vue
+		return "cours/formulaire-modif";
+		
+	}//end chargerModifCoursBddModifMatiere
 	
 	/**
 	 * permet de modifier un cours dans la bdd
@@ -313,12 +315,16 @@ public class GestionCoursController {
 		if (result.hasErrors()) {
 
 			//récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 			//renvoi de la liste des matières et des promotions et de la personne connectée vers la vue 
 			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
-			model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));				
-			
+			model.addAttribute("attribut_promotions", promotionService.findPromotionByMatiere(coursService.findCoursById(pCours.getIdCours()).getMatieres().getIdMatiere()));				
+			model.addAttribute("attribut_cours", pCours);
+			model.addAttribute("attribut_idmatiere", coursService.findCoursById(pCours.getIdCours()).getMatieres().getIdMatiere());					
+			model.addAttribute("attribut_matiere", coursService.findCoursById(pCours.getIdCours()).getMatieres());					
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication)); 
+
 			// aide de la page
 			Aide aideDeLaPage = aideService.findAideByURL("formulaire-modif");
 			model.addAttribute("attribut_help", aideDeLaPage);
@@ -413,7 +419,8 @@ public class GestionCoursController {
 	public String afficherListeCoursByPersonne(ModelMap model, Authentication authentication) {
 		
 		//1. récup de la personne connectée
-		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
+		System.out.println(personneConnecte.getNom());
 		
 		//2. récup de la liste des cours de la bdd via le service
 		List<Cours> listeCoursByPersonneBdd = coursService.findCoursPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole());
@@ -425,7 +432,8 @@ public class GestionCoursController {
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 		model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
 		model.addAttribute("attribut_promotions", promotionService.findPromotionByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));
-		
+		model.addAttribute("modifMatiere", "false");
+
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("liste-cours");
 		model.addAttribute("attribut_help", aideDeLaPage);
@@ -450,7 +458,7 @@ public class GestionCoursController {
 		} else {
 			
 			//1. récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 
 			//2. récup de la liste des cours de la bdd via le service
 			List<Cours> listeCoursByMatiereBdd = coursService.findCoursPersonneMatiere(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pIdMatiere);
@@ -489,7 +497,7 @@ public class GestionCoursController {
 		} else {
 			
 			//1. récup de la personne connectée
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 			//2. récup de la liste des cours de la bdd via le service
 			List<Cours> listeCoursByPromoBdd = coursService.findCoursPersonneByPromotion(personneConnecte.getIdPersonne(), pIdPromotion, personneConnecte.getRole());
@@ -534,7 +542,7 @@ public class GestionCoursController {
 			} else {
 				
 				//1. récup de la personne connectée
-				Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+				Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
 			
 				//2. récup de la liste des cours de la bdd via le service
 				List<Cours> listeCoursByDateBdd = coursService.findCoursPersonneByDate(personneConnecte.getIdPersonne(), personneConnecte.getRole(), pDate);
@@ -563,5 +571,43 @@ public class GestionCoursController {
 		return "redirect:/cours/liste";
 	
 	}//end afficherListeCoursByDate
+	
+	
+	/**
+	 * permet de mettre à jour les promotions en fonction du choix de la matière
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/cours/choixpromotion", method=RequestMethod.GET)
+	public String afficherListePromotionByMatiere(@RequestParam("id-matiere") Long pIdMatiere, @RequestParam("coursId") Long pIdCours, ModelMap model, Authentication authentication) {
+			
+			//1. récup de la personne connectée
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication); 
+
+			//2. récup de la liste des promotions associés à la matière de la bdd via le service
+			List<Promotion> listePromotionsMatiere = promotionService.findPromotionByMatiere(pIdMatiere);
+						
+			//3. renvoi de la liste vers la vue via l'objet model de type 'ModelMap'
+			model.addAttribute("attribut_promotions", listePromotionsMatiere);
+			
+			//4. renvoi de la liste des matières et des promotions vers la vue 
+			model.addAttribute("attribut_matieres", matiereService.findMatiereByPersonne(personneConnecte.getIdPersonne(), personneConnecte.getRole()));					
+			model.addAttribute("attribut_idmatiere", pIdMatiere);					
+			model.addAttribute("attribut_matiere", matiereService.trouverMatiereId(pIdMatiere));
+			model.addAttribute("attribut_personne_connecte", personneConnecte);
+
+			//5. renvoi du nom logique de la vue
+
+			if(pIdCours == 0) {
+				model.addAttribute("attribut_cours", new Cours());
+				return "cours/formulaire-ajout";		
+			}else {				
+				model.addAttribute("attribut_cours", coursService.findCoursById(pIdCours));	
+				return "cours/formulaire-modif";
+			}//end else
+		
+	}//end afficherListePromotionByMatiere
+	
+	
 	
 }//end class

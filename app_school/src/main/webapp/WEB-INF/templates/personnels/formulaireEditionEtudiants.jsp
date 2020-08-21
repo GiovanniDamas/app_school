@@ -90,7 +90,7 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 			  </div>
 			</div>
@@ -167,7 +167,7 @@
 			enctype="multipart/form-data">
 
 			<tr>
-				<c:if test="${idPersonne} != 0"></c:if>
+
 				<td><form:hidden path="idPersonne" /></td>
 
 			</tr>
@@ -229,10 +229,12 @@
 				</div>
 
 				<div class="form-group">
-					<input type="submit" value="Ajouter" />
-
-					<c:if test="${idPersonne} != 0"></c:if>
-					<input type="submit" value="Modifier" />
+					<c:if test="${idPersonne == 0}" >
+						<input type="submit" value="Ajouter" />
+					</c:if>
+					<c:if test="${idPersonne != 0}">
+						<input type="submit" value="Modifier" />
+					</c:if>
 				</div>
 
 			</fieldset>

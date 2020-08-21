@@ -95,7 +95,7 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 			  </div>
 			</div>
@@ -170,26 +170,31 @@
 			<fieldset>
 			
 				<!--  récup de l'id du cours à modifier dans un champ caché -->
-				<c:if test="${idAide} != 0"> 
+				<%-- <c:if test="${idAide != 0} "> --%>
 					<form:hidden path="idAide"/>			
-				</c:if>
+				
 				
 				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
-					<form:label class="col-form-label" path="urlPage">Nom</form:label>
+					<form:label class="col-form-label" path="urlPage">Titre</form:label>
 					<form:input type="text" class="form-control" path="urlPage" />
 					<form:errors path="urlPage" cssStyle="color:red; font-style:italic;" />
 				</div>
 				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
-					<form:label class="col-form-label" path="contenu">Prénom</form:label>
+					<form:label class="col-form-label" path="contenu">Contenu</form:label>
 					<form:textarea type="text" class="helpcontent" rows="20" path="contenu" />
 					<form:errors path="contenu" cssStyle="color:red; font-style:italic;" />
 				</div>
 				
 				<div class="form-group">
-					<input type="submit" value="Ajouter" />
-
-					<c:if test="${idPersonne} != 0"></c:if>
-					<input type="submit" value="Modifier" />
+				
+					<c:if test="${idAide == 0}">
+						<input type="submit" value="Ajouter" />
+					</c:if>
+					
+					<c:if test="${idAide != 0}">
+						<input type="submit" value="Modifier" />
+					</c:if>
+					
 				</div>
 			
 			</fieldset>

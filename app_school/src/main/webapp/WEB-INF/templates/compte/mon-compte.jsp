@@ -1,20 +1,14 @@
-<%@page import="com.intiformation.appschool.modeles.Enseignants"%>
-<%@page import="com.intiformation.appschool.service.EnseignantsServiceImpl"%>
-<%@page import="com.intiformation.appschool.service.IEnseignantsService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
-
-
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>    
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Accueil</title>
-
+	<title>Insert title here</title>
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
 		rel="stylesheet">
@@ -22,6 +16,10 @@
 	<!-- Lien vers feuille de style perso de index -->
 	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
 	    rel="stylesheet">
+	    
+	<!-- Lien vers feuille de style perso de compte -->
+	<link href="${pageContext.request.contextPath}/resources/styles/compte.css"
+	    rel="stylesheet">	    
 
     <!-- Lien vers font awesome 4.7.0-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
@@ -38,20 +36,6 @@
 </head>
 <body>
 	
-<%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
-	
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
-
-	<div>
-
-     	<!--Put some content here-->
-
-		<h1>Hello world !!</h1>
- 	</div>
- 	
- <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
---%>
 
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
@@ -62,7 +46,7 @@
 		<h1 id="titre">SchoolApp</h1>
 		
 		<div id="connexion">
-		
+
 			<c:if test="${attribut_help != null}">
 				<!-- Bouton d'aide lançant un modal -->
 				<button type="button" class="btn" 
@@ -95,8 +79,6 @@
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-	
-		
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -156,48 +138,123 @@
 		<!-- ===================================================== -->
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
-		<div id="content">
-			<div class="container">			
+		<div id="content" style="width:100%">
+							
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
 	
-		<img src="${pageContext.request.contextPath}/resources/media/ecole.jpeg"  style=" width:20%; float:left ; margin-top: 20px; margin-right: 20px" />
-		</div>	
 		
-		<!-- Affichage d'un message lors de la déconnexion -->
-	    <div class="présentation" > 
+			<div class="container-fluid" style="align:center">
 	
-		<c:if test="${not empty param.logout_message}">
-			<div class="alert alert-dismissible alert-success col-12" style="float: right;">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<font> Déconnexion avec succès </font>
-			</div>
-		</c:if>
 	
-			<br />
+				<h1 style="text-align:center">Informations Personnelles</h1>
+	
+				<div class="container informations" >
+				
+					<div class="row informations-header"> 
+					
+						<h2 class="col-md-4">Profil</h2>	
+						<div class="col-md-6"></div> 
+						
+						<div class="col-md-2">
+							<figure class="photo" > 
+								
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ENSEIGNANT' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/conseiller.jpg" alt="Ens"/>
+								</c:if>
+								
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/${attribut_personne_connecte.photo}" alt="Etu"/>
+								</c:if>
+								<c:if test="${attribut_personne_connecte.role == 'ROLE_ADMIN' }">
+									<img src="${pageContext.request.contextPath}/resources/Images/administrateur.png" alt="A"/>
+								</c:if>
+								
+							</figure> 	
+						</div>
+					</div><!-- end informations-header -->
+					<hr align="center" size="1px" width="100%" color="gray"/>
+				
+				
+					<div class="row info">	<div class="col-md-4 info-header">Nom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.nom }</div>	</div>
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Prénom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.prenom }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">E-mail :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.email }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Identifiant :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.identifiant }</div>	</div> 
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row info">	<div class="col-md-4 info-header">Password :</div> 	<div class="col-md-8 info-content">**********</div>	</div> 
+					
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+						<hr align="center" size="1px" width="100%" color="gray"/>
+						<div class="info">	<div class="info-header">Anniversaire</div> 	<div class="info-contetn">${attribut_personne_connecte.dateDeNaissance }</div>	</div>
+					</c:if>
+					
+					
+				
+					<br/>
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ENSEIGNANT' }">
+						<a class="btn btn-info" type="button" style="align:right"
+								href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
+								Modifier
+						</a>
+					</c:if>
+					<c:if test="${attribut_personne_connecte.role == 'ROLE_ETUDIANT' }">
+						<a class="btn btn-info" type="button" style="align:right"
+								href="${pageContext.request.contextPath}/gestionEtudiants/form-edit?idPersonne=${attribut_personne_connecte.idPersonne}">
+								Modifier
+						</a>
+					</c:if>					
+					
+				</div><!-- end informations -->
+	
+				
+				<div class="container adresses">
+				
+					<div class="row adresses-header"> 
+						<h2 class="col-md-6">Adresses</h2>	
+						<div class="col-md-6"></div> 
+					</div>
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row">
+					
+						<div class="col-lg-3 col-md-5 col-sm-11 add-adress" >
+							<a href="${pageContext.request.contextPath}/compte/editAdresse?idAdresse=0">
+								<span class="fa fa-plus fa-2x plus"></span>
+								<br/>
+								<h4>Ajouter une adresse</h4>
+							</a>	
+						</div>
+					
+					<c:forEach items="${attribut_adresses}"  var="adresse">
+						
+						
+						<div class="col-lg-3 col-md-5 col-sm-11  adresse" >
+							<div class="row ">	<div class="numero">${adresse.numero} </div>  <div class="rue"> ${adresse.rue}</div>		</div>
+							<div class="row">	<div class="code-postal">${adresse.codePostal} </div>	<div class="ville"> ${adresse.ville}</div>	</div>
+							<div class="row gestion">	
+								<a href="${pageContext.request.contextPath}/compte/editAdresse?idAdresse=${adresse.idAdresse}">Modifier</a> 
+								<span>|</span>	
+								<a href="${pageContext.request.contextPath}/compte/deleteAdresse?idAdresse=${adresse.idAdresse}">Supprimer</a>	
+							</div>
+						</div>
+					
+					</c:forEach>
+					
+					</div>
+				</div><!-- end adresses -->
+	
+	
+	
+			</div><!-- end container fluid -->
 
-			<!--Put some content here-->
-	
-			<h3 >Bienvenue sur le site de l'école Sainte Thérèse de Saint-Vaast-la-Hougue. </h3>
-			
-			<br/><br/><br/>
-			<p > 
-				Nous avons le plaisir d'accompagner vos enfants du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
-				ces conditions si spéciales.<br/>
-				Nous mettrons tout en oeuvre pour continuer notre enseignement tel que vous le connaissez tout en respectant les consignes pour le bien de la cause sanitaire.<br/>
-				Nous vous remercions pour votre soutient et votre compréhension. <br/>
-				Mme la directrice.
-			</p>
-			
-			<hr>
-			
-			<p >
-				Les inscriptions à l'école pour l'année scolaire 2020/2021 sont désormais ouvertes !!
-			</p>
-
-		  </div>
-		
 		</div><!-- end content -->
 	</div>	<!-- end wrapper -->
 

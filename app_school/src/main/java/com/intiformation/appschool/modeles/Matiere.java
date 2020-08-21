@@ -94,4 +94,14 @@ public class Matiere implements Serializable {
 	}
 
 
+	public List<EnseignantMatierePromotionLink> getEnseignantMatierePromotionLinks() {
+		return enseignantMatierePromotionLinks;
+	}
+
+
+	public void setEnseignantMatierePromotionLinks(List<EnseignantMatierePromotionLink> enseignantMatierePromotionLinks) {
+		this.enseignantMatierePromotionLinks = enseignantMatierePromotionLinks;
+	}
+
+
 }//end classe

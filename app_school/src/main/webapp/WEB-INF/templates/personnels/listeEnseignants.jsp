@@ -86,8 +86,8 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fa fa-sign-out" ></span> Déconnexion</a>
 			  </div>
 			</div>
 			<%-- 
@@ -152,7 +152,7 @@
 
 		<table class="table table-bordered" style="width:90%;margin-left:5%">
 
-			<h3 align="center">Liste des Enseignant</h3>
+			<h3 align="center">Liste des Enseignants</h3>
 			
 			<thead class="thead-dark">
 				<tr>
@@ -166,6 +166,11 @@
 					<th scope="col">Supprimer</th>
 					</s:authorize>
 					<th scope="col">Envoyer un mail</th>					
+					<th scope="col">Adresse(s)</th>
+					<th scope="col">Modifier</th>
+					<th scope="col">Supprimer</th>
+					<th scope="col">Envoyer un mail</th>	
+									
 				</tr>
 			</thead>
 			<tbody>
@@ -181,6 +186,19 @@
 						<a
 							href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
 							aria-pressed="true"><i class="fas fa-pencil-alt fa-3x"></i>Modifier
+						
+						
+						<td><a	href="${pageContext.request.contextPath}/adresses/listeAdresses?idPersonne=${ens.idPersonne}&role=${ens.role}"
+								class="fa fa-home fa-1x"
+								aria-pressed="true">
+								Voir adresse(s)
+							</a>
+						</td>						
+						
+						<td><a	href="${pageContext.request.contextPath}/gestionEnseignants/form-edit?idPersonne=${ens.idPersonne}"
+								class="fa fa-pencil-square-o fa-1x"
+								aria-pressed="true">
+								Modifier
 						</a></td>
 						</s:authorize>
 						
@@ -188,7 +206,8 @@
 						<!-- colonne pour la suppression de l'emploe -->
 						<s:authorize access="hasAnyRole('ROLE_ADMIN')">
 						<td><a
-							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}">Supprimer</a>
+							href="${pageContext.request.contextPath}/gestionEnseignants/delete?idPersonne=${ens.idPersonne}"
+							class="fa fa-trash fa-1x"> Supprimer</a>
 						</td>
 						</s:authorize>
 						

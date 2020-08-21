@@ -8,13 +8,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.EnseignantMatierePromotionLink;
+import com.intiformation.appschool.modeles.Enseignants;
 import com.intiformation.appschool.modeles.Matiere;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.modeles.Promotion;
@@ -26,9 +30,12 @@ import com.intiformation.appschool.service.IEtudiantsService;
 import com.intiformation.appschool.service.IMatiereService;
 import com.intiformation.appschool.service.IPromotionService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Implémentation d'un controleur spring mvc pour la gestion des matières
@@ -55,7 +62,7 @@ public class GestionMatiereController {
 	// ___ déclaration du service de enseignant avec setter pour injection spring
 	@Autowired // injection par modificateur
 	private IEnseignantsService enseignantsService;
-	
+
 	@Autowired
 	private IAideService aideService;
 
@@ -148,7 +155,7 @@ public class GestionMatiereController {
 	 */
 	@RequestMapping(value = "/matiere/liste-matiere", method = RequestMethod.GET)
 	public String recupererListeMatieresDB(ModelMap model, Authentication authentication) {
-		
+
 		// 1. Récupération de la personne connectée
 		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
 
@@ -159,11 +166,10 @@ public class GestionMatiereController {
 		model.addAttribute("attribut_liste_matieres", listeMatieresDB);
 		model.addAttribute("attribut_personne_connecte", personneConnecte);
 
-		
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("liste-matiere");
 		model.addAttribute("attribut_help", aideDeLaPage);
-		
+
 		// 4. Renvoi de la liste vers la vue
 		return "liste-matiere";
 	}// end recupererListeMatieresDB
@@ -220,7 +226,7 @@ public class GestionMatiereController {
 			// aide de la page
 			Aide aideDeLaPage = aideService.findAideByURL("matiere-formulaire");
 			model.addAttribute("attribut_help", aideDeLaPage);
-			
+
 			String viewName = "matiere-formulaire";
 			return new ModelAndView(viewName, dataCommand);
 
@@ -241,7 +247,7 @@ public class GestionMatiereController {
 			// aide de la page
 			Aide aideDeLaPage = aideService.findAideByURL("matiere-formulaire");
 			model.addAttribute("attribut_help", aideDeLaPage);
-			
+
 			return new ModelAndView("matiere-formulaire", "linkCommand", linkToUpdate);
 
 		} // end else
@@ -359,10 +365,13 @@ public class GestionMatiereController {
 	 */
 
 	@RequestMapping(value = "/matiere/liaison-matiere-form", method = RequestMethod.GET)
-	public ModelAndView AfficherFormulaireAjoutPromotions(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model) {
+	public ModelAndView AfficherFormulaireAjoutPromotions(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model, Authentication authentication) {
 
 		EnseignantMatierePromotionLink linkToUpdate = new EnseignantMatierePromotionLink();
 
+		
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
 		// List<EnseignantMatierePromotionLink> listeLinksParMatière =
 		// linkService.trouverlinkViaIdMatiere(pIdMatiere);
 
@@ -373,14 +382,36 @@ public class GestionMatiereController {
 		List<Promotion> listePromotionsDB = promoService.trouverAllPromotions();
 		model.addAttribute("attribut_liste_promotions", listePromotionsDB);
 		model.addAttribute("idMatiere", pIdMatiere);
+		// model.addAttribute("attribut_liste_enseignant",
+		// enseignantsService.findAllEnseignant());
 
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("lier-matiere-enseignant");
 		model.addAttribute("attribut_help", aideDeLaPage);
-		
+
 		return new ModelAndView("lier-matiere-enseignant", "linkCommand", linkToUpdate);
 
 	}// end AfficherFormulaireModification
+
+	@RequestMapping(value = "/matiere/lier1", method = RequestMethod.POST)
+	public ModelAndView afficherForumlaireajoutEnseignant(
+			@RequestParam(value = "promotion.idPromotion") Long IDPromSelect, ModelMap model,
+			@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink, Authentication authentication)
+			throws Exception {
+
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+		
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+		pLink.getPromotion().setIdPromotion(IDPromSelect);
+
+		List<EnseignantMatierePromotionLink> listLinks = linkService.trouverlinkViaIdPromo(IDPromSelect);
+
+		model.addAttribute("attribut_liste_enseignant", listLinks);
+		model.addAttribute("attribut_liste_promotions", promoService.trouverAllPromotions());
+
+		return new ModelAndView("lier-matiere-enseignant-promotion", "linkCommand", pLink);
+
+	}// end
 
 	/**
 	 * Méthode qui permet de modifier une matiere dans la database Invoquée au clic
@@ -391,103 +422,84 @@ public class GestionMatiereController {
 	 * 
 	 * @return : le nom logique de la vue
 	 */
-	@RequestMapping(value = "/matiere/lier", method = RequestMethod.POST)
-	public String lierMatierePromotionDB(@RequestParam(value = "promotion.idPromotion") List<Long> listeIDPromSelect,
-			ModelMap model, @ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink) throws Exception {
+	@RequestMapping(value = "/matiere/lier2", method = RequestMethod.POST)
+	public String lierMatierePromotionDB(@RequestParam(value = "enseignant.idPersonne") List<Long> listeIDEnseignants ,
+			ModelMap model, HttpServletRequest request,
+			@ModelAttribute("linkCommand") EnseignantMatierePromotionLink pLink) throws Exception {
 
+	
+		
 		System.out.println("pIdMatiere" + pLink.getMatiere().getIdMatiere());
+		System.out.println("pIdPromotion" + pLink.getPromotion().getIdPromotion());
+
+		List<EnseignantMatierePromotionLink> listeDePromo = linkService
+				.trouverlinkViaIdPromo(pLink.getPromotion().getIdPromotion());
 
 		Matiere matiereAAjouter = matiereService.trouverMatiereId(pLink.getMatiere().getIdMatiere());
 
-		// List<EnseignantMatierePromotionLink> listeLinksParMatière = linkService
-		// .trouverlinkViaIdMatiere(pLink.getMatiere().getIdMatiere());
-		// List<EnseignantMatierePromotionLink> listeTousLesLinks =
-		// linkService.trouverAllLinks();
+		for (EnseignantMatierePromotionLink link : listeDePromo) {
 
-		for (Long IdPromotion : listeIDPromSelect) {
+			for (Long idEnseignant : listeIDEnseignants) {
 
-			System.out.println("PidPromotion=" + IdPromotion);
-
-			List<EnseignantMatierePromotionLink> listLinkPromo = linkService.trouverlinkViaIdPromo(IdPromotion);
-
-			for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
-
-				System.out.println("Id de la promotion à changer = " + linkParPromo.getPromotion().getIdPromotion());
-
-				if (linkParPromo.getMatiere() != null) {
-
-					linkParPromo.setMatiere(matiereAAjouter);
-					linkService.ajouterLink(linkParPromo);
-
-				} else {
-
-					linkParPromo.setMatiere(matiereAAjouter);
-					linkService.modifierLink(linkParPromo);
-
+				if (idEnseignant == link.getEnseignant().getIdPersonne()) {
+					
+					link.setMatiere(matiereAAjouter);
+					linkService.modifierLink(link);
 				}
+	
 
 			} // end for
 		}
-
-		/*
-		 * for (EnseignantMatierePromotionLink link : listeTousLesLinks) {
-		 * 
-		 * if (listeLinksParMatière.size() == 0) {
-		 * 
-		 * 
-		 * for (Long IdPromotion : listeIDPromSelect) {
-		 * 
-		 * System.out.println("IdPromotion= " + IdPromotion);
-		 * 
-		 * List<EnseignantMatierePromotionLink> listLinkPromo =
-		 * linkService.trouverlinkViaIdPromo(IdPromotion);
-		 * 
-		 * for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
-		 * 
-		 * System.out.println("Id de la promotion du link" +
-		 * link.getPromotion().getIdPromotion());
-		 * 
-		 * linkParPromo.setMatiere(matiereAAjouter);
-		 * 
-		 * linkService.modifierLink(linkParPromo); } // end for } // end for } else {
-		 * 
-		 * for (EnseignantMatierePromotionLink linksParMatiere : listeLinksParMatière) {
-		 * 
-		 * linksParMatiere.setMatiere(matiereNull);
-		 * linkService.modifierLink(linksParMatiere); }
-		 * 
-		 * for (Long IdPromotion : listeIDPromSelect) {
-		 * System.out.println("IdPromotion= " + IdPromotion);
-		 * 
-		 * List<EnseignantMatierePromotionLink> listLinkPromo =
-		 * linkService.trouverlinkViaIdPromo(IdPromotion);
-		 * 
-		 * for (EnseignantMatierePromotionLink linkParPromo : listLinkPromo) {
-		 * 
-		 * System.out.println("Id de la promotion du link" +
-		 * linkParPromo.getPromotion().getIdPromotion());
-		 * 
-		 * linkParPromo.setMatiere(matiereAAjouter);
-		 * linkService.ajouterLink(linkParPromo);
-		 * 
-		 * } // end for
-		 * 
-		 * } // end for break;
-		 * 
-		 * 
-		 * } // end if(link.getMatiere().getIdMatiere()==null) } // end for
-		 * (EnseignantMatierePromotionLink link : listeTousLesLinks)
-		 * 
-		 * // int taille = listeLinksParMatière.size(); //
-		 * System.out.println("Taille de la liste de link pour la matiere avec id " + //
-		 * pLink.getMatiere().getIdMatiere() // + " = " + taille);
-		 * 
-		 * // if (listeLinksParMatière.size() == 0) {
-		 */
+		
 		model.addAttribute("attribut_liste_matieres", matiereService.trouverAllMatieres());
 
 		return "redirect:/matiere/liste-matiere";
 
 	}// end modifierEmployeDB()
+
+	@RequestMapping(value = "/matiere/promotion-matiere", method = RequestMethod.GET)
+	public String afficherPromotionParMatiere(@RequestParam("idMatiere") Long pIdMatiere, ModelMap model,
+			Authentication authentication) {
+
+		// 3. récup de la personne connectée
+		Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+
+		model.addAttribute("attribut_liste_promotion_matiere", linkService.trouverlinkViaIdMatiere(pIdMatiere));
+		model.addAttribute("attribut_personne_connecte", personneConnecte);
+
+		// aide de la page
+		Aide aideDeLaPage = aideService.findAideByURL("enseignants-promotion");
+		model.addAttribute("attribut_help", aideDeLaPage);
+
+		return "promotion-matiere";
+
+	}// end afficherPromotionEnseignants
+	
+	/**
+	 * Permet de supprimer une matière dans la base de données avec son id via le
+	 * service
+	 * 
+	 * @return le nom logique de la vue
+	 */
+	@RequestMapping(value = "/matiere/supprimer-lien", method = RequestMethod.GET)
+	public String supprimerLienMatierePromotionDB(@RequestParam("idLien") Long pIdLink, ModelMap model, RedirectAttributes redirectAttributes) {
+
+		EnseignantMatierePromotionLink lienASupprimer = linkService.trouverLinkId(pIdLink);
+
+		Long IdMatiere = lienASupprimer.getMatiere().getIdMatiere();
+		redirectAttributes.addFlashAttribute("idMatiere", IdMatiere);
+		
+		
+		model.addAttribute("attribut_liste_promotion_matiere", linkService.trouverlinkViaIdMatiere(IdMatiere));
+		
+		//Matiere matiereNulle = new Matiere(0L);
+		lienASupprimer.setMatiere(null);
+		
+		linkService.modifierLink(lienASupprimer);
+	
+		return "promotion-matiere";
+
+	}// end supprimerEmployeDB
+	
 
 }// end class

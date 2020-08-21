@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,9 +51,11 @@ import com.intiformation.appschool.service.IPromotionService;
 @Controller
 public class GestionEtudiantsController {
 
-	private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images";
-//	private static final String UPLOAD_DIRECTORY = "/Users/marle/Desktop/Marlene/Formation_INTI_JAVA/Projet_groupe_app_school/app_school/app_school/src/main/webapp/resources/Images";
-
+	//private static final String UPLOAD_DIRECTORY = "/Users/giovanni/Desktop/FormationJAVA/projet_app_school /app_school/app_school/src/main/webapp/resources/Images";
+	//private static final String UPLOAD_DIRECTORY = "/Users/marle/Desktop/Marlene/Formation_INTI_JAVA/Projet_groupe_app_school/app_school/app_school/src/main/webapp/resources/Images";
+	//private static final String UPLOAD_DIRECTORY = "/Users/hannahlevardon/Documents/Adaming/App_gestion_ecole/app_school/app_school/src/main/webapp/resources/Images";
+	private static final String UPLOAD_DIRECTORY = "/app_school/src/main/webapp/resources/Images";
+	
 	private Etudiants etudiants;
 	// Déclaration de la couche service Etudiants
 	@Autowired
@@ -110,6 +113,14 @@ public class GestionEtudiantsController {
 	public void setEtudiantValidator(EtudiantValidator etudiantValidator) {
 		this.etudiantValidator = etudiantValidator;
 	}
+	
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
+	
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}
 
 	/**
 	 * Méthode permettant de récupérer la liste des etudiants via le service,
@@ -119,7 +130,7 @@ public class GestionEtudiantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEtudiants/listeEtudiants", method = RequestMethod.GET)
-	public String recupererListeEtudiantBdd(ModelMap model) {
+	public String recupererListeEtudiantBdd(ModelMap model, Authentication authentication) {
 
 		// 1. recup de la liste des employés dans la bdd via le service
 
@@ -127,6 +138,7 @@ public class GestionEtudiantsController {
 
 		// 2. renvoi de la liste vers la vue via l'objet model
 		model.addAttribute("attribut_liste_etudiants", listeEtudiantsBDD);
+		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("listeEtudiants");
@@ -146,7 +158,7 @@ public class GestionEtudiantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEtudiants/form-edit", method = RequestMethod.GET)
-	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model) {
+	public String afficherFormulaireEdition(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model, Authentication authentication) {
 
 		if (pIdEtudiant == 0) {
 
@@ -158,6 +170,7 @@ public class GestionEtudiantsController {
 			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());
 			model.addAttribute("attribut_etudiants", etudiant);
 			model.addAttribute("idPersonne", pIdEtudiant);
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		} else if (pIdEtudiant != 0) {
 
@@ -170,6 +183,7 @@ public class GestionEtudiantsController {
 			model.addAttribute("attribut_etudiants", etudiantToUpdate);
 			model.addAttribute("idPersonne", pIdEtudiant);
 			model.addAttribute("photo", etudiantToUpdate.getPhoto());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		} // END IF ELSE IF
 
@@ -194,7 +208,7 @@ public class GestionEtudiantsController {
 	@RequestMapping(value = "/gestionEtudiants/edit", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public String ajoutEtudiantBdd(@ModelAttribute("attribut_etudiants") Etudiants pEtudiant,
 			@RequestParam(name = "file", required = false) MultipartFile file, HttpServletResponse httpServletResponse,
-			ModelMap model, BindingResult result) {
+			ModelMap model, BindingResult result, Authentication authentication) {
 
 		etudiantValidator.validate(pEtudiant, result);
 
@@ -204,6 +218,9 @@ public class GestionEtudiantsController {
 			Aide aideDeLaPage = aideService.findAideByURL("formulaireEditionEtudiants");
 			model.addAttribute("attribut_help", aideDeLaPage);	
 			
+			model.addAttribute("attribut_promotions", promotionService.trouverAllPromotions());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
+
 			// renvoie du formulaire
 			return "personnels/formulaireEditionEtudiants";
 
@@ -277,6 +294,7 @@ public class GestionEtudiantsController {
 			// Recup nouvelle liste d'etudiant après ajout
 
 			model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+			model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			return "redirect:/gestionEtudiants/listeEtudiants";
 
@@ -345,6 +363,7 @@ public class GestionEtudiantsController {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} else {
 				
@@ -437,6 +456,7 @@ public class GestionEtudiantsController {
 				// Recup nouvelle liste d'etudiant après ajout
 
 				model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+				model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 			} // END if
 
@@ -455,7 +475,7 @@ public class GestionEtudiantsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gestionEtudiants/delete", method = RequestMethod.GET)
-	public String supprimerEtudiantsBDD(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model) {
+	public String supprimerEtudiantsBDD(@RequestParam("idPersonne") Long pIdEtudiant, ModelMap model, Authentication authentication) {
 
 		// Récup de l'étudiant à supprimer
 
@@ -464,6 +484,7 @@ public class GestionEtudiantsController {
 		// Récup nouvelle liste et envoie vers vue
 
 		model.addAttribute("attribut_liste_etudiants", etudiantsService.findAllEtudiant());
+		model.addAttribute("attribut_personne_connecte", welcomeController.getInfosPersonneConnecte(authentication));
 
 		return "redirect:/gestionEtudiants/listeEtudiants";
 

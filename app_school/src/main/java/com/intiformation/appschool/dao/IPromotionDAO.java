@@ -27,6 +27,13 @@ public interface IPromotionDAO extends IGenerique<Promotion> {
 	 * @return
 	 */
 	public List<Promotion> afficherPromotionByEnseignant(Long pIdEnseignant);
+
+	/**
+	 * methode pour retourner la liste des promotions associés à une matière 
+	 * @param pIdMatiere
+	 * @return
+	 */
+	public List<Promotion> afficherPromotionByMatiere(Long pIdMatiere);
 	
 
 }//end interface

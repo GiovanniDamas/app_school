@@ -22,7 +22,7 @@ public class LinkValidator implements Validator {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "promotion.libelle", "required.libelle", "Le libellé de la promotion est obligatoire");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enseignant.idPersonne", "required.idEnseignant", "La selection d'enseignant est obligatoire");
-	//	ValidationUtils.rejectIfEmptyOrWhitespace(errors, "enseignant", "required.enseignant", "L'enseignant est obligatoire");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "matiere.libelle", "required.matiere", "Veuillez renseigner un nom de matière");
 
 	}
 

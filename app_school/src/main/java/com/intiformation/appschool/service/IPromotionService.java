@@ -51,7 +51,13 @@ public interface IPromotionService {
 	 * @return
 	 */
 	public List<Promotion> findPromotionByPersonne(Long pIdPersonne, String pRole);
-	
-	
+
+	/**
+	 * méthode pour afficher la liste des promotions associées à une matière 
+	 * @param pIdPersonne
+	 * @return
+	 */
+	public List<Promotion> findPromotionByMatiere(Long pIdMatiere);
+
 
 }//end interface

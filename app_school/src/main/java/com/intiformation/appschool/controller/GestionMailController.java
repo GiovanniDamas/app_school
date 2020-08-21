@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.intiformation.appschool.modeles.Personnes;
-import com.intiformation.appschool.service.IAdministrateursService;
-import com.intiformation.appschool.service.IEnseignantsService;
-import com.intiformation.appschool.service.IEtudiantsService;
-
 /**
  * controller pour la gestion de mails
  * @author marle
@@ -24,66 +20,15 @@ import com.intiformation.appschool.service.IEtudiantsService;
  */
 @Controller
 public class GestionMailController {
-	//___ déclaration du service de enseignant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEnseignantsService enseignantsService;
-
-	public void setEnseignantsService(IEnseignantsService enseignantsService) {
-		this.enseignantsService = enseignantsService;
-	}
-
-	//____ déclaration du service de administrateur avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IAdministrateursService administrateursService;
-
-	public void setAdministrateursService(IAdministrateursService administrateursService) {
-		this.administrateursService = administrateursService;
-	}
-
-	//___ déclaration du service de etudiant avec setter pour injection spring
-	@Autowired //injection par modificateur
-	private IEtudiantsService etudiantsService;
-
-	public void setEtudiantsService(IEtudiantsService etudiantsService) {
-		this.etudiantsService = etudiantsService;
-	}
 	
-	private Personnes personneConnecte;
+	//déclaration WelcomeController pour recup infos personne connectée
+	@Autowired
+	private WelcomeController welcomeController;
 	
-	/**
-	 * méthode qui permet de récupérer les informations de la personne connectée
-	 * @param authentication
-	 * @return
-	 */
-	public Personnes getInfosPersonneConnecte(Authentication authentication) {
-				
-		if(authentication == null) {
-			
-			personneConnecte = null;
-			
-		} else if (authentication != null) {
-			
-			if (authentication.getAuthorities().toString().contains("ROLE_ADMIN")) {
-				
-				//1. cas d'un admin : récupération de l'administrateur connecté
-				personneConnecte = administrateursService.findAdministrateurByIdentifiant(authentication.getName());
-		
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ENSEIGNANT")) {
-				
-				//1. cas d'un enseignant : récupération de l'enseignant connecté
-				personneConnecte = enseignantsService.findEnseignantByIdentifiant(authentication.getName());
-				
-			} else if (authentication.getAuthorities().toString().contains("ROLE_ETUDIANT")) {
-				
-				//1. cas d'un etudiant : récupération de l'eutidnat connecté
-				personneConnecte = etudiantsService.findEtudiantByIdentifiant(authentication.getName());
-			}//end else if
-			
-		}//end else if
-		
-		return personneConnecte;
-		
-	}//end getInfosPersonneConnecte
+	public void setWelcomeController(WelcomeController welcomeController) {
+		this.welcomeController = welcomeController;
+	}	
+
 	
 	 @Autowired
 	 private JavaMailSender mailSender;
@@ -129,7 +74,7 @@ public class GestionMailController {
 			model.addAttribute("attribut_destinataire", pMail);
 					
 			//2. récup de la personne connectée et renvoi vers la vue
-			Personnes personneConnecte = getInfosPersonneConnecte(authentication);
+			Personnes personneConnecte = welcomeController.getInfosPersonneConnecte(authentication);
 			model.addAttribute("attribut_personne_connecte", personneConnecte);
 			
 			//3. renvoi du nom logique de la vue

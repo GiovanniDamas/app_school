@@ -1,20 +1,22 @@
-<%@page import="com.intiformation.appschool.modeles.Enseignants"%>
-<%@page import="com.intiformation.appschool.service.EnseignantsServiceImpl"%>
-<%@page import="com.intiformation.appschool.service.IEnseignantsService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>   
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Accueil</title>
+	<title>Ajout/modif Adresse</title>
 
+	
+	<!--  
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">	-->
+ 
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
 		rel="stylesheet">
@@ -22,36 +24,21 @@
 	<!-- Lien vers feuille de style perso de index -->
 	<link href="${pageContext.request.contextPath}/resources/styles/index.css"
 	    rel="stylesheet">
-
-    <!-- Lien vers font awesome 4.7.0-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>
-
+	    
 	<!-- Lien vers la font de la sidebar -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     
-   	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 
+   	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet"> <!-- 'Fredericka the Great' --> 	    
 
- 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/jquery-3.4.1.min.js"></script>	
+    <!-- Lien vers font awesome 4.7.0-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" data-auto-a11y="true"></script>	
+	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/bootstrap.bundle.min.js"></script>	
-
+	
 </head>
+
 <body>
-	
-<%--		UNCOMMENT IF U WANT TO USE INCLUDE (PB: FOOTER ) 
-	
-	<jsp:include page="/WEB-INF/generic/header.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/generic/sidebar.jsp"></jsp:include>  
-
-	<div>
-
-     	<!--Put some content here-->
-
-		<h1>Hello world !!</h1>
- 	</div>
- 	
- <jsp:include page="/WEB-INF/generic/footer.jsp"></jsp:include>
---%>
 
 	<!-- ===================================================== -->
 	<!-- =============== HEADER ============================= -->
@@ -95,8 +82,6 @@
 			Bienvenue, ${attribut_personne_connecte.prenom} ${attribut_personne_connecte.nom}
 			</h5>
 		</s:authorize>
-	
-		
 		
 		<s:authorize
 			access="hasAnyRole('ROLE_ETUDIANT', 'ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -128,9 +113,7 @@
 		<!-- ===================================================== -->
 		<!-- =============== SIDEBAR ============================= -->
 		<!-- ===================================================== -->
-		<nav class="sidebar" id="sidebar"> <!--
-        <button type="button" class="toggler" id="sidebarCollapse" > <span class="fa fa-arrow-left fa-2x"></span></button>
-        -->
+		<nav class="sidebar" id="sidebar"> 
 
 
 		<div class="sidebar-header">
@@ -156,71 +139,101 @@
 		<!-- ===================================================== -->
 		<!-- =============== CONTENT ============================= -->
 		<!-- ===================================================== -->
-		<div id="content">
-			<div class="container">			
+		<div id="content" style="width:100%">
+							
 			<button type="button" id="sidebarCollapse" class="navbar-btn">
 				<span></span> <span></span> <span></span>
 			</button>
-	
-		<img src="${pageContext.request.contextPath}/resources/media/ecole.jpeg"  style=" width:20%; float:left ; margin-top: 20px; margin-right: 20px" />
-		</div>	
-		
-		<!-- Affichage d'un message lors de la déconnexion -->
-	    <div class="présentation" > 
-	
-		<c:if test="${not empty param.logout_message}">
-			<div class="alert alert-dismissible alert-success col-12" style="float: right;">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<font> Déconnexion avec succès </font>
-			</div>
-		</c:if>
-	
-			<br />
 
-			<!--Put some content here-->
+
+
+	<div align="center" >
+		<h1>Edition de l'adresse</h1>
+	</div>
+
+	<br/>
 	
-			<h3 >Bienvenue sur le site de l'école Sainte Thérèse de Saint-Vaast-la-Hougue. </h3>
-			
-			<br/><br/><br/>
-			<p > 
-				Nous avons le plaisir d'accompagner vos enfants du CP jusqu'au CM2 dans des conditions d'apprentissage permettant son épanouissement, malgré
-				ces conditions si spéciales.<br/>
-				Nous mettrons tout en oeuvre pour continuer notre enseignement tel que vous le connaissez tout en respectant les consignes pour le bien de la cause sanitaire.<br/>
-				Nous vous remercions pour votre soutient et votre compréhension. <br/>
-				Mme la directrice.
-			</p>
-			
-			<hr>
-			
-			<p >
-				Les inscriptions à l'école pour l'année scolaire 2020/2021 sont désormais ouvertes !!
-			</p>
+	<div align="center">
 
-		  </div>
-		
-		</div><!-- end content -->
-	</div>	<!-- end wrapper -->
+		<form:form modelAttribute="attribut_adresse" method="POST"
+			action="${pageContext.request.contextPath}/adresses/edit"
+			enctype="multipart/form-data">  
 
+			<%-- affichage de tous les messages d'erreurs --%>
+			<%-- <form:errors path="*" cssClass="erreur_validation" element="div" />--%>
+
+
+			<fieldset>
+			
+				<!--  récup de l'id du cours à modifier dans un champ caché -->
+				<%-- <c:if test="${idAide != 0} "> --%>
+				<form:hidden path="idAdresse"/>		
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="numero">Numéro</form:label>
+					<form:input type="text" class="form-control" path="numero"  />
+					<form:errors path="numero" cssStyle="color:red; font-style:italic;" />
+				</div>
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="rue">Rue</form:label>
+					<form:input type="text" class="form-control" rows="20" path="rue" />
+					<form:errors path="rue" cssStyle="color:red; font-style:italic;" />
+				</div>
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="codePostal">Code Postal</form:label>
+					<form:input type="text" class="form-control" rows="20" path="codePostal" />
+					<form:errors path="codePostal" cssStyle="color:red; font-style:italic;" />
+				</div>
+				
+				<div class="form-group" style="margin-left: 20%; margin-right: 20%">
+					<form:label class="col-form-label" path="ville">Ville</form:label>
+					<form:input type="text" class="form-control" rows="20" path="ville" />
+					<form:errors path="ville" cssStyle="color:red; font-style:italic;" />
+				</div>								
+				
+				<div class="form-group">
+				
+					<c:if test="${idAdresse == 0}">
+						<input type="submit" value="Ajouter" />
+					</c:if>
+					
+					<c:if test="${idAdresse != 0}">
+						<input type="submit" value="Modifier" />
+					</c:if>
+				</div>
+			
+			</fieldset>
+			
+		</form:form>
+	</div>
+
+
+
+	</div><!-- end content -->
+</div><!-- end wrapper -->
 
 	<!-- ===================================================== -->
 	<!-- =============== FOOTER ============================== -->
 	<!-- ===================================================== -->
-  <div class="clear" style="clear:both"></div>
+
      
 	<footer class="footer" >
   
         <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
          
   </footer>
-    
-    
+
+
 	<!-- ===================================================================== -->
 	<!-- ==================  SCRIPTS  ======================================== -->
-	<!-- ===================================================================== -->	    
- 
-
+	<!-- ===================================================================== -->	
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/sidebar.js"></script>	
     
+	
+
+	
 </body>
 </html>

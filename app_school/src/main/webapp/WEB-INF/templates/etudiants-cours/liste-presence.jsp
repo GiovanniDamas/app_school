@@ -91,7 +91,7 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 			  </div>
 			</div>
@@ -177,7 +177,7 @@
 
 	<table class="table table-hover" style="width:90%;margin-left:5%";">
 	 	
-	 	<thead style="text-align: center;">
+	 	<thead class="thead-light" style="text-align: center;">
     		<tr>
     			<th scope="row">Motif</th>
       			<th scope="row">Etudiant</th>
@@ -228,14 +228,13 @@
 	 	 	
 	 <table class="table table-hover" style="width:90%;margin-left:5%";text-align: center">
 	 	
-	 	<thead style="text-align: center;">
+	 	<thead class="thead-light" style="text-align: center;">
     		<tr>
       			<th scope="row">Absence</th>
     			<th scope="row">Motif</th>
       			<th scope="row">Etudiant</th>
       			<th scope="row">Cours</th>
       			<th scope="row">Modifier</th>
-      	<%-- 	<th scope="row">Supprimer</th>  --%>
     		</tr>
   	  </thead>
   	  

@@ -92,7 +92,7 @@
 			     <span class="fa fa-user-circle" ></span> Mon compte
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#"><span class="fa fa-address-card " ></span> Mes informations</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
 			  </div>
 			</div>
@@ -158,7 +158,7 @@
 		
 			<div style="padding: 30px;">
 				<h1 style="margin-left: 20px">
-					<u>Liste des Promotions:</u>
+					<u>Liste des Enseignants:</u>
 				</h1>
 			</div>
 			<div class="container">

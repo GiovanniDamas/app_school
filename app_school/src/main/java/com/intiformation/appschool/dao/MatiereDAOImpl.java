@@ -204,7 +204,7 @@ public class MatiereDAOImpl implements IMatiereDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Matiere> getMatiereByEtudiantQuery = session.createQuery("SELECT m FROM Matiere m, "
+			Query<Matiere> getMatiereByEtudiantQuery = session.createQuery("SELECT DISTINCT m FROM Matiere m, "
 																						+ "EnseignantMatierePromotionLink link, "
 																						+ "Promotion p ,"
 																						+ "Etudiants e "
@@ -242,7 +242,7 @@ public class MatiereDAOImpl implements IMatiereDAO {
 		try {
 					
 			//construction requête HQL
-			Query<Matiere> getMatiereByEnseignantQuery = session.createQuery("SELECT m FROM Matiere m, "
+			Query<Matiere> getMatiereByEnseignantQuery = session.createQuery("SELECT DISTINCT m FROM Matiere m, "
 																						+ "EnseignantMatierePromotionLink link, "
 																						+ "Enseignants e "
 																						+ "WHERE m.idMatiere = link.matiere.idMatiere "

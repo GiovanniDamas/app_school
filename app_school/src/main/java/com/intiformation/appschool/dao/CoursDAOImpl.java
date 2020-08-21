@@ -410,11 +410,11 @@ public class CoursDAOImpl implements ICoursDAO{
 			//construction requête HQL
 			Query<Cours> getCoursEtudiantByMatiereQuery = session.createQuery("SELECT DISTINCT c FROM Cours c, "
 																						+ "EnseignantMatierePromotionLink link, "
-																						+ "Promotion p "
-																						+ "Etudiants e"
+																						+ "Promotion p, "
+																						+ "Etudiants e "
 																						+ "WHERE c.promotions.idPromotion = p.idPromotion "
 																						+ "AND link.promotion.idPromotion = p.idPromotion "
-																						+ "AND e.promotion.idPromotion = p.idPromotion"
+																						+ "AND e.promotion.idPromotion = p.idPromotion "
 																						+ "AND e.idPersonne = :pIdEtudiant "
 																						+ "AND c.matieres.idMatiere = :pIdMatiere");
 			//passage de paramètre

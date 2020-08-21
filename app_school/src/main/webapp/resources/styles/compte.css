@@ -131,7 +131,7 @@
 .adresse .gestion{
 	position:absolute;
 	bottom:10px;
-	text-align:center
+	align:center
 }
 
 .adresse .gestion span{

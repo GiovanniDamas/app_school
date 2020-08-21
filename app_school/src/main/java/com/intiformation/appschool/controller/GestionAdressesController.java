@@ -206,7 +206,7 @@ public class GestionAdressesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/adresses/edit", method = RequestMethod.POST)
-	public String ajoutAideBdd(@ModelAttribute("attribut_adresse") Adresse pAdresse, ModelMap model, Authentication authentication) {
+	public String ajoutAdresseBdd(@ModelAttribute("attribut_adresse") Adresse pAdresse, ModelMap model, Authentication authentication) {
 		
 		pAdresse.setPersonne(propriétaire);
 		
@@ -229,7 +229,7 @@ public class GestionAdressesController {
 		// redirection => necessité params
 		return "redirect:/adresses/listeAdresses?idPersonne="+ propriétaire.getIdPersonne() + "&role="+propriétaire.getRole();
 
-	}//end ajoutAideBdd
+	}//end ajoutAdresseBdd
 
 	/**
 	 * Méthode permettant de supprimer l'adresse de la bdd Appelée via une requête

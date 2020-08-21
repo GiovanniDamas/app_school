@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/security/tags"%>    
@@ -7,7 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Insert title here</title>
 	<!-- Lien vers feuille de style de Bootstrap -->
 	<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.css"
@@ -48,7 +48,7 @@
 		<div id="connexion">
 
 			<c:if test="${attribut_help != null}">
-				<!-- Bouton d'aide lançant un modal -->
+				<!-- Bouton d'aide lanÃ§ant un modal -->
 				<button type="button" class="btn" 
 						data-toggle="modal" data-target="#exampleModal" 
 						style="padding:0;max-width:16x;max-height:16px" >
@@ -89,12 +89,12 @@
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			    <a class="dropdown-item" href="${pageContext.request.contextPath}/gestionCompte/compte"><span class="fa fa-address-card " ></span> Mes informations</a>
-			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> Déconnexion</a>
+			    <a class="dropdown-item" href="${pageContext.request.contextPath}/logout"><span class="fas fa-sign-out-alt" ></span> DÃ©connexion</a>
 			  </div>
 			</div>
 			<%-- 
 				<a href="${pageContext.request.contextPath}/logout" id="deconnexion"
-				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> Déconnexion</a>--%>
+				type="button" class="btn btn-dark" style="align-content: right"> <span class="fas fa-sign-out-alt" ></span> DÃ©connexion</a>--%>
 		</s:authorize>
 
 		<s:authorize access="hasRole('ROLE_ANONYMOUS')">
@@ -124,7 +124,7 @@
 			<li><a	href="${pageContext.request.contextPath}/gestionEtudiants/listeEtudiants">Etudiant</a>		</li>
 			<li><a	href="${pageContext.request.contextPath}/gestionEnseignants/listeEnseignants">Enseignant</a>	</li>
 			<li><a href="${pageContext.request.contextPath}/promotion/liste-promotion">Promotion</a></li>
-			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">Matière(s)</a>	</li>
+			<li><a href="${pageContext.request.contextPath}/matiere/liste-matiere">MatiÃ¨re(s)</a>	</li>
 			<li><a href="${pageContext.request.contextPath}/cours/liste">Cours</a>	</li>
 			<li><a	href="${pageContext.request.contextPath}/etudiants-cours/liste">Absence</a>	</li>
 			<s:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ENSEIGNANT')">
@@ -180,7 +180,7 @@
 					<div class="row info">	<div class="col-md-4 info-header">Nom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.nom }</div>	</div>
 					<hr align="center" size="1px" width="100%" color="gray"/>
 					
-					<div class="row info">	<div class="col-md-4 info-header">Prénom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.prenom }</div>	</div> 
+					<div class="row info">	<div class="col-md-4 info-header">PrÃ©nom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.prenom }</div>	</div> 
 					<hr align="center" size="1px" width="100%" color="gray"/>
 					
 					<div class="row info">	<div class="col-md-4 info-header">E-mail :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.email }</div>	</div> 
@@ -225,8 +225,8 @@
 					
 					<div class="row">
 					
-						<div class="col-md-4 add-adress" >
-							<a href="${pageContext.request.contextPath}/adresses/editAdresse?idAdresse=0">
+						<div class="col-lg-3 col-md-5 col-sm-11 add-adress" >
+							<a href="${pageContext.request.contextPath}/compte/editAdresse?idAdresse=0">
 								<span class="fa fa-plus fa-2x plus"></span>
 								<br/>
 								<h4>Ajouter une adresse</h4>
@@ -236,13 +236,13 @@
 					<c:forEach items="${attribut_adresses}"  var="adresse">
 						
 						
-						<div class="col-md-4 adresse" >
+						<div class="col-lg-3 col-md-5 col-sm-11  adresse" >
 							<div class="row ">	<div class="numero">${adresse.numero} </div>  <div class="rue"> ${adresse.rue}</div>		</div>
 							<div class="row">	<div class="code-postal">${adresse.codePostal} </div>	<div class="ville"> ${adresse.ville}</div>	</div>
 							<div class="row gestion">	
-								<a href="#">Modifier</a> 
+								<a href="${pageContext.request.contextPath}/compte/editAdresse?idAdresse=${adresse.idAdresse}">Modifier</a> 
 								<span>|</span>	
-								<a href="#">Supprimer</a>	
+								<a href="${pageContext.request.contextPath}/compte/deleteAdresse?idAdresse=${adresse.idAdresse}">Supprimer</a>	
 							</div>
 						</div>
 					
@@ -266,7 +266,7 @@
      
 	<footer class="footer" >
   
-        <p>2020 Copyright © Groupe2 : Gio, Hannah, Marlène &#x26; Gab  </p>
+        <p>2020 Copyright Â© Groupe2 : Gio, Hannah, MarlÃ¨ne &#x26; Gab  </p>
          
   </footer>
     

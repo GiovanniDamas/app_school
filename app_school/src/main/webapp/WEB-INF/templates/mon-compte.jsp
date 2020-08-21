@@ -151,6 +151,7 @@
 				<h1 style="text-align:center">Informations Personnelles</h1>
 	
 				<div class="container informations" >
+				
 					<div class="row informations-header"> 
 					
 						<h2 class="col-md-4">Profil</h2>	
@@ -174,6 +175,7 @@
 						</div>
 					</div><!-- end informations-header -->
 					<hr align="center" size="1px" width="100%" color="gray"/>
+				
 				
 					<div class="row info">	<div class="col-md-4 info-header">Nom :</div> 	<div class="col-md-8 info-content">${attribut_personne_connecte.nom }</div>	</div>
 					<hr align="center" size="1px" width="100%" color="gray"/>
@@ -210,15 +212,48 @@
 						</a>
 					</c:if>					
 					
-				</div>
+				</div><!-- end informations -->
 	
 				
-				<div class="adresses">
+				<div class="container adresses">
 				
-				</div>
+					<div class="row adresses-header"> 
+						<h2 class="col-md-6">Adresses</h2>	
+						<div class="col-md-6"></div> 
+					</div>
+					<hr align="center" size="1px" width="100%" color="gray"/>
+					
+					<div class="row">
+					
+						<div class="col-md-4 add-adress" >
+							<a href="${pageContext.request.contextPath}/adresses/editAdresse?idAdresse=0">
+								<span class="fa fa-plus fa-2x plus"></span>
+								<br/>
+								<h4>Ajouter une adresse</h4>
+							</a>	
+						</div>
+					
+					<c:forEach items="${attribut_adresses}"  var="adresse">
+						
+						
+						<div class="col-md-4 adresse" >
+							<div class="row ">	<div class="numero">${adresse.numero} </div>  <div class="rue"> ${adresse.rue}</div>		</div>
+							<div class="row">	<div class="code-postal">${adresse.codePostal} </div>	<div class="ville"> ${adresse.ville}</div>	</div>
+							<div class="row gestion">	
+								<a href="#">Modifier</a> 
+								<span>|</span>	
+								<a href="#">Supprimer</a>	
+							</div>
+						</div>
+					
+					</c:forEach>
+					
+					</div>
+				</div><!-- end adresses -->
 	
-			</div>
-
+	
+	
+			</div><!-- end container fluid -->
 
 		</div><!-- end content -->
 	</div>	<!-- end wrapper -->

@@ -12,6 +12,7 @@ import com.intiformation.appschool.modeles.Aide;
 import com.intiformation.appschool.modeles.Etudiants;
 import com.intiformation.appschool.modeles.Personnes;
 import com.intiformation.appschool.service.IAdministrateursService;
+import com.intiformation.appschool.service.IAdresseService;
 import com.intiformation.appschool.service.IAideService;
 import com.intiformation.appschool.service.IEnseignantMatierePromotionLinkService;
 import com.intiformation.appschool.service.IEnseignantsService;
@@ -39,6 +40,9 @@ public class GestionEspacePerso {
 	
 	@Autowired
 	private IAideService aideService;
+	@Autowired
+	private IAdresseService adresseService;
+	
 	/**
 	 * 
 	 * Setter de la couche service pour injection pour modificateur de Spring
@@ -62,9 +66,13 @@ public class GestionEspacePerso {
 		this.aideService = aideService;
 	}
 
-
+	public void setAdresseService(IAdresseService adresseService) {
+		this.adresseService = adresseService;
+	}
 
 	// _________________ METHODES GESTIONNAIRES DU CONTROLLEUR ___________________
+
+
 
 	/**
 	 * méthode qui permet de récupérer les informations de la personne connectée
@@ -113,7 +121,9 @@ public class GestionEspacePerso {
 		model.addAttribute("attribut_personne_connecte", personne);
 		//model.addAttribute("photo", etudiantToUpdate.getPhoto());
 
-
+		model.addAttribute("attribut_adresses", adresseService.findAdresseByPersonne(personne));
+		
+		
 		// aide de la page
 		Aide aideDeLaPage = aideService.findAideByURL("compte");
 		model.addAttribute("attribut_help", aideDeLaPage);	
